@@ -1,0 +1,3645 @@
+{
+  "@context": [
+    "https://secorolab.github.io/metamodels/prov.json",
+    "https://secorolab.github.io/metamodels/metadata.json",
+    "https://raw.githubusercontent.com/cps-test-lab/metamodels/refs/heads/main/robovast.json",
+    {
+      "agn": "https://purl.org/secorolab/metamodels/agent#",
+      "smm": "https://purl.org/secorolab/metamodels/scenarios/osc/",
+      "env": "https://purl.org/secorolab/metamodels/environment#",
+      "robovast": "https://purl.org/robovast/metamodels/",
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "prov": "http://www.w3.org/ns/prov#",
+      "dcterms": "http://purl.org/dc/terms/",
+      "qudt": "http://qudt.org/schema/qudt/",
+      "unit": "http://qudt.org/vocab/unit/",
+      "dataset": "https://purl.org/robovast/datasets/default/"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "https://github.com/cps-test-lab/roqsim",
+      "@type": "Entity"
+    },
+    {
+      "@id": "https://github.com/turtlebot/turtlebot4/tree/jazzy",
+      "@type": "Entity"
+    },
+    {
+      "@id": "orcid:0000-0002-2626-1538",
+      "@type": [
+        "Agent",
+        "Person"
+      ],
+      "foaf:name": "Pasch, Frederik"
+    },
+    {
+      "@id": "orcid:0000-0002-3873-4435",
+      "@type": [
+        "Agent",
+        "Person"
+      ],
+      "foaf:name": "Ortega Sainz, Argentina"
+    },
+    {
+      "@id": "orcid:0009-0002-9215-1238",
+      "@type": [
+        "Agent",
+        "Person"
+      ],
+      "foaf:name": "Wiest, Samuel"
+    },
+    {
+      "@id": "https://purl.org/robovast/",
+      "@type": "SoftwareAgent",
+      "hasVersion": "7e2a5ef"
+    },
+    {
+      "@id": "repository:default/",
+      "@type": [
+        "Entity",
+        "Dataset"
+      ],
+      "contributor": [],
+      "creator": [
+        "orcid:0009-0002-9215-1238",
+        "orcid:0000-0002-3873-4435",
+        "orcid:0000-0002-2626-1538"
+      ],
+      "description": "Replication of nav2's wait-behavior system test\n(nav2_system_tests/src/behaviors/wait, main). Where upstream drives the /wait\naction with a C++ tester (wait_behavior_tester.cpp) against a tb3 Gazebo world,\nthis campaign runs the full nav2 stack (files/nav2_stack.launch.py, the same\nhexagon world as the sibling error_codes and system_failure campaigns) and drives\n/wait with the generic action_call primitive.\n\nMEANING OF A CELL: one configuration is one upstream wait parameterization\n(nav2_system_tests.csv lines 23-26, test case `test_wait_behavior`). The wait behavior\nSUCCEEDS after its configured duration, so every ported cell carries\nexpect_success: true and action_call returns SUCCESS -- the same assertion\nwait_behavior_tester.cpp's behaviorTest() makes. The analysis additionally verifies\nthe upstream `elapsed >= wait_time` assertion from the recorded /wait/_action\ntimestamps (not expressible in the scenario; see wait_behavior.osc header).\n\nPORTED CASE -> DURATION:\n- Wait 1 (CSV line 23) -> 1.0 s\n- Wait 2 (CSV line 24) -> 2.0 s\n- Wait 5 (CSV line 25) -> 5.0 s\n\nNOT PORTED: Wait 10 + cancel (CSV line 26). behaviorTestCancel() sends a /wait goal\nthen async_cancel_all_goals and asserts the goal was canceled; a mid-run cancel\ncannot be sequenced in this scenario framework (action_call has no cancel entry\npoint -- RosActionCall.shutdown() cancels only at scenario teardown). Recorded,\nnot faked, in readme.md.\n\nUPSTREAM ODDITY worth recording: upstream CMakeLists.txt sets\nBT_NAVIGATOR_XML=navigate_to_pose_w_replanning_and_behavior.xml, a file that exists\nneither in the navigation2 source tree nor in the installed nav2_bt_navigator share\ndirectory (verified in the robovast image). It is immaterial here -- /wait is a\nbehavior-server action, not a BT node -- but the CSV row's BT column therefore names\na file that cannot be loaded.\n",
+      "hasVersion": "1.0.0",
+      "language": "http://id.loc.gov/vocabulary/iso639-1/en",
+      "license": "http://purl.org/NET/rdflicense/cc-by-4.0",
+      "modified": "2026-09-06T13:05:46.966554",
+      "title": "Nav2 wait-behavior server test, TurtleBot 4 + Nav2, in roqsim (MuJoCo)",
+      "distribution": [],
+      "themeTaxonomy": [
+        "robotics",
+        "navigation",
+        "ROS2",
+        "mujoco",
+        "roqsim",
+        "nav2",
+        "turtlebot4",
+        "behavior",
+        "wait"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/",
+      "@type": [
+        "Entity",
+        "Campaign"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/execution/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/environments/hexagon/3d-mesh/hexagon.stl",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/environments/hexagon/3d-mesh/hexagon.stl.yaml",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/environments/hexagon/json-ld/floorplan.fpm.json",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/environments/hexagon/json-ld/floorplan.fpm.json.yaml",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/environments/hexagon/maps/hexagon.pgm",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/environments/hexagon/maps/hexagon.yaml",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/collision_monitor.py",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/gazebo_launch.py",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/models/box.sdf.xacro",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/models/cylinder.sdf.xacro",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/monitor_cam_launch.py",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/nav2/spawn_tb4.launch.py",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/nav2/tb4_bridge.yaml",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/nav2/tb4_simulation_launch.py",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/nav2_gazebo.launch.py",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/nav2_launch.py",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/nav2_stack.launch.py",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/navigate_to_pose_w_replanning_and_recovery.xml",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/world.sdf.xacro",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/scenario.osc",
+      "@type": [
+        "Entity",
+        "smm:AbstractScenario"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/test_wait_behavior.vast",
+      "@type": [
+        "Entity",
+        "Collection",
+        "VastConfiguration"
+      ],
+      "references": "dataset:test-wait-behavior-2026-09-06-15015548/_config/scenario.osc",
+      "hadMember": []
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_config/world/nav2.yaml",
+      "@type": "Entity"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/logs/clock_map.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/clock_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/logs/rosout.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/logs/rosout_bag",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/rosout_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config",
+      "@type": [
+        "Entity",
+        "Collection"
+      ],
+      "hadMember": "dataset:test-wait-behavior-2026-09-06-15015548/_config/world/nav2.yaml"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+      "@type": [
+        "Entity",
+        "Collection"
+      ],
+      "hadMember": "dataset:test-wait-behavior-2026-09-06-15015548/_config/files/nav2_stack.launch.py"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/config_generation",
+      "@type": [
+        "Activity",
+        "ConfigGeneration"
+      ],
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_config/test_wait_behavior.vast",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_config/scenario.osc"
+      ],
+      "wasAssociatedWith": "https://purl.org/robovast/",
+      "wasInfluencedBy": "dataset:test-wait-behavior-2026-09-06-15015548/execution/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/execution/",
+      "@type": [
+        "Activity",
+        "CampaignExecution",
+        "robovast:Cluster"
+      ],
+      "startedAtTime": "2026-09-06T13:05:34.639368+00:00",
+      "wasAssociatedWith": "https://purl.org/robovast/",
+      "runs": 5
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/metadata.prov.json",
+      "@type": [
+        "Entity",
+        "CampaignGraph"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/metadata.yaml",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/graph/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/metadata.yaml",
+      "@type": [
+        "Entity",
+        "CampaignMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/metadata/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "@type": [
+        "Activity",
+        "Postprocessing"
+      ],
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/logs/rosout_bag",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/system_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/resource_usage_sut.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/system_usage_sut.csv"
+      ],
+      "wasAssociatedWith": "https://purl.org/robovast/",
+      "wasInfluencedBy": "dataset:test-wait-behavior-2026-09-06-15015548/execution/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/graph/",
+      "@type": [
+        "Activity",
+        "PostprocessingGraph"
+      ],
+      "endedAtTime": "2026-09-06T13:05:46.967281",
+      "startedAtTime": "2026-09-06T13:05:46.956270",
+      "used": "dataset:test-wait-behavior-2026-09-06-15015548/metadata.yaml",
+      "wasAssociatedWith": "https://purl.org/robovast/",
+      "wasInfluencedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/metadata/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/metadata/",
+      "@type": [
+        "Activity",
+        "PostprocessingMetadata"
+      ],
+      "used": "dataset:test-wait-behavior-2026-09-06-15015548/",
+      "wasAssociatedWith": "https://purl.org/robovast/",
+      "wasInfluencedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/simulation",
+      "@type": "SoftwareAgent",
+      "wasDerivedFrom": "https://github.com/cps-test-lab/roqsim",
+      "robovast:ros_distro": "jazzy"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/simulation/load/",
+      "@type": "Activity",
+      "used": "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config",
+      "wasAssociatedWith": "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+      "@type": "SoftwareAgent",
+      "wasDerivedFrom": "https://github.com/turtlebot/turtlebot4/tree/jazzy",
+      "robovast:ros_distro": "jazzy"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4/load/",
+      "@type": "Activity",
+      "used": "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+      "wasAssociatedWith": "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/",
+      "@type": [
+        "Entity",
+        "smm:ConcreteScenario"
+      ],
+      "atLocation": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/_config/scenario.config",
+      "generatedAtTime": "2026-09-06T15:01:56.696641",
+      "specializationOf": "dataset:test-wait-behavior-2026-09-06-15015548/_config/scenario.osc",
+      "wasDerivedFrom": [],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/config_generation"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:02:24.584379+00:00",
+      "startedAtTime": "2026-09-06T13:02:16.826650+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b0"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/0/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-0/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:02:24.184361+00:00",
+      "startedAtTime": "2026-09-06T13:02:16.826612+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b1"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/1/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-1/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:02:48.067507+00:00",
+      "startedAtTime": "2026-09-06T13:02:39.908245+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b2"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/2/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-2/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:02:47.355628+00:00",
+      "startedAtTime": "2026-09-06T13:02:39.888772+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b3"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/3/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-3/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:03:11.650959+00:00",
+      "startedAtTime": "2026-09-06T13:03:03.985796+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b4"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/4/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-4/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait1/_config/scenario.config",
+      "@type": "prov:Location"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/",
+      "@type": [
+        "Entity",
+        "smm:ConcreteScenario"
+      ],
+      "atLocation": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/_config/scenario.config",
+      "generatedAtTime": "2026-09-06T15:01:56.696641",
+      "specializationOf": "dataset:test-wait-behavior-2026-09-06-15015548/_config/scenario.osc",
+      "wasDerivedFrom": [],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/config_generation"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:03:12.332297+00:00",
+      "startedAtTime": "2026-09-06T13:03:03.986301+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b5"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/0/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-5/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:03:35.996414+00:00",
+      "startedAtTime": "2026-09-06T13:03:27.125538+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b6"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/1/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-6/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:03:35.949412+00:00",
+      "startedAtTime": "2026-09-06T13:03:27.123452+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b7"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/2/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-7/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:04:00.025216+00:00",
+      "startedAtTime": "2026-09-06T13:03:51.211434+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b8"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/3/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-8/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:03:59.454389+00:00",
+      "startedAtTime": "2026-09-06T13:03:51.205097+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b9"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/4/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-9/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait2/_config/scenario.config",
+      "@type": "prov:Location"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/",
+      "@type": [
+        "Entity",
+        "smm:ConcreteScenario"
+      ],
+      "atLocation": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/_config/scenario.config",
+      "generatedAtTime": "2026-09-06T15:01:56.696641",
+      "specializationOf": "dataset:test-wait-behavior-2026-09-06-15015548/_config/scenario.osc",
+      "wasDerivedFrom": [],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/config_generation"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:04:24.925469+00:00",
+      "startedAtTime": "2026-09-06T13:04:13.334926+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b10"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/0/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-10/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:04:30.064629+00:00",
+      "startedAtTime": "2026-09-06T13:04:16.318765+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b11"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/1/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-11/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:04:52.623321+00:00",
+      "startedAtTime": "2026-09-06T13:04:40.437766+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b12"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/2/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-12/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:04:56.043068+00:00",
+      "startedAtTime": "2026-09-06T13:04:44.378054+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b13"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/3/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-13/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4",
+      "@type": [
+        "Activity",
+        "TestExecution"
+      ],
+      "endedAtTime": "2026-09-06T13:05:19.146919+00:00",
+      "startedAtTime": "2026-09-06T13:05:07.592545+00:00",
+      "used": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/turtlebot4-config",
+        "dataset:test-wait-behavior-2026-09-06-15015548/config/simulation-config"
+      ],
+      "wasAssociatedWith": [
+        "https://purl.org/robovast/",
+        "dataset:test-wait-behavior-2026-09-06-15015548/turtlebot4",
+        "dataset:test-wait-behavior-2026-09-06-15015548/simulation"
+      ],
+      "success": "true",
+      "sysinfo": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/sysinfo/"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/.robovast_rosbags_process_cache",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/action_wait_feedback.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/action_wait_status.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/action_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/behaviors.jsonl",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/capture/capture.bin",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/capture/capture.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/costmaps.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/costmap_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/entities.json",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/poses.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/tf_to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/resource_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/resource_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/resource_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/resource_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "resource_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/",
+      "@type": [
+        "Collection",
+        "robovast:ROSBag"
+      ],
+      "hasVersion": "jazzy",
+      "hadMember": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/rosbag2_0.mcap",
+        "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/metadata.yaml"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4",
+      "message_types": [
+        "jazzy:action_msgs/msg/GoalStatusArray",
+        "jazzy:geometry_msgs/msg/PoseWithCovarianceStamped",
+        "jazzy:nav2_msgs/action/Wait_FeedbackMessage",
+        "jazzy:nav2_msgs/msg/BehaviorTreeLog",
+        "jazzy:nav_msgs/msg/OccupancyGrid",
+        "jazzy:nav_msgs/msg/Odometry",
+        "jazzy:nav_msgs/msg/Path",
+        "jazzy:rosgraph_msgs/msg/Clock",
+        "jazzy:sensor_msgs/msg/LaserScan",
+        "jazzy:std_msgs/msg/Bool",
+        "jazzy:tf2_msgs/msg/TFMessage"
+      ]
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/metadata.yaml",
+      "@type": [
+        "Entity",
+        "BagFileMetadata"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/rosbag2_0.mcap",
+      "@type": [
+        "Entity",
+        "MCAPFile"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2_collision.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/rosbag2/",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "rosbags_process/to_csv"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/run.npz",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/sysinfo/",
+      "@type": "Entity",
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4",
+      "robovast:available_cpus": "2",
+      "robovast:available_mem": "4294967296",
+      "robovast:cpu_governor": "performance",
+      "robovast:cpu_name": "Intel(R) Core(TM) Ultra 9 285K",
+      "robovast:gpu": {
+        "@id": "_:b14"
+      },
+      "robovast:instance_type": "x86_64",
+      "robovast:machine": "x86_64",
+      "robovast:node_label": "node-7f7e372628b2",
+      "robovast:platform": "Linux-7.0.0-30-generic-x86_64-with-glibc2.39",
+      "robovast:processor": "x86_64",
+      "robovast:release": "7.0.0-30-generic",
+      "robovast:system": "Linux",
+      "robovast:version": "#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/4/system_usage.csv",
+      "@type": [
+        "Entity",
+        "Traces"
+      ],
+      "wasDerivedFrom": [
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/system_usage_main.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/system_usage_simulation.csv",
+        "dataset:test-wait-behavior-2026-09-06-15015548/_jobs/batch-0/job-14/system_usage_sut.csv"
+      ],
+      "wasGeneratedBy": "dataset:test-wait-behavior-2026-09-06-15015548/postprocessing/",
+      "plugin": "system_usage"
+    },
+    {
+      "@id": "dataset:test-wait-behavior-2026-09-06-15015548/wait5/_config/scenario.config",
+      "@type": "prov:Location"
+    },
+    {
+      "@id": "https://purl.org/secorolab/scenery_builder/",
+      "@type": "SoftwareAgent"
+    }
+  ]
+}

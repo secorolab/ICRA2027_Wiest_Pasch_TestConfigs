@@ -1,0 +1,826 @@
+seq,sim_time,wall_ts,time_source,in_window,container,node,source,level,severity,message,file,function,line
+0,,1789586013.391444921,stamp,0,simulation,entrypoint,stdout,INFO,other,Secondary container starting (random-20142397-batch06d19519b4c01fca3-101-dp2wn)...,,,
+1,,1789586013.393285036,stamp,0,simulation,entrypoint,stdout,INFO,other,"Running as UID: 1000, GID: 1000...",,,
+2,,1789586013.655987978,stamp,0,simulation,entrypoint,stdout,INFO,other,sourced /opt/ros/jazzy and /ws/install,,,
+3,,1789586013.774899960,stamp,0,simulation,entrypoint,stdout,INFO,other,Started resource monitor (PID=32) -> /out/_jobs/batch-0/job-101/resource_usage_simulation.csv,,,
+4,,1789586013.775424957,stamp,0,simulation,entrypoint,stdout,INFO,other,Starting container command: roqsim sim /config/world/nav2.yaml --headless --pacing realtime --override /config/sim.overrides.yaml,,,
+5,,1789586014.265557051,stamp,0,simulation,roqsim.runner,stdout,INFO,other,"seed: 110896245 (drawn -- pass --seed 110896245, or set sim.seed, to repeat this run)",,,
+6,,1789586014.284082890,stamp,0,simulation,roqsim.plugins.contact_monitor,stdout,INFO,other,"contact_monitor: watching 16 geoms of 'base_link', ignoring 1",,,
+7,,1789586014.401791096,stamp,0,sut,entrypoint,stdout,INFO,other,Secondary container starting (random-20142397-batch06d19519b4c01fca3-101-dp2wn)...,,,
+8,,1789586014.403713942,stamp,0,sut,entrypoint,stdout,INFO,other,"Running as UID: 1000, GID: 1000...",,,
+9,,1789586014.408454895,stamp,0,simulation,roqsim_ros_bridge.extensions,stdout,INFO,other,bridge extension loaded: roqsim_nav (roqsim_nav_ros.actions),,,
+10,,1789586014.475272894,stamp,0,simulation,roqsim.engine,stdout,WARNING,warn,"bridge: endpoint 'pose' asked for 60 Hz and publishes at 62.5 Hz (every 8 steps, exactly 125/2) -- a publish lands on a physics step and this world steps at 500 Hz, so the request is 8.33 steps apart and no whole number of steps gives it. The spacing is exact, so there is no drift. Nearby: 55.5556 Hz (k=9), 71.4286 Hz (k=7), 50 Hz (k=10). To keep 60 Hz itself, step this world at a multiple of it -- the nearest is 480 Hz (sim.timestep 0.0020833333333333333).",,,
+11,,1789586014.475550890,stamp,0,simulation,roqsim.engine,stdout,WARNING,warn,"bridge: endpoint 'contact' asked for 30 Hz and publishes at 29.41 Hz (every 17 steps, exactly 500/17) -- a publish lands on a physics step and this world steps at 500 Hz, so the request is 16.67 steps apart and no whole number of steps gives it. The spacing is exact, so there is no drift. Nearby: 27.7778 Hz (k=18), 31.25 Hz (k=16), 26.3158 Hz (k=19). To keep 30 Hz itself, step this world at a multiple of it -- the nearest is 510 Hz (sim.timestep 0.0019607843137254902).",,,
+12,,1789586014.482851028,stamp,0,simulation,roqsim.engine,stdout,INFO,other,recording: sim_poses.csv carries 5 named bodies; 0 unnamed bodies have no row,,,
+13,,1789586014.671114922,stamp,0,sut,entrypoint,stdout,INFO,other,sourced /opt/ros/jazzy and /ws/install,,,
+14,,1789586014.786503077,stamp,0,sut,entrypoint,stdout,INFO,other,Started resource monitor (PID=32) -> /out/_jobs/batch-0/job-101/resource_usage_sut.csv,,,
+15,,1789586014.787065983,stamp,0,sut,entrypoint,stdout,INFO,other,Starting scenario-execution-server-ros on socket '/ipc/sut'...,,,
+16,,1789586015.140294075,stamp,0,sut,scenario_execution_server,rosout,INFO,other,"scenario-execution-server-ros starting (port=7613, socket_path='/ipc/sut', watchdog=3s, connect_timeout=15s)",/ws/install/scenario_execution_server_ros/lib/python3.12/site-packages/scenario_execution_server_ros/server_ros.py,__init__,130
+17,,1789586015.141201496,stamp,0,sut,scenario_execution_server.server,stdout,INFO,other,scenario-execution-server listening on ipc:///ipc/sut,,,
+18,,1789586015.408292055,stamp,0,robovast,entrypoint,stdout,INFO,other,"Running as UID: 1000, GID: 1000...",,,
+19,,1789586015.669190884,stamp,0,robovast,entrypoint,stdout,INFO,other,sourced /opt/ros/jazzy and /ws/install,,,
+20,,1789586015.669677973,stamp,0,robovast,entrypoint,stdout,INFO,other,Collecting system information...,,,
+21,,1789586015.789412975,stamp,0,robovast,entrypoint,stdout,INFO,other,X11 disabled - skipping virtual display setup,,,
+22,,1789586015.789942026,stamp,0,robovast,entrypoint,stdout,INFO,other,Entrypoint script initialized,,,
+23,,1789586015.792378902,stamp,0,robovast,entrypoint,stdout,INFO,other,Started resource monitor (PID=37) -> /out/_jobs/batch-0/job-101/resource_usage_main.csv,,,
+24,,1789586015.794379950,stamp,0,robovast,entrypoint,stdout,INFO,other,Started rosbag recording /rosout /clock (PID=42) -> /out/_jobs/batch-0/job-101/logs/rosout_bag,,,
+25,,1789586015.797298908,stamp,0,robovast,entrypoint,stdout,INFO,other,Starting scenario execution (mode=ros2) with config file...,,,
+26,,1789586015.797785997,stamp,0,robovast,entrypoint,stdout,INFO,other,Commandline: ros2 run scenario_execution_ros scenario_execution_ros -o /out /config/nav_to_pose.osc --post-run /tmp/robovast_cleanup.sh --post-run /tmp/s3_upload.sh --scenario-parameter-file /config/batch-0-job-101.params.yaml --output-result-per-scenario  --bt-log ,,,
+27,,1789586016.141078949,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Press SPACE for pausing/resuming,./src/rosbag2_transport/recorder.cpp,RecorderImpl,223
+28,,1789586016.141088009,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Event publisher thread: Started,./src/rosbag2_transport/recorder_event_notifier_impl.hpp,event_publisher_thread_main,169
+29,,1789586016.143117905,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Starting recording to '/out/_jobs/batch-0/job-101/logs/rosout_bag',./src/rosbag2_transport/recorder.cpp,record,313
+30,,1789586016.144543648,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/rosout',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+31,,1789586016.144597530,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Listening for topics...,./src/rosbag2_transport/recorder.cpp,record,338
+32,,1789586016.144604921,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Recording...,./src/rosbag2_transport/recorder.cpp,record,347
+33,,1789586016.144624949,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Topics discovery started.,./src/rosbag2_transport/recorder.cpp,topics_discovery,638
+34,,1789586016.248589039,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/clock',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+35,,1789586016.248607635,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,All requested topics are subscribed. Stopping discovery...,./src/rosbag2_transport/recorder.cpp,topics_discovery,658
+36,,1789586016.248610497,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Topics discovery stopped.,./src/rosbag2_transport/recorder.cpp,topics_discovery,680
+37,2.267628,1789586016.749051571,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,Applying parameter overrides for scenarios: ['test_scenario'],/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+38,2.547754,1789586017.028966427,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,Executing scenario 'test_scenario',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+39,2.548638,1789586017.029850006,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,Recording behaviour tree status to /out/tr-101/0/behaviors.jsonl,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+40,2.590787,1789586017.071967602,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,"Connecting to scenario-execution-server at ipc:///ipc/sut (plugin='ros_launch', action_id=40a03e95, timeout=10.0s) ...",/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+41,2.591251,1789586017.072430849,stamp,1,sut,scenario_execution_server.server,stdout,INFO,other,cmd=init action_id=40a03e95,,,
+42,2.757982,1789586017.239036083,stamp,1,sut,scenario_execution_server.action_runner,stdout,INFO,other,Initialized 'ros_launch' (id=40a03e95),,,
+43,2.758308,1789586017.239361525,stamp,1,sut,scenario_execution_server.server,stdout,INFO,other,cmd=setup action_id=40a03e95,,,
+44,2.758427,1789586017.239480972,stamp,1,sut,scenario_execution_server.action_runner,stdout,INFO,other,Setup (id=40a03e95),,,
+45,2.758645,1789586017.239698887,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,Connected to scenario-execution-server at ipc:///ipc/sut OK,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+46,3.665957,1789586018.146692038,stamp,1,simulation,roqsim.presence,stdout,INFO,other,presence: dynamic_0 absent at t=3.664 (1 geoms),,,
+47,3.864831,1789586018.345551491,stamp,1,sut,scenario_execution_server.server,stdout,INFO,other,cmd=execute action_id=40a03e95,,,
+48,3.864983,1789586018.345704317,stamp,1,sut,action.40a03e95,stdout,INFO,other,Command: ros2 launch /config/files/nav2_stack.launch.py map:=/config/environments/hexagon/maps/hexagon.yaml params_file:=/config/files/nav2_params_dwb_astar1.yaml autostart:=true use_rviz:=False laserscan_gaussian_noise_std_deviation:=0.0 laserscan_random_drop_percentage:=0.0,,,
+49,3.866280,1789586018.347001314,stamp,1,sut,scenario_execution_server.server,stdout,INFO,other,"cmd=terminate action_id=40a03e95
+[INFO] [1789586018.512802805] [action.40a03e95]: [INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-09-16-19-13-38-511927-random-20142397-batch06d19519b4c01fca3-101-dp2wn-56
+[INFO] [1789586018.512960446] [action.40a03e95]: [INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [1789586018.978933971] [action.40a03e95]: [INFO] [robot_state_publisher-1]: process started with pid [78]
+[INFO] [1789586018.979064774] [action.40a03e95]: [INFO] [laserscan_modification-2]: process started with pid [79]
+[INFO] [1789586018.979166698] [action.40a03e95]: [INFO] [component_container_isolated-3]: process started with pid [80]",,,
+50,4.521823,1789586019.002537251,stamp,1,sut,kdl_parser,stdout,WARN,warn,"The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.",,,
+51,4.521930,1789586019.002643824,stamp,1,sut,robot_state_publisher,rosout,INFO,other,Robot initialized,./src/robot_state_publisher.cpp,setupURDF,215
+52,4.621751,1789586019.102468967,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libamcl_core.so,./src/component_manager.cpp,create_component_factory,116
+53,4.627460,1789586019.108178616,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_amcl::AmclNode>,./src/component_manager.cpp,create_component_factory,129
+54,4.627497,1789586019.108214855,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_amcl::AmclNode>
+[INFO] [1789586019.113675927] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.113437267] [amcl]:
+[INFO] [1789586019.113791897] [action.40a03e95]: [component_container_isolated-3] 	amcl lifecycle node launched.
+[INFO] [1789586019.113896880] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.113995049] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/component_manager.cpp,create_component_factory,131
+55,4.632719,1789586019.113437176,stamp,1,sut,amcl,rosout,INFO,other,"
+	amcl lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+56,4.633284,1789586019.114002466,stamp,1,sut,amcl,rosout,INFO,other,"Creating
+[INFO] [1789586019.115209137] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/amcl' in container '/nav2_container'",./src/amcl_node.cpp,AmclNode,65
+57,4.634895,1789586019.115613699,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libnav2_lifecycle_manager_core.so,./src/component_manager.cpp,create_component_factory,116
+58,4.635590,1789586019.116308451,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_lifecycle_manager::LifecycleManager>,./src/component_manager.cpp,create_component_factory,129
+59,4.635670,1789586019.116388798,stamp,1,sut,nav2_container,rosout,INFO,other,Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_lifecycle_manager::LifecycleManager>,./src/component_manager.cpp,create_component_factory,131
+60,4.639339,1789586019.120057583,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,"Creating
+[INFO] [1789586019.123005140] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/lifecycle_manager_localization' in container '/nav2_container'",./src/lifecycle_manager.cpp,LifecycleManager,38
+61,4.641656,1789586019.122375011,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,[34m[1mCreating and initializing lifecycle service clients[0m[0m,./src/lifecycle_manager.cpp,message,568
+62,4.700897,1789586019.181617737,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libmap_server_core.so,./src/component_manager.cpp,create_component_factory,116
+63,4.707874,1789586019.188595295,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::CostmapFilterInfoServer>,./src/component_manager.cpp,create_component_factory,129
+64,4.707907,1789586019.188627720,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapSaver>,./src/component_manager.cpp,create_component_factory,129
+65,4.707913,1789586019.188634157,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapServer>,./src/component_manager.cpp,create_component_factory,129
+66,4.707925,1789586019.188645840,stamp,1,sut,nav2_container,rosout,INFO,other,Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapServer>,./src/component_manager.cpp,create_component_factory,131
+67,4.713260,1789586019.193981647,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,[34m[1mStarting managed nodes bringup...[0m[0m,./src/lifecycle_manager.cpp,message,568
+68,4.713302,1789586019.194023371,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,"[34m[1mConfiguring map_server[0m[0m
+[INFO] [1789586019.194704507] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.194255189] [map_server]:
+[INFO] [1789586019.194834079] [action.40a03e95]: [component_container_isolated-3] 	map_server lifecycle node launched.
+[INFO] [1789586019.194965148] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.195144119] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_manager.cpp,message,568
+69,4.713534,1789586019.194255114,stamp,1,sut,map_server,rosout,INFO,other,"
+	map_server lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+70,4.713567,1789586019.194288492,stamp,1,sut,map_server,rosout,INFO,other,Creating,./src/map_server/map_server.cpp,MapServer,68
+71,4.713788,1789586019.194509029,stamp,1,sut,map_server,rosout,INFO,other,Configuring,./src/map_server/map_server.cpp,on_configure,83
+72,4.713837,1789586019.194557905,stamp,1,sut,map_io,stdout,INFO,other,Loading yaml file: /config/environments/hexagon/maps/hexagon.yaml,,,
+73,4.714019,1789586019.194740295,stamp,1,sut,map_io,stdout,INFO,other,resolution: 0.05,,,
+74,4.714025,1789586019.194746494,stamp,1,sut,map_io,stdout,INFO,other,origin[0]: -4.18294,,,
+75,4.714028,1789586019.194749355,stamp,1,sut,map_io,stdout,INFO,other,origin[1]: -3.79,,,
+76,4.714029,1789586019.194750786,stamp,1,sut,map_io,stdout,INFO,other,origin[2]: 0,,,
+77,4.714031,1789586019.194752455,stamp,1,sut,map_io,stdout,INFO,other,free_thresh: 0.196,,,
+78,4.714033,1789586019.194754124,stamp,1,sut,map_io,stdout,INFO,other,occupied_thresh: 0.65,,,
+79,4.714035,1789586019.194756746,stamp,1,sut,map_io,stdout,INFO,other,mode: trinary,,,
+80,4.714038,1789586019.194758892,stamp,1,sut,map_io,stdout,INFO,other,negate: 0,,,
+81,4.714177,1789586019.194898129,stamp,1,sut,map_io,stdout,INFO,other,"Loading image_file: /config/environments/hexagon/maps/hexagon.pgm
+[INFO] [1789586019.196842670] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/map_server' in container '/nav2_container'",,,
+82,4.714635,1789586019.195356369,stamp,1,sut,map_io,stdout,INFO,other,Read map /config/environments/hexagon/maps/hexagon.pgm: 167 X 151 map @ 0.05 m/cell,,,
+83,4.716412,1789586019.197133303,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,[34m[1mConfiguring amcl[0m[0m,./src/lifecycle_manager.cpp,message,568
+84,4.716480,1789586019.197201252,stamp,1,sut,amcl,rosout,INFO,other,Configuring,./src/amcl_node.cpp,on_configure,251
+85,4.716557,1789586019.197278023,stamp,1,sut,amcl,rosout,INFO,other,initTransforms,./src/amcl_node.cpp,initTransforms,1513
+86,4.719432,1789586019.200153112,stamp,1,sut,amcl,rosout,INFO,other,initPubSub,./src/amcl_node.cpp,initPubSub,1555
+87,4.722023,1789586019.202744961,stamp,1,sut,amcl,rosout,INFO,other,Subscribed to map topic.,./src/amcl_node.cpp,initPubSub,1573
+88,4.723603,1789586019.204324722,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,[34m[1mActivating map_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+89,4.723675,1789586019.204397202,stamp,1,sut,map_server,rosout,INFO,other,Activating,./src/map_server/map_server.cpp,on_activate,131
+90,4.723765,1789586019.204486847,stamp,1,sut,map_server,rosout,INFO,other,Creating bond (map_server) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+91,4.723810,1789586019.204531431,stamp,1,sut,amcl,rosout,INFO,other,Received a 167 X 151 map @ 0.050 m/pix,./src/amcl_node.cpp,handleMapMessage,1429
+92,4.747322,1789586019.228044510,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libcontroller_server_core.so,./src/component_manager.cpp,create_component_factory,116
+93,4.749242,1789586019.229964733,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_controller::ControllerServer>,./src/component_manager.cpp,create_component_factory,129
+94,4.749268,1789586019.229990721,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_controller::ControllerServer>
+[INFO] [1789586019.235222654] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.234883430] [controller_server]:
+[INFO] [1789586019.235382124] [action.40a03e95]: [component_container_isolated-3] 	controller_server lifecycle node launched.
+[INFO] [1789586019.235516552] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.235647811] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/component_manager.cpp,create_component_factory,131
+95,4.754161,1789586019.234883547,stamp,1,sut,controller_server,rosout,INFO,other,"
+	controller_server lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+96,4.758944,1789586019.239666700,stamp,1,sut,controller_server,rosout,INFO,other,"Creating controller server
+[INFO] [1789586019.244959390] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.244628510] [local_costmap.local_costmap]:
+[INFO] [1789586019.245112814] [action.40a03e95]: [component_container_isolated-3] 	local_costmap lifecycle node launched.
+[INFO] [1789586019.245246462] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.245384116] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/controller_server.cpp,ControllerServer,50
+97,4.763905,1789586019.244628429,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,"
+	local_costmap lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+98,4.764504,1789586019.245227098,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,"Creating Costmap
+[INFO] [1789586019.246232199] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/controller_server' in container '/nav2_container'",./src/costmap_2d_ros.cpp,init,110
+99,4.766102,1789586019.246825695,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libsmoother_server_core.so,./src/component_manager.cpp,create_component_factory,116
+100,4.767439,1789586019.248162270,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_smoother::SmootherServer>,./src/component_manager.cpp,create_component_factory,129
+101,4.767459,1789586019.248182535,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_smoother::SmootherServer>
+[INFO] [1789586019.253352638] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.253022948] [smoother_server]:
+[INFO] [1789586019.253504029] [action.40a03e95]: [component_container_isolated-3] 	smoother_server lifecycle node launched.
+[INFO] [1789586019.253636944] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.253767094] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/component_manager.cpp,create_component_factory,131
+102,4.772299,1789586019.253022909,stamp,1,sut,smoother_server,rosout,INFO,other,"
+	smoother_server lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+103,4.774008,1789586019.254731655,stamp,1,sut,smoother_server,rosout,INFO,other,"Creating smoother server
+[INFO] [1789586019.255633636] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/smoother_server' in container '/nav2_container'",./src/nav2_smoother.cpp,SmootherServer,41
+104,4.775068,1789586019.255791664,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libplanner_server_core.so,./src/component_manager.cpp,create_component_factory,116
+105,4.775730,1789586019.256453991,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_planner::PlannerServer>,./src/component_manager.cpp,create_component_factory,129
+106,4.775750,1789586019.256474018,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_planner::PlannerServer>
+[INFO] [1789586019.261813899] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.261512485] [planner_server]:
+[INFO] [1789586019.261962008] [action.40a03e95]: [component_container_isolated-3] 	planner_server lifecycle node launched.
+[INFO] [1789586019.262094685] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.262223747] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/component_manager.cpp,create_component_factory,131
+107,4.780789,1789586019.261512518,stamp,1,sut,planner_server,rosout,INFO,other,"
+	planner_server lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+108,4.782523,1789586019.263247252,stamp,1,sut,planner_server,rosout,INFO,other,"Creating
+[INFO] [1789586019.269399329] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.269025068] [global_costmap.global_costmap]:
+[INFO] [1789586019.269561026] [action.40a03e95]: [component_container_isolated-3] 	global_costmap lifecycle node launched.
+[INFO] [1789586019.269700072] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.269831358] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/planner_server.cpp,PlannerServer,51
+109,4.788301,1789586019.269025087,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"
+	global_costmap lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+110,4.788801,1789586019.269525528,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"Creating Costmap
+[INFO] [1789586019.270590669] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/planner_server' in container '/nav2_container'",./src/costmap_2d_ros.cpp,init,110
+111,4.790252,1789586019.270976067,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libroute_server_core.so,./src/component_manager.cpp,create_component_factory,116
+112,4.791418,1789586019.272141933,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_route::RouteServer>,./src/component_manager.cpp,create_component_factory,129
+113,4.791438,1789586019.272162199,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_route::RouteServer>
+[INFO] [1789586019.277935835] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.277698642] [route_server]:
+[INFO] [1789586019.278050710] [action.40a03e95]: [component_container_isolated-3] 	route_server lifecycle node launched.
+[INFO] [1789586019.278151647] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.278248711] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [1789586019.278348375] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/route_server' in container '/nav2_container'",./src/component_manager.cpp,create_component_factory,131
+114,4.796974,1789586019.277698755,stamp,1,sut,route_server,rosout,INFO,other,"
+	route_server lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+115,4.797995,1789586019.278719425,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libbehavior_server_core.so,./src/component_manager.cpp,create_component_factory,116
+116,4.798699,1789586019.279423237,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<behavior_server::BehaviorServer>,./src/component_manager.cpp,create_component_factory,129
+117,4.798716,1789586019.279440641,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<behavior_server::BehaviorServer>
+[INFO] [1789586019.285176514] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.284921681] [behavior_server]:
+[INFO] [1789586019.285298080] [action.40a03e95]: [component_container_isolated-3] 	behavior_server lifecycle node launched.
+[INFO] [1789586019.285400878] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.285502732] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [1789586019.287541507] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/behavior_server' in container '/nav2_container'",./src/component_manager.cpp,create_component_factory,131
+118,4.804197,1789586019.284921646,stamp,1,sut,behavior_server,rosout,INFO,other,"
+	behavior_server lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+119,4.807120,1789586019.287844419,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libbt_navigator_core.so,./src/component_manager.cpp,create_component_factory,116
+120,4.809096,1789586019.289821386,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_bt_navigator::BtNavigator>,./src/component_manager.cpp,create_component_factory,129
+121,4.809120,1789586019.289844990,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_bt_navigator::BtNavigator>
+[INFO] [1789586019.296442744] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.296136474] [bt_navigator]:
+[INFO] [1789586019.296565357] [action.40a03e95]: [component_container_isolated-3] 	bt_navigator lifecycle node launched.
+[INFO] [1789586019.296669701] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.296775825] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/component_manager.cpp,create_component_factory,131
+122,4.815411,1789586019.296136379,stamp,1,sut,bt_navigator,rosout,INFO,other,"
+	bt_navigator lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+123,4.817158,1789586019.297883034,stamp,1,sut,bt_navigator,rosout,INFO,other,"Creating
+[INFO] [1789586019.298705430] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/bt_navigator' in container '/nav2_container'",./src/bt_navigator.cpp,BtNavigator,40
+124,4.818156,1789586019.298881769,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libwaypoint_follower_core.so,./src/component_manager.cpp,create_component_factory,116
+125,4.819004,1789586019.299729824,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_waypoint_follower::WaypointFollower>,./src/component_manager.cpp,create_component_factory,129
+126,4.819023,1789586019.299748182,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_waypoint_follower::WaypointFollower>
+[INFO] [1789586019.306026216] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.305688201] [waypoint_follower]:
+[INFO] [1789586019.306187692] [action.40a03e95]: [component_container_isolated-3] 	waypoint_follower lifecycle node launched.
+[INFO] [1789586019.306332559] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.306488017] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/component_manager.cpp,create_component_factory,131
+127,4.824963,1789586019.305688143,stamp,1,sut,waypoint_follower,rosout,INFO,other,"
+	waypoint_follower lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+128,4.825344,1789586019.306069136,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,Server map_server connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+129,4.825369,1789586019.306094170,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,[34m[1mActivating amcl[0m[0m,./src/lifecycle_manager.cpp,message,568
+130,4.825469,1789586019.306194544,stamp,1,sut,amcl,rosout,INFO,other,Activating,./src/amcl_node.cpp,on_activate,271
+131,4.825495,1789586019.306221008,stamp,1,sut,amcl,rosout,INFO,other,Creating bond (amcl) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+132,4.825559,1789586019.306284904,stamp,1,sut,waypoint_follower,rosout,INFO,other,"Creating
+[INFO] [1789586019.307301631] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/waypoint_follower' in container '/nav2_container'",./src/waypoint_follower.cpp,WaypointFollower,35
+133,4.826837,1789586019.307562590,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libvelocity_smoother_core.so,./src/component_manager.cpp,create_component_factory,116
+134,4.827474,1789586019.308199644,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_velocity_smoother::VelocitySmoother>,./src/component_manager.cpp,create_component_factory,129
+135,4.827489,1789586019.308214188,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_velocity_smoother::VelocitySmoother>
+[INFO] [1789586019.314695744] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.314402597] [velocity_smoother]:
+[INFO] [1789586019.314839541] [action.40a03e95]: [component_container_isolated-3] 	velocity_smoother lifecycle node launched.
+[INFO] [1789586019.314980989] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.315109317] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [1789586019.315237539] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/velocity_smoother' in container '/nav2_container'",./src/component_manager.cpp,create_component_factory,131
+136,4.833677,1789586019.314402580,stamp,1,sut,velocity_smoother,rosout,INFO,other,"
+	velocity_smoother lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+137,4.834911,1789586019.315636873,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libcollision_monitor_core.so,./src/component_manager.cpp,create_component_factory,116
+138,4.836832,1789586019.317557812,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_collision_monitor::CollisionMonitor>,./src/component_manager.cpp,create_component_factory,129
+139,4.836861,1789586019.317587137,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_collision_monitor::CollisionMonitor>
+[INFO] [1789586019.324234261] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.323894506] [collision_monitor]:
+[INFO] [1789586019.324398906] [action.40a03e95]: [component_container_isolated-3] 	collision_monitor lifecycle node launched.
+[INFO] [1789586019.324536446] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.324667232] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [1789586019.324796241] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/collision_monitor' in container '/nav2_container'",./src/component_manager.cpp,create_component_factory,131
+140,4.843168,1789586019.323894501,stamp,1,sut,collision_monitor,rosout,INFO,other,"
+	collision_monitor lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+141,4.844429,1789586019.325155735,stamp,1,sut,nav2_container,rosout,INFO,other,Load Library: /opt/ros/jazzy/lib/libopennav_docking_core.so,./src/component_manager.cpp,create_component_factory,116
+142,4.845551,1789586019.326277733,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<opennav_docking::DockingServer>,./src/component_manager.cpp,create_component_factory,129
+143,4.845571,1789586019.326297283,stamp,1,sut,nav2_container,rosout,INFO,other,"Instantiate class: rclcpp_components::NodeFactoryTemplate<opennav_docking::DockingServer>
+[INFO] [1789586019.333075284] [action.40a03e95]: [component_container_isolated-3] [INFO] [1789586019.332743774] [docking_server]:
+[INFO] [1789586019.333233594] [action.40a03e95]: [component_container_isolated-3] 	docking_server lifecycle node launched.
+[INFO] [1789586019.333373787] [action.40a03e95]: [component_container_isolated-3] 	Waiting on external lifecycle transitions to activate
+[INFO] [1789586019.333505680] [action.40a03e95]: [component_container_isolated-3] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/component_manager.cpp,create_component_factory,131
+144,4.852017,1789586019.332743883,stamp,1,sut,docking_server,rosout,INFO,other,"
+	docking_server lifecycle node launched. 
+	Waiting on external lifecycle transitions to activate
+	See https://design.ros2.org/articles/node_lifecycle.html for more information.",./src/lifecycle_node.cpp,printLifecycleNodeNotification,159
+145,4.852047,1789586019.332773924,stamp,1,sut,docking_server,rosout,INFO,other,"Creating docking_server
+[INFO] [1789586019.333763168] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/docking_server' in container '/nav2_container'",./src/docking_server.cpp,DockingServer,30
+146,4.853337,1789586019.334064007,stamp,1,sut,nav2_container,rosout,INFO,other,Found class: rclcpp_components::NodeFactoryTemplate<nav2_lifecycle_manager::LifecycleManager>,./src/component_manager.cpp,create_component_factory,129
+147,4.853358,1789586019.334084511,stamp,1,sut,nav2_container,rosout,INFO,other,Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_lifecycle_manager::LifecycleManager>,./src/component_manager.cpp,create_component_factory,131
+148,4.858373,1789586019.339100122,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,"Creating
+[INFO] [1789586019.340680792] [action.40a03e95]: [INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/lifecycle_manager_navigation' in container '/nav2_container'",./src/lifecycle_manager.cpp,LifecycleManager,38
+149,4.859398,1789586019.340124369,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCreating and initializing lifecycle service clients[0m[0m,./src/lifecycle_manager.cpp,message,568
+150,4.868255,1789586019.348982096,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mStarting managed nodes bringup...[0m[0m,./src/lifecycle_manager.cpp,message,568
+151,4.868294,1789586019.349020958,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mConfiguring controller_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+152,4.868400,1789586019.349127054,stamp,1,sut,controller_server,rosout,INFO,other,Configuring controller interface,./src/controller_server.cpp,on_configure,89
+153,4.868430,1789586019.349157572,stamp,1,sut,controller_server,rosout,INFO,other,getting progress checker plugins..,./src/controller_server.cpp,on_configure,91
+154,4.868571,1789586019.349297762,stamp,1,sut,controller_server,rosout,INFO,other,getting goal checker plugins..,./src/controller_server.cpp,on_configure,101
+155,4.868632,1789586019.349359035,stamp,1,sut,controller_server,rosout,INFO,other,Controller frequency set to 20.0000Hz,./src/controller_server.cpp,on_configure,128
+156,4.868675,1789586019.349402189,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,Configuring,./src/costmap_2d_ros.cpp,on_configure,146
+157,4.871317,1789586019.352044344,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,"Using plugin ""voxel_layer""",./src/costmap_2d_ros.cpp,on_configure,179
+158,4.873479,1789586019.354206562,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,Subscribed to Topics: scan,./plugins/obstacle_layer.cpp,onInitialize,113
+159,4.876269,1789586019.356996775,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,"Initialized plugin ""voxel_layer""",./src/costmap_2d_ros.cpp,on_configure,200
+160,4.876287,1789586019.357014179,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,"Using plugin ""inflation_layer""",./src/costmap_2d_ros.cpp,on_configure,179
+161,4.876761,1789586019.357488155,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,"Initialized plugin ""inflation_layer""",./src/costmap_2d_ros.cpp,on_configure,200
+162,4.884883,1789586019.365610600,stamp,1,sut,controller_server,rosout,INFO,other,Created progress_checker : progress_checker of type nav2_controller::SimpleProgressChecker,./src/controller_server.cpp,on_configure,145
+163,4.885083,1789586019.365810633,stamp,1,sut,controller_server,rosout,INFO,other,Controller Server has progress_checker  progress checkers available.,./src/controller_server.cpp,on_configure,166
+164,4.885474,1789586019.366201401,stamp,1,sut,controller_server,rosout,INFO,other,Created goal checker : general_goal_checker of type nav2_controller::SimpleGoalChecker,./src/controller_server.cpp,on_configure,175
+165,4.885687,1789586019.366414785,stamp,1,sut,controller_server,rosout,INFO,other,Controller Server has general_goal_checker  goal checkers available.,./src/controller_server.cpp,on_configure,193
+166,4.887681,1789586019.368408680,stamp,1,sut,controller_server,rosout,INFO,other,Created controller : FollowPath of type dwb_core::DWBLocalPlanner,./src/controller_server.cpp,on_configure,202
+167,4.888216,1789586019.368944407,stamp,1,sut,controller_server,rosout,INFO,other,Setting transform_tolerance to 0.100000,./src/dwb_local_planner.cpp,configure,117
+168,4.894751,1789586019.375478983,stamp,1,sut,controller_server,rosout,INFO,other,"Using critic ""RotateToGoal"" (dwb_critics::RotateToGoalCritic)",./src/dwb_local_planner.cpp,loadCritics,221
+169,4.895154,1789586019.375881910,stamp,1,sut,controller_server,rosout,INFO,other,Critic plugin initialized,./src/dwb_local_planner.cpp,loadCritics,233
+170,4.895238,1789586019.375966072,stamp,1,sut,controller_server,rosout,INFO,other,"Using critic ""Oscillation"" (dwb_critics::OscillationCritic)",./src/dwb_local_planner.cpp,loadCritics,221
+171,4.895560,1789586019.376288652,stamp,1,sut,controller_server,rosout,INFO,other,Critic plugin initialized,./src/dwb_local_planner.cpp,loadCritics,233
+172,4.895655,1789586019.376383543,stamp,1,sut,controller_server,rosout,INFO,other,"Using critic ""BaseObstacle"" (dwb_critics::BaseObstacleCritic)",./src/dwb_local_planner.cpp,loadCritics,221
+173,4.895754,1789586019.376481771,stamp,1,sut,controller_server,rosout,INFO,other,Critic plugin initialized,./src/dwb_local_planner.cpp,loadCritics,233
+174,4.895815,1789586019.376543283,stamp,1,sut,controller_server,rosout,INFO,other,"Using critic ""GoalAlign"" (dwb_critics::GoalAlignCritic)",./src/dwb_local_planner.cpp,loadCritics,221
+175,4.896001,1789586019.376729012,stamp,1,sut,controller_server,rosout,INFO,other,Critic plugin initialized,./src/dwb_local_planner.cpp,loadCritics,233
+176,4.896077,1789586019.376804829,stamp,1,sut,controller_server,rosout,INFO,other,"Using critic ""PathAlign"" (dwb_critics::PathAlignCritic)",./src/dwb_local_planner.cpp,loadCritics,221
+177,4.896306,1789586019.377034187,stamp,1,sut,controller_server,rosout,INFO,other,Critic plugin initialized,./src/dwb_local_planner.cpp,loadCritics,233
+178,4.896368,1789586019.377096176,stamp,1,sut,controller_server,rosout,INFO,other,"Using critic ""PathDist"" (dwb_critics::PathDistCritic)",./src/dwb_local_planner.cpp,loadCritics,221
+179,4.896483,1789586019.377210855,stamp,1,sut,controller_server,rosout,INFO,other,Critic plugin initialized,./src/dwb_local_planner.cpp,loadCritics,233
+180,4.896536,1789586019.377264261,stamp,1,sut,controller_server,rosout,INFO,other,"Using critic ""GoalDist"" (dwb_critics::GoalDistCritic)",./src/dwb_local_planner.cpp,loadCritics,221
+181,4.896661,1789586019.377389669,stamp,1,sut,controller_server,rosout,INFO,other,Critic plugin initialized,./src/dwb_local_planner.cpp,loadCritics,233
+182,4.896672,1789586019.377400398,stamp,1,sut,controller_server,rosout,INFO,other,Controller Server has FollowPath  controllers available.,./src/controller_server.cpp,on_configure,222
+183,4.901582,1789586019.382310629,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mConfiguring smoother_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+184,4.901655,1789586019.382383585,stamp,1,sut,smoother_server,rosout,INFO,other,Configuring smoother server,./src/nav2_smoother.cpp,on_configure,68
+185,4.904445,1789586019.385173559,stamp,1,sut,smoother_server,rosout,INFO,other,Created smoother : simple_smoother of type nav2_smoother::SimpleSmoother,./src/nav2_smoother.cpp,loadSmootherPlugins,139
+186,4.904761,1789586019.385489702,stamp,1,sut,smoother_server,rosout,INFO,other,Smoother Server has simple_smoother  smoothers available.,./src/nav2_smoother.cpp,loadSmootherPlugins,158
+187,4.907308,1789586019.388036728,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mConfiguring planner_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+188,4.907373,1789586019.388101816,stamp,1,sut,planner_server,rosout,INFO,other,Configuring,./src/planner_server.cpp,on_configure,85
+189,4.907402,1789586019.388131142,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,Configuring,./src/costmap_2d_ros.cpp,on_configure,146
+190,4.909317,1789586019.390046120,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"Using plugin ""static_layer""",./src/costmap_2d_ros.cpp,on_configure,179
+191,4.909821,1789586019.390549421,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,Subscribing to the map topic (/map) with transient local durability,./plugins/static_layer.cpp,onInitialize,85
+192,4.910106,1789586019.390834808,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"Initialized plugin ""static_layer""",./src/costmap_2d_ros.cpp,on_configure,200
+193,4.910121,1789586019.390850067,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"Using plugin ""obstacle_layer""",./src/costmap_2d_ros.cpp,on_configure,179
+194,4.910568,1789586019.391297102,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,Subscribed to Topics: scan,./plugins/obstacle_layer.cpp,onInitialize,113
+195,4.911834,1789586019.392562628,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"Initialized plugin ""obstacle_layer""",./src/costmap_2d_ros.cpp,on_configure,200
+196,4.911848,1789586019.392576456,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"Using plugin ""inflation_layer""",./src/costmap_2d_ros.cpp,on_configure,179
+197,4.912104,1789586019.392832994,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"Initialized plugin ""inflation_layer""",./src/costmap_2d_ros.cpp,on_configure,200
+198,4.918998,1789586019.399726868,stamp,1,sut,planner_server,rosout,INFO,other,Created global planner plugin GridBased of type nav2_navfn_planner::NavfnPlanner,./src/planner_server.cpp,on_configure,115
+199,4.919031,1789586019.399760485,stamp,1,sut,planner_server,rosout,INFO,other,Configuring plugin GridBased of type NavfnPlanner,./src/navfn_planner.cpp,configure,78
+200,4.919328,1789586019.400057316,stamp,1,sut,planner_server,rosout,INFO,other,Planner Server has GridBased  planners available.,./src/planner_server.cpp,on_configure,133
+201,4.922204,1789586019.402933121,stamp,1,sut,amcl,rosout,INFO,other,createLaserObject,./src/amcl_node.cpp,createLaserObject,1051
+202,4.924339,1789586019.405068159,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mConfiguring route_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+203,4.924413,1789586019.405142307,stamp,1,sut,route_server,rosout,INFO,other,Configuring,./src/route_server.cpp,on_configure,31
+204,4.926508,1789586019.407237291,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,Server amcl connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+205,4.926557,1789586019.407286882,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,[34m[1mManaged nodes are active[0m[0m,./src/lifecycle_manager.cpp,message,568
+206,4.926568,1789586019.407297850,stamp,1,sut,lifecycle_manager_localization,rosout,INFO,other,[34m[1mCreating bond timer...[0m[0m,./src/lifecycle_manager.cpp,message,568
+207,4.932628,1789586019.413357258,stamp,1,sut,route_server,rosout,INFO,other,Created GraphFileLoader GeoJsonGraphFileLoader of type nav2_route::GeoJsonGraphFileLoader,./src/graph_loader.cpp,GraphLoader,52
+208,4.932653,1789586019.413382530,stamp,1,sut,route_server,rosout,INFO,other,Configuring geojson graph file loader,./src/plugins/graph_file_loaders/geojson_graph_file_loader.cpp,configure,28
+209,4.932662,1789586019.413391590,stamp,1,sut,route_server,rosout,INFO,other,No graph file provided to load yet.,./src/graph_loader.cpp,loadGraphFromParameter,98
+210,4.934215,1789586019.414944887,stamp,1,sut,route_server,rosout,INFO,other,Created edge cost function plugin DistanceScorer of type nav2_route::DistanceScorer,./src/edge_scorer.cpp,EdgeScorer,52
+211,4.934239,1789586019.414968252,stamp,1,sut,route_server,rosout,INFO,other,Configuring distance scorer.,./src/plugins/edge_cost_functions/distance_scorer.cpp,configure,29
+212,4.934446,1789586019.415175915,stamp,1,sut,route_server,rosout,INFO,other,Created edge cost function plugin CostmapScorer of type nav2_route::CostmapScorer,./src/edge_scorer.cpp,EdgeScorer,52
+213,4.934457,1789586019.415186644,stamp,1,sut,route_server,rosout,INFO,other,Configuring costmap scorer.,./src/plugins/edge_cost_functions/costmap_scorer.cpp,configure,29
+214,4.936156,1789586019.416885376,stamp,1,sut,route_server,rosout,INFO,other,Created route operation AdjustSpeedLimit of type nav2_route::AdjustSpeedLimit,./src/operations_manager.cpp,OperationsManager,56
+215,4.936177,1789586019.416906834,stamp,1,sut,route_server,rosout,INFO,other,Configuring Adjust speed limit operation.,./src/plugins/route_operations/adjust_speed_limit.cpp,configure,29
+216,4.936798,1789586019.417527676,stamp,1,sut,route_server,rosout,INFO,other,Created route operation ReroutingService of type nav2_route::ReroutingService,./src/operations_manager.cpp,OperationsManager,56
+217,4.936812,1789586019.417541981,stamp,1,sut,route_server,rosout,INFO,other,Configuring Rerouting service operation.,./src/plugins/route_operations/rerouting_service.cpp,configure,29
+218,4.937519,1789586019.418249130,stamp,1,sut,route_server,rosout,INFO,other,Created route operation CollisionMonitor of type nav2_route::CollisionMonitor,./src/operations_manager.cpp,OperationsManager,56
+219,4.937590,1789586019.418320179,stamp,1,sut,route_server,rosout,INFO,other,Using costmap topic: local_costmap/costmap_raw instead of server costmap topic: global_costmap/costmap_raw for CollisionMonitor.,./src/plugins/route_operations/collision_monitor.cpp,configure,40
+220,4.939225,1789586019.419954538,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mConfiguring behavior_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+221,4.939296,1789586019.420026064,stamp,1,sut,behavior_server,rosout,INFO,other,Configuring,./src/behavior_server.cpp,on_configure,83
+222,4.940415,1789586019.421144962,stamp,1,sut,behavior_server,rosout,INFO,other,Creating behavior plugin spin of type nav2_behaviors::Spin,./src/behavior_server.cpp,loadBehaviorPlugins,111
+223,4.941078,1789586019.421808243,stamp,1,sut,behavior_server,rosout,INFO,other,Creating behavior plugin backup of type nav2_behaviors::BackUp,./src/behavior_server.cpp,loadBehaviorPlugins,111
+224,4.941521,1789586019.422251225,stamp,1,sut,behavior_server,rosout,INFO,other,Creating behavior plugin drive_on_heading of type nav2_behaviors::DriveOnHeading,./src/behavior_server.cpp,loadBehaviorPlugins,111
+225,4.941954,1789586019.422684193,stamp,1,sut,behavior_server,rosout,INFO,other,Creating behavior plugin assisted_teleop of type nav2_behaviors::AssistedTeleop,./src/behavior_server.cpp,loadBehaviorPlugins,111
+226,4.942682,1789586019.423412085,stamp,1,sut,behavior_server,rosout,INFO,other,Creating behavior plugin wait of type nav2_behaviors::Wait,./src/behavior_server.cpp,loadBehaviorPlugins,111
+227,4.943726,1789586019.424456358,stamp,1,sut,behavior_server,rosout,INFO,other,Configuring spin,./include/nav2_behaviors/timed_behavior.hpp,configure,126
+228,4.945748,1789586019.426477671,stamp,1,sut,behavior_server,rosout,INFO,other,Configuring backup,./include/nav2_behaviors/timed_behavior.hpp,configure,126
+229,4.947348,1789586019.428078175,stamp,1,sut,behavior_server,rosout,INFO,other,Configuring drive_on_heading,./include/nav2_behaviors/timed_behavior.hpp,configure,126
+230,4.948859,1789586019.429589033,stamp,1,sut,behavior_server,rosout,INFO,other,Configuring assisted_teleop,./include/nav2_behaviors/timed_behavior.hpp,configure,126
+231,4.950953,1789586019.431683302,stamp,1,sut,behavior_server,rosout,INFO,other,Configuring wait,./include/nav2_behaviors/timed_behavior.hpp,configure,126
+232,4.952611,1789586019.433341265,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mConfiguring velocity_smoother[0m[0m,./src/lifecycle_manager.cpp,message,568
+233,4.952685,1789586019.433415413,stamp,1,sut,velocity_smoother,rosout,INFO,other,Configuring velocity smoother,./src/velocity_smoother.cpp,on_configure,49
+234,4.953941,1789586019.434671402,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mConfiguring collision_monitor[0m[0m,./src/lifecycle_manager.cpp,message,568
+235,4.954006,1789586019.434736252,stamp,1,sut,collision_monitor,rosout,INFO,other,Configuring,./src/collision_monitor_node.cpp,on_configure,49
+236,4.955889,1789586019.436619043,stamp,1,sut,collision_monitor,rosout,INFO,other,[scan]: Creating Scan,./src/scan.cpp,Scan,41
+237,4.956461,1789586019.437191248,stamp,1,sut,collision_monitor,rosout,INFO,other,[FootprintApproach]: Creating Polygon,./src/polygon.cpp,Polygon,44
+238,4.956554,1789586019.437284708,stamp,1,sut,collision_monitor,rosout,INFO,other,[FootprintApproach]: Polygon points are not defined. Using dynamic subscription instead.,./src/polygon.cpp,getParameters,487
+239,4.957010,1789586019.437740088,stamp,1,sut,collision_monitor,rosout,INFO,other,[FootprintApproach]: Making footprint subscriber on /local_costmap/published_footprint topic,./src/polygon.cpp,configure,72
+240,4.959580,1789586019.440310955,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mConfiguring bt_navigator[0m[0m,./src/lifecycle_manager.cpp,message,568
+241,4.959649,1789586019.440379620,stamp,1,sut,bt_navigator,rosout,INFO,other,Configuring,./src/bt_navigator.cpp,on_configure,61
+242,4.961461,1789586019.442191601,stamp,1,sut,bt_navigator,rosout,INFO,other,Creating navigator id navigate_to_pose of type nav2_bt_navigator::NavigateToPoseNavigator,./src/bt_navigator.cpp,on_configure,122
+243,4.980177,1789586019.460908890,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,StaticLayer: Resizing costmap to 167 X 151 at 0.050000 m/pix,./plugins/static_layer.cpp,processMap,207
+244,5.000901,1789586019.481632948,stamp,1,sut,bt_navigator,rosout,INFO,other,Creating navigator id navigate_through_poses of type nav2_bt_navigator::NavigateThroughPosesNavigator,./src/bt_navigator.cpp,on_configure,122
+245,5.014545,1789586019.495277882,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mConfiguring waypoint_follower[0m[0m,./src/lifecycle_manager.cpp,message,568
+246,5.014624,1789586019.495356798,stamp,1,sut,waypoint_follower,rosout,INFO,other,Configuring,./src/waypoint_follower.cpp,on_configure,59
+247,5.023379,1789586019.504112482,stamp,1,sut,waypoint_follower,rosout,INFO,other,Created waypoint_task_executor : wait_at_waypoint of type nav2_waypoint_follower::WaitAtWaypoint,./src/waypoint_follower.cpp,on_configure,118
+248,5.023812,1789586019.504545450,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mConfiguring docking_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+249,5.023881,1789586019.504614353,stamp,1,sut,docking_server,rosout,INFO,other,Configuring docking_server,./src/docking_server.cpp,on_configure,48
+250,5.023919,1789586019.504652023,stamp,1,sut,docking_server,rosout,INFO,other,Controller frequency set to 50.0000Hz,./src/docking_server.cpp,on_configure,62
+251,5.033799,1789586019.514532089,stamp,1,sut,docking_server,rosout,INFO,other,Created charging dock plugin simple_charging_dock of type opennav_docking::SimpleChargingDock,./src/dock_database.cpp,getDockPlugins,171
+252,5.036328,1789586019.517061472,stamp,1,sut,docking_server,rosout,WARN,warn,Dock database filepath nor dock parameters set. Docking actions can only be executed specifying the dock pose via the action request. Or update the dock database via the reload_database service.,./src/dock_database.cpp,getDockInstances,221
+253,5.036350,1789586019.517083168,stamp,1,sut,docking_server,rosout,INFO,other,Docking Server has 1 dock types and 0 dock instances available.,./src/dock_database.cpp,initialize,52
+254,5.037205,1789586019.517938852,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mActivating controller_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+255,5.037282,1789586019.518015623,stamp,1,sut,controller_server,rosout,INFO,other,Activating,./src/controller_server.cpp,on_activate,265
+256,5.037314,1789586019.518047333,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,Activating,./src/costmap_2d_ros.cpp,on_activate,277
+257,5.037325,1789586019.518059015,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,Checking transform,./src/costmap_2d_ros.cpp,on_activate,284
+258,5.037396,1789586019.518129587,stamp,1,sut,local_costmap.local_costmap,rosout,INFO,other,start,./src/costmap_2d_ros.cpp,start,605
+259,5.237923,1789586019.718675137,stamp,1,sut,controller_server,rosout,INFO,other,Creating bond (controller_server) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+260,5.335046,1789586019.815819979,stamp,1,robovast,basic_nav_init_nav2,rosout,INFO,other,"Publishing Initial Pose
+[INFO] [1789586023.459043209] [scenario_execution_ros]: [WARN] [ros2bag]: Positional ""topics"" argument deprecated. Please use optional ""--topics"" argument instead.",/opt/ros/jazzy/lib/python3.12/site-packages/nav2_simple_commander/robot_navigator.py,info,823
+261,5.335186,1789586019.815959930,stamp,1,sut,amcl,rosout,INFO,other,initialPoseReceived,./src/amcl_node.cpp,initialPoseReceived,537
+262,5.335272,1789586019.816046715,stamp,1,sut,amcl,rosout,WARN,warn,"Failed to transform initial pose in time (Lookup would require extrapolation into the future.  Requested time 5.334000 but the latest data is at time 5.322000, when looking up transform from frame [base_footprint] to frame [odom])",./src/amcl_node.cpp,handleInitialPose,593
+263,5.335292,1789586019.816066265,stamp,1,sut,amcl,rosout,INFO,other,Setting pose (5.334000): 1.146 -1.765 -2.208,./src/amcl_node.cpp,handleInitialPose,608
+264,5.341069,1789586019.821844339,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,Server controller_server connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+265,5.341105,1789586019.821880817,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mActivating smoother_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+266,5.341327,1789586019.822103024,stamp,1,sut,smoother_server,rosout,INFO,other,Activating,./src/nav2_smoother.cpp,on_activate,168
+267,5.341367,1789586019.822142839,stamp,1,sut,smoother_server,rosout,INFO,other,Creating bond (smoother_server) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+268,5.444201,1789586019.925000191,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,Server smoother_server connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+269,5.444249,1789586019.925047636,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mActivating planner_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+270,5.444455,1789586019.925253630,stamp,1,sut,planner_server,rosout,INFO,other,Activating,./src/planner_server.cpp,on_activate,184
+271,5.444507,1789586019.925305367,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,Activating,./src/costmap_2d_ros.cpp,on_activate,277
+272,5.444519,1789586019.925317764,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,Checking transform,./src/costmap_2d_ros.cpp,on_activate,284
+273,5.444536,1789586019.925334692,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"Timed out waiting for transform from base_link to map to become available, tf error: Could not find a connection between 'map' and 'base_link' because they are not part of the same tree.Tf has two or more unconnected trees.",./src/costmap_2d_ros.cpp,on_activate,293
+274,5.944486,1789586020.425396919,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"Timed out waiting for transform from base_link to map to become available, tf error: Lookup would require extrapolation into the past.  Requested time 5.942000 but the earliest data is at time 6.462000, when looking up transform from frame [base_link] to frame [map]",./src/costmap_2d_ros.cpp,on_activate,293
+275,6.444478,1789586020.925394535,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,"Timed out waiting for transform from base_link to map to become available, tf error: Lookup would require extrapolation into the past.  Requested time 6.442000 but the earliest data is at time 6.462000, when looking up transform from frame [base_link] to frame [map]",./src/costmap_2d_ros.cpp,on_activate,293
+276,6.944637,1789586021.425445795,stamp,1,sut,global_costmap.global_costmap,rosout,INFO,other,start,./src/costmap_2d_ros.cpp,start,605
+277,7.995574,1789586022.476309061,stamp,1,sut,planner_server,rosout,INFO,other,Activating plugin GridBased of type NavfnPlanner,./src/navfn_planner.cpp,activate,103
+278,7.996825,1789586022.477559805,stamp,1,sut,planner_server,rosout,INFO,other,Creating bond (planner_server) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+279,8.099834,1789586022.580567837,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,Server planner_server connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+280,8.099883,1789586022.580616951,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mActivating route_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+281,8.100122,1789586022.580855370,stamp,1,sut,route_server,rosout,INFO,other,Activating,./src/route_server.cpp,on_activate,126
+282,8.100255,1789586022.580988169,stamp,1,sut,route_server,rosout,INFO,other,Creating bond (route_server) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+283,8.203745,1789586022.684477091,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,Server route_server connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+284,8.203816,1789586022.684548140,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mActivating behavior_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+285,8.204300,1789586022.685032129,stamp,1,sut,behavior_server,rosout,INFO,other,Activating,./src/behavior_server.cpp,on_activate,197
+286,8.204328,1789586022.685059547,stamp,1,sut,behavior_server,rosout,INFO,other,Activating spin,./include/nav2_behaviors/timed_behavior.hpp,activate,170
+287,8.204342,1789586022.685074329,stamp,1,sut,behavior_server,rosout,INFO,other,Activating backup,./include/nav2_behaviors/timed_behavior.hpp,activate,170
+288,8.204353,1789586022.685084581,stamp,1,sut,behavior_server,rosout,INFO,other,Activating drive_on_heading,./include/nav2_behaviors/timed_behavior.hpp,activate,170
+289,8.204361,1789586022.685093164,stamp,1,sut,behavior_server,rosout,INFO,other,Activating assisted_teleop,./include/nav2_behaviors/timed_behavior.hpp,activate,170
+290,8.204370,1789586022.685102463,stamp,1,sut,behavior_server,rosout,INFO,other,Activating wait,./include/nav2_behaviors/timed_behavior.hpp,activate,170
+291,8.204383,1789586022.685114622,stamp,1,sut,behavior_server,rosout,INFO,other,Creating bond (behavior_server) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+292,8.307108,1789586022.787855864,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,Server behavior_server connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+293,8.307150,1789586022.787897587,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mActivating velocity_smoother[0m[0m,./src/lifecycle_manager.cpp,message,568
+294,8.307371,1789586022.788118601,stamp,1,sut,velocity_smoother,rosout,INFO,other,Activating,./src/velocity_smoother.cpp,on_activate,182
+295,8.307419,1789586022.788166285,stamp,1,sut,velocity_smoother,rosout,INFO,other,Creating bond (velocity_smoother) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+296,8.411173,1789586022.891950369,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,Server velocity_smoother connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+297,8.411213,1789586022.891989946,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mActivating collision_monitor[0m[0m,./src/lifecycle_manager.cpp,message,568
+298,8.411442,1789586022.892218828,stamp,1,sut,collision_monitor,rosout,INFO,other,Activating,./src/collision_monitor_node.cpp,on_activate,112
+299,8.411501,1789586022.892277956,stamp,1,sut,collision_monitor,rosout,INFO,other,Creating bond (collision_monitor) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+300,8.515560,1789586022.996366501,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,Server collision_monitor connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+301,8.515604,1789586022.996410370,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mActivating bt_navigator[0m[0m,./src/lifecycle_manager.cpp,message,568
+302,8.515828,1789586022.996634722,stamp,1,sut,bt_navigator,rosout,INFO,other,Activating,./src/bt_navigator.cpp,on_activate,147
+303,8.557639,1789586023.041507959,stamp,1,sut,bt_navigator,rosout,INFO,other,Creating bond (bt_navigator) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+304,8.653297,1789586023.144428730,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,Server bt_navigator connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+305,8.653334,1789586023.144465923,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mActivating waypoint_follower[0m[0m,./src/lifecycle_manager.cpp,message,568
+306,8.653552,1789586023.144688845,stamp,1,sut,waypoint_follower,rosout,INFO,other,Activating,./src/waypoint_follower.cpp,on_activate,135
+307,8.653586,1789586023.144723415,stamp,1,sut,waypoint_follower,rosout,INFO,other,Creating bond (waypoint_follower) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+308,8.745469,1789586023.249017954,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,Server waypoint_follower connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+309,8.745484,1789586023.249054432,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mActivating docking_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+310,8.745590,1789586023.249309540,stamp,1,sut,docking_server,rosout,INFO,other,Activating docking_server,./src/docking_server.cpp,on_activate,103
+311,8.751064,1789586023.255363703,stamp,1,sut,docking_server,rosout,INFO,other,Creating bond (docking_server) to lifecycle manager.,./src/lifecycle_node.cpp,createBond,74
+312,8.847085,1789586023.359394789,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,Server docking_server connected with bond.,./src/lifecycle_manager.cpp,createBondConnection,237
+313,8.847126,1789586023.359435558,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mManaged nodes are active[0m[0m,./src/lifecycle_manager.cpp,message,568
+314,8.847133,1789586023.359442711,stamp,1,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCreating bond timer...[0m[0m,./src/lifecycle_manager.cpp,message,568
+315,8.946799,1789586023.459043264,stamp,1,robovast,scenario_execution_ros,rosout,INFO,warn,"[WARN] [ros2bag]: Positional ""topics"" argument deprecated. Please use optional ""--topics"" argument instead.",/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+316,8.955440,1789586023.467678785,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Press SPACE for pausing/resuming,./src/rosbag2_transport/recorder.cpp,RecorderImpl,223
+317,8.955447,1789586023.467685938,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Event publisher thread: Started,./src/rosbag2_transport/recorder_event_notifier_impl.hpp,event_publisher_thread_main,169
+318,8.955658,1789586023.467896938,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,stdin is not a terminal device. Keyboard handling disabled.[INFO] [1789586023.467678709] [rosbag2_recorder]: Press SPACE for pausing/resuming,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+319,8.956582,1789586023.468820333,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.467686054] [rosbag2_recorder]: Event publisher thread: Started,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+320,8.957728,1789586023.469965219,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Starting recording to '/out/tr-101/0/rosbag2',./src/rosbag2_transport/recorder.cpp,record,313
+321,8.957899,1789586023.470135927,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.469965215] [rosbag2_recorder]: Starting recording to '/out/tr-101/0/rosbag2',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+322,8.958508,1789586023.470744133,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Listening for topics...,./src/rosbag2_transport/recorder.cpp,record,338
+323,8.958516,1789586023.470752954,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Recording...,./src/rosbag2_transport/recorder.cpp,record,347
+324,8.958542,1789586023.470778704,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Topics discovery started.,./src/rosbag2_transport/recorder.cpp,topics_discovery,638
+325,8.958559,1789586023.470795870,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,"use_sim_time set, waiting for /clock before starting recording...",./src/rosbag2_transport/recorder.cpp,topics_discovery,641
+326,8.958640,1789586023.470876217,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.470744072] [rosbag2_recorder]: Listening for topics...,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+327,8.959449,1789586023.471684694,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.470752946] [rosbag2_recorder]: Recording...,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+328,8.960163,1789586023.472398281,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.470778697] [rosbag2_recorder]: Topics discovery started.,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+329,8.961436,1789586023.473670721,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,"[INFO] [1789586023.470795785] [rosbag2_recorder]: use_sim_time set, waiting for /clock before starting recording...",/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+330,9.168761,1789586023.691046476,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,"Sim time /clock found, starting recording.",./src/rosbag2_transport/recorder.cpp,topics_discovery,650
+331,9.169037,1789586023.691323280,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,"[INFO] [1789586023.691046372] [rosbag2_recorder]: Sim time /clock found, starting recording.",/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+332,9.171051,1789586023.693338156,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/clock',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+333,9.171246,1789586023.693532944,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.693338154] [rosbag2_recorder]: Subscribed to topic '/clock',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+334,9.174148,1789586023.696436405,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/tf',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+335,9.174358,1789586023.696645737,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.696436320] [rosbag2_recorder]: Subscribed to topic '/tf',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+336,9.174930,1789586023.697218180,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/collision',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+337,9.176254,1789586023.698543072,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/scan',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+338,9.177922,1789586023.700211048,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.697218273] [rosbag2_recorder]: Subscribed to topic '/collision',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+339,9.178110,1789586023.700398922,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/odom',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+340,9.178568,1789586023.700857162,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/tf_static',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+341,9.180707,1789586023.702997684,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.698543113] [rosbag2_recorder]: Subscribed to topic '/scan',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+342,9.181426,1789586023.703716755,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.700398880] [rosbag2_recorder]: Subscribed to topic '/odom',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+343,9.182046,1789586023.704337120,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.700857247] [rosbag2_recorder]: Subscribed to topic '/tf_static',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+344,9.276460,1789586023.798786402,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/map',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+345,9.277219,1789586023.799546003,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.798786395] [rosbag2_recorder]: Subscribed to topic '/map',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+346,9.278607,1789586023.800934076,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/amcl_pose',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+347,9.279261,1789586023.801588774,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.800934072] [rosbag2_recorder]: Subscribed to topic '/amcl_pose',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+348,9.381833,1789586023.910288572,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/local_costmap/costmap',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+349,9.382510,1789586023.910965443,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/global_costmap/costmap',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+350,9.383375,1789586023.911830425,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.910288554] [rosbag2_recorder]: Subscribed to topic '/local_costmap/costmap',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+351,9.383504,1789586023.911959171,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/plan',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+352,9.384591,1789586023.913045883,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.910965473] [rosbag2_recorder]: Subscribed to topic '/global_costmap/costmap',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+353,9.385416,1789586023.913870811,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586023.911959085] [rosbag2_recorder]: Subscribed to topic '/plan',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+354,9.490798,1789586024.019216061,stamp,1,robovast,rosbag2_cpp,stdout,WARN,warn,Message definition for topic '/navigate_to_pose/_action/status' with type 'action_msgs/msg/GoalStatusArray' not found. Message definition will be left empty in bag.,,,
+355,9.491065,1789586024.019483089,stamp,1,robovast,scenario_execution_ros,rosout,INFO,warn,[WARN] [1789586024.019216099] [rosbag2_cpp]: Message definition for topic '/navigate_to_pose/_action/status' with type 'action_msgs/msg/GoalStatusArray' not found. Message definition will be left empty in bag.,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+356,9.491897,1789586024.020314455,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/navigate_to_pose/_action/status',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+357,9.491995,1789586024.020412683,stamp,1,robovast,rosbag2_cpp,stdout,WARN,warn,Message definition for topic '/navigate_to_pose/_action/feedback' with type 'nav2_msgs/action/NavigateToPose_FeedbackMessage' not found. Message definition will be left empty in bag.,,,
+358,9.492781,1789586024.021198511,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586024.020314529] [rosbag2_recorder]: Subscribed to topic '/navigate_to_pose/_action/status',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+359,9.493758,1789586024.022174597,stamp,1,robovast,scenario_execution_ros,rosout,INFO,warn,[WARN] [1789586024.020412778] [rosbag2_cpp]: Message definition for topic '/navigate_to_pose/_action/feedback' with type 'nav2_msgs/action/NavigateToPose_FeedbackMessage' not found. Message definition will be left empty in bag.,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+360,9.494928,1789586024.023344755,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/navigate_to_pose/_action/feedback',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+361,9.496522,1789586024.024938107,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586024.023344864] [rosbag2_recorder]: Subscribed to topic '/navigate_to_pose/_action/feedback',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+362,9.497816,1789586024.026231289,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Subscribed to topic '/behavior_tree_log',./src/rosbag2_transport/recorder.cpp,subscribe_topic,739
+363,9.497835,1789586024.026251078,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,All requested topics are subscribed. Stopping discovery...,./src/rosbag2_transport/recorder.cpp,topics_discovery,658
+364,9.497841,1789586024.026256800,stamp,1,robovast,rosbag2_recorder,rosout,INFO,other,Topics discovery stopped.,./src/rosbag2_transport/recorder.cpp,topics_discovery,680
+365,9.503242,1789586024.031656027,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586024.026231171] [rosbag2_recorder]: Subscribed to topic '/behavior_tree_log',/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+366,9.504005,1789586024.032418728,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586024.026250967] [rosbag2_recorder]: All requested topics are subscribed. Stopping discovery...,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+367,9.504994,1789586024.033407450,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586024.026256702] [rosbag2_recorder]: Topics discovery stopped.,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+368,9.616621,1789586024.144995213,stamp,1,sut,bt_navigator,rosout,INFO,other,"Begin navigating from current location (1.15, -1.77) to (-2.00, -0.25)",./src/navigators/navigate_to_pose.cpp,initializeGoalPose,252
+369,9.637175,1789586024.165542126,stamp,1,sut,controller_server,rosout,INFO,other,"Received a goal, begin computing control effort.",./src/controller_server.cpp,computeControl,465
+370,9.637218,1789586024.165584803,stamp,1,sut,controller_server,rosout,WARN,warn,No goal checker was specified in parameter 'current_goal_checker'. Server will use only plugin loaded general_goal_checker . This warning will appear once.,./src/controller_server.cpp,findGoalCheckerId,399
+371,9.637231,1789586024.165598154,stamp,1,sut,controller_server,rosout,WARN,warn,No progress checker was specified in parameter 'current_progress_checker'. Server will use only plugin loaded progress_checker . This warning will appear once.,./src/controller_server.cpp,findProgressCheckerId,441
+372,10.653640,1789586025.215761662,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+373,11.696087,1789586026.265780449,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+374,12.471438,1789586027.265757561,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+375,13.521435,1789586028.315790653,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+376,14.181756,1789586029.315757275,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+377,15.007838,1789586030.365760326,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+378,16.007775,1789586031.365765810,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+379,17.057808,1789586032.415769815,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+380,17.865082,1789586033.415768147,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+381,18.868629,1789586034.465924501,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+382,19.867800,1789586035.465763092,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+383,20.887303,1789586036.515760183,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+384,21.857019,1789586037.515759706,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+385,22.882211,1789586038.565762043,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+386,23.726888,1789586039.565760374,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+387,24.726178,1789586040.565758705,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+388,25.773480,1789586041.615759850,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+389,26.736087,1789586042.615760088,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+390,27.610983,1789586043.665760994,stamp,1,sut,controller_server,rosout,INFO,other,Passing new path to controller.,./src/controller_server.cpp,updateGlobalPath,727
+391,27.612818,1789586043.667616367,stamp,1,sut,controller_server,rosout,INFO,other,Reached the goal!,./src/controller_server.cpp,computeControl,539
+392,27.650028,1789586043.705223560,stamp,1,sut,bt_navigator,rosout,INFO,other,Goal succeeded,/opt/ros/jazzy/include/nav2_behavior_tree/bt_action_server_impl.hpp,executeCallback,341
+393,27.689775,1789586043.745395899,stamp,1,robovast,scenario_execution_ros,rosout,INFO,other,Scenario 'test_scenario' succeeded.,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+394,27.691762,1789586043.747404575,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,Shutting down...,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+395,27.692657,1789586043.748308659,stamp,0,sut,scenario_execution_server.server,stdout,INFO,other,cmd=reset action_id=40a03e95,,,
+396,27.692853,1789586043.748507023,stamp,0,sut,action.40a03e95,stdout,INFO,other,"Cancel requested, sending SIGINT to process...",,,
+397,27.692885,1789586043.748539209,stamp,0,sut,rclcpp,stdout,INFO,other,signal_handler(SIGINT/SIGTERM),,,
+398,27.692889,1789586043.748543739,stamp,0,sut,rclcpp,stdout,INFO,other,"signal_handler(SIGINT/SIGTERM)
+[INFO] [1789586044.350666515] [action.40a03e95]: [INFO] [component_container_isolated-3]: sending signal 'SIGINT' to process[component_container_isolated-3]
+[INFO] [1789586044.350793025] [action.40a03e95]: [laserscan_modification-2] Traceback (most recent call last):
+[INFO] [1789586044.350918103] [action.40a03e95]: [laserscan_modification-2]   File ""/ws/install/message_modification/lib/python3.12/site-packages/message_modification/laserscan_modification.py"", line 82, in main
+[INFO] [1789586044.351045386] [action.40a03e95]: [laserscan_modification-2]     executor.spin()
+[INFO] [1789586044.351173394] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py"", line 359, in spin
+[INFO] [1789586044.351303080] [action.40a03e95]: [laserscan_modification-2]     self._spin_once_impl()
+[INFO] [1789586044.351428912] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py"", line 991, in _spin_once_impl
+[INFO] [1789586044.351554162] [action.40a03e95]: [laserscan_modification-2]     handler, entity, node = self.wait_for_ready_callbacks(
+[INFO] [1789586044.351679655] [action.40a03e95]: [laserscan_modification-2]                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[INFO] [1789586044.351804332] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py"", line 877, in wait_for_ready_callbacks
+[INFO] [1789586044.351943730] [action.40a03e95]: [laserscan_modification-2]     return next(self._cb_iter)
+[INFO] [1789586044.352069630] [action.40a03e95]: [laserscan_modification-2]            ^^^^^^^^^^^^^^^^^^^
+[INFO] [1789586044.352194794] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py"", line 749, in _wait_for_ready_callbacks
+[INFO] [1789586044.352326080] [action.40a03e95]: [laserscan_modification-2]     entity_count += waitable.get_num_entities()
+[INFO] [1789586044.352452142] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/waitable.py"", line 38, in __add__
+[INFO] [1789586044.352577882] [action.40a03e95]: [laserscan_modification-2]     result = self.__class__()
+[INFO] [1789586044.352711055] [action.40a03e95]: [laserscan_modification-2]              ^^^^^^^^^^^^^^^^
+[INFO] [1789586044.352837605] [action.40a03e95]: [laserscan_modification-2] KeyboardInterrupt",,,
+399,27.692910,1789586043.748564482,stamp,0,sut,amcl,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (amcl),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+400,27.692967,1789586043.748622417,stamp,0,sut,amcl,rosout,INFO,other,Deactivating,./src/amcl_node.cpp,on_deactivate,314
+401,27.692993,1789586043.748647928,stamp,0,sut,amcl,rosout,INFO,other,"Destroying bond (amcl) to lifecycle manager.
+[INFO] [1789586044.350275672] [action.40a03e95]: [INFO] [robot_state_publisher-1]: process has finished cleanly [pid 78]
+[INFO] [1789586044.350404261] [action.40a03e95]: [ERROR] [laserscan_modification-2]: process has died [pid 79, exit code 1, cmd '/ws/install/message_modification/lib/message_modification/laserscan_modification --ros-args -r __node:=laserscan_modification -r __ns:=/ --params-file /tmp/launch_params_ca9nyxfs -r /in:=/scan_sim -r /out:=/scan'].",./src/lifecycle_node.cpp,destroyBond,149
+402,27.693048,1789586043.748703480,stamp,0,sut,action.40a03e95,stdout,INFO,other,Sending SIGINT to process...,,,
+403,27.693312,1789586043.748970509,stamp,0,sut,action.40a03e95,stdout,INFO,other,"Waiting 10s for process to finish...
+[INFO] [1789586043.749292502] [action.40a03e95]: [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [1789586043.749478027] [action.40a03e95]: [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)",,,
+404,27.693442,1789586043.749102592,stamp,0,sut,rclcpp,stdout,INFO,other,signal_handler(SIGINT/SIGTERM),,,
+405,27.703237,1789586043.759001493,stamp,0,sut,amcl,rosout,INFO,other,Cleaning up,./src/amcl_node.cpp,on_cleanup,335
+406,27.710276,1789586043.766116142,stamp,0,sut,amcl,rosout,INFO,other,Destroying bond (amcl) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+407,27.710303,1789586043.766143799,stamp,0,sut,lifecycle_manager_localization,rosout,INFO,other,Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_localization),./src/lifecycle_manager.cpp,onRclPreshutdown,450
+408,27.710314,1789586043.766154766,stamp,0,sut,lifecycle_manager_localization,rosout,INFO,other,[34m[1mTerminating bond timer...[0m[0m,./src/lifecycle_manager.cpp,message,568
+409,27.736297,1789586043.792415619,stamp,0,sut,map_server,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (map_server),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+410,27.736339,1789586043.792457819,stamp,0,sut,map_server,rosout,INFO,other,Deactivating,./src/map_server/map_server.cpp,on_deactivate,149
+411,27.736356,1789586043.792474985,stamp,0,sut,map_server,rosout,INFO,other,Destroying bond (map_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+412,27.746330,1789586043.802555323,stamp,0,sut,map_server,rosout,INFO,other,Cleaning up,./src/map_server/map_server.cpp,on_cleanup,162
+413,27.746365,1789586043.802591324,stamp,0,sut,map_server,rosout,INFO,other,Destroying bond (map_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+414,27.746373,1789586043.802599430,stamp,0,sut,controller_server,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (controller_server),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+415,27.746388,1789586043.802613974,stamp,0,sut,controller_server,rosout,INFO,other,Deactivating,./src/controller_server.cpp,on_deactivate,292
+416,27.746415,1789586043.802642107,stamp,0,sut,local_costmap.local_costmap,rosout,INFO,other,Deactivating,./src/costmap_2d_ros.cpp,on_deactivate,342
+417,27.856145,1789586043.918361902,stamp,0,sut,controller_server,rosout,INFO,other,Destroying bond (controller_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+418,27.866334,1789586043.928548098,stamp,0,sut,controller_server,rosout,INFO,other,Cleaning up,./src/controller_server.cpp,on_cleanup,335
+419,27.866769,1789586043.928982973,stamp,0,sut,local_costmap.local_costmap,rosout,INFO,other,Cleaning up,./src/costmap_2d_ros.cpp,on_cleanup,369
+420,27.894751,1789586043.956959248,stamp,0,sut,controller_server,rosout,INFO,other,Destroying bond (controller_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+421,27.894778,1789586043.956986189,stamp,0,sut,smoother_server,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (smoother_server),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+422,27.894791,1789586043.956999540,stamp,0,sut,smoother_server,rosout,INFO,other,Deactivating,./src/nav2_smoother.cpp,on_deactivate,186
+423,27.894807,1789586043.957015038,stamp,0,sut,smoother_server,rosout,INFO,other,Destroying bond (smoother_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+424,27.897310,1789586043.959517002,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mHave not received a heartbeat from controller_server.[0m[0m,./src/lifecycle_manager.cpp,message,568
+425,27.897337,1789586043.959544420,stamp,0,sut,lifecycle_manager_navigation,rosout,ERROR,error,CRITICAL FAILURE: SERVER controller_server IS DOWN after not receiving a heartbeat for 4000 ms. Shutting down related nodes.,./src/lifecycle_manager.cpp,checkBondConnections,494
+426,27.897386,1789586043.959593058,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mTerminating bond timer...[0m[0m,./src/lifecycle_manager.cpp,message,568
+427,27.897397,1789586043.959604502,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mResetting managed nodes...[0m[0m,./src/lifecycle_manager.cpp,message,568
+428,27.897403,1789586043.959610939,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mDeactivating docking_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+429,27.897596,1789586043.959803343,stamp,0,sut,docking_server,rosout,INFO,other,Deactivating docking_server,./src/docking_server.cpp,on_deactivate,128
+430,27.901605,1789586043.963811159,stamp,0,sut,docking_server,rosout,INFO,other,Destroying bond (docking_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+431,27.904958,1789586043.967164040,stamp,0,sut,smoother_server,rosout,INFO,other,Cleaning up,./src/nav2_smoother.cpp,on_cleanup,204
+432,27.910145,1789586043.972350121,stamp,0,sut,smoother_server,rosout,INFO,other,Destroying bond (smoother_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+433,27.910162,1789586043.972367048,stamp,0,sut,planner_server,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (planner_server),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+434,27.910172,1789586043.972376585,stamp,0,sut,planner_server,rosout,INFO,other,Deactivating,./src/planner_server.cpp,on_deactivate,220
+435,27.910187,1789586043.972391605,stamp,0,sut,global_costmap.global_costmap,rosout,INFO,other,Deactivating,./src/costmap_2d_ros.cpp,on_deactivate,342
+436,27.968175,1789586044.075700521,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mDeactivating waypoint_follower[0m[0m,./src/lifecycle_manager.cpp,message,568
+437,27.968210,1789586044.075945854,stamp,0,sut,waypoint_follower,rosout,INFO,other,Deactivating,./src/waypoint_follower.cpp,on_deactivate,154
+438,27.968215,1789586044.075979233,stamp,0,sut,waypoint_follower,rosout,INFO,other,Destroying bond (waypoint_follower) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+439,28.049604,1789586044.188192606,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mDeactivating bt_navigator[0m[0m,./src/lifecycle_manager.cpp,message,568
+440,28.049838,1789586044.188426733,stamp,0,sut,bt_navigator,rosout,INFO,other,Deactivating,./src/bt_navigator.cpp,on_deactivate,164
+441,28.049872,1789586044.188460588,stamp,0,sut,bt_navigator,rosout,INFO,other,Destroying bond (bt_navigator) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+442,28.113729,1789586044.300812721,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mDeactivating collision_monitor[0m[0m,./src/lifecycle_manager.cpp,message,568
+443,28.122020,1789586044.338876009,stamp,0,sut,collision_monitor,rosout,INFO,other,Deactivating,./src/collision_monitor_node.cpp,on_deactivate,142
+444,28.122026,1789586044.338938713,stamp,0,sut,collision_monitor,rosout,INFO,other,Destroying bond (collision_monitor) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+445,28.123205,1789586044.352962494,stamp,0,sut,action.40a03e95,stdout,INFO,other,"[laserscan_modification-2]
+[INFO] [1789586044.353087824] [action.40a03e95]: [laserscan_modification-2] During handling of the above exception, another exception occurred:",,,
+446,28.123226,1789586044.353212595,stamp,0,sut,action.40a03e95,stdout,INFO,other,"[laserscan_modification-2]
+[INFO] [1789586044.353339365] [action.40a03e95]: [laserscan_modification-2] Traceback (most recent call last):
+[INFO] [1789586044.353464126] [action.40a03e95]: [laserscan_modification-2]   File ""/ws/install/message_modification/lib/python3.12/site-packages/message_modification/laserscan_modification.py"", line 84, in main
+[INFO] [1789586044.353589310] [action.40a03e95]: [laserscan_modification-2]     laserscan_modification.get_logger().info(""User requested shut down."")
+[INFO] [1789586044.353714020] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/impl/rcutils_logger.py"", line 343, in info
+[INFO] [1789586044.353838450] [action.40a03e95]: [laserscan_modification-2]     return self.log(message, LoggingSeverity.INFO, **kwargs)
+[INFO] [1789586044.353963442] [action.40a03e95]: [laserscan_modification-2]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[INFO] [1789586044.354088190] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/impl/rcutils_logger.py"", line 301, in log
+[INFO] [1789586044.354213171] [action.40a03e95]: [laserscan_modification-2]     caller_id = CallerId()
+[INFO] [1789586044.354340769] [action.40a03e95]: [laserscan_modification-2]                 ^^^^^^^^^^
+[INFO] [1789586044.354465927] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/impl/rcutils_logger.py"", line 59, in __new__
+[INFO] [1789586044.354590162] [action.40a03e95]: [laserscan_modification-2]     frame = _find_caller(inspect.currentframe())
+[INFO] [1789586044.354714508] [action.40a03e95]: [laserscan_modification-2]             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[INFO] [1789586044.354838730] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/impl/rcutils_logger.py"", line 42, in _find_caller
+[INFO] [1789586044.354963699] [action.40a03e95]: [laserscan_modification-2]     os.path.realpath(__file__),
+[INFO] [1789586044.355088036] [action.40a03e95]: [laserscan_modification-2]     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[INFO] [1789586044.355212278] [action.40a03e95]: [laserscan_modification-2]   File ""<frozen posixpath>"", line 432, in realpath
+[INFO] [1789586044.355339352] [action.40a03e95]: [laserscan_modification-2]   File ""<frozen posixpath>"", line 476, in _joinrealpath
+[INFO] [1789586044.355464639] [action.40a03e95]: [laserscan_modification-2] KeyboardInterrupt",,,
+447,28.123426,1789586044.355588675,stamp,0,sut,action.40a03e95,stdout,INFO,other,"[laserscan_modification-2]
+[INFO] [1789586044.355713907] [action.40a03e95]: [laserscan_modification-2] During handling of the above exception, another exception occurred:",,,
+448,28.123448,1789586044.355845213,stamp,0,sut,action.40a03e95,stdout,INFO,other,"[laserscan_modification-2]
+[INFO] [1789586044.355969930] [action.40a03e95]: [laserscan_modification-2] Traceback (most recent call last):
+[INFO] [1789586044.356094868] [action.40a03e95]: [laserscan_modification-2]   File ""/ws/install/message_modification/lib/message_modification/laserscan_modification"", line 33, in <module>
+[INFO] [1789586044.356218381] [action.40a03e95]: [laserscan_modification-2]     sys.exit(load_entry_point('message-modification==1.5.0', 'console_scripts', 'laserscan_modification')())
+[INFO] [1789586044.356349865] [action.40a03e95]: [laserscan_modification-2]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[INFO] [1789586044.356478451] [action.40a03e95]: [laserscan_modification-2]   File ""/ws/install/message_modification/lib/python3.12/site-packages/message_modification/laserscan_modification.py"", line 86, in main
+[INFO] [1789586044.356603232] [action.40a03e95]: [laserscan_modification-2]     rclpy.shutdown()
+[INFO] [1789586044.356728257] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py"", line 134, in shutdown
+[INFO] [1789586044.356852916] [action.40a03e95]: [laserscan_modification-2]     _shutdown(context=context)
+[INFO] [1789586044.356977747] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/utilities.py"", line 82, in shutdown
+[INFO] [1789586044.357103078] [action.40a03e95]: [laserscan_modification-2]     context.shutdown()
+[INFO] [1789586044.357228007] [action.40a03e95]: [laserscan_modification-2]   File ""/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/context.py"", line 129, in shutdown
+[INFO] [1789586044.357356532] [action.40a03e95]: [laserscan_modification-2]     self.__context.shutdown()
+[INFO] [1789586044.357481922] [action.40a03e95]: [laserscan_modification-2] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:333",,,
+449,28.144029,1789586044.425996542,stamp,0,sut,planner_server,rosout,INFO,other,Deactivating plugin GridBased of type NavfnPlanner,./src/navfn_planner.cpp,deactivate,115
+450,28.144095,1789586044.426061630,stamp,0,sut,planner_server,rosout,INFO,other,Destroying bond (planner_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+451,28.154255,1789586044.436217785,stamp,0,sut,planner_server,rosout,INFO,other,Cleaning up,./src/planner_server.cpp,on_cleanup,251
+452,28.163385,1789586044.445343733,stamp,0,sut,global_costmap.global_costmap,rosout,INFO,other,Cleaning up,./src/costmap_2d_ros.cpp,on_cleanup,369
+453,28.167058,1789586044.449015141,stamp,0,sut,planner_server,rosout,INFO,other,Cleaning up plugin GridBased of type NavfnPlanner,./src/navfn_planner.cpp,cleanup,128
+454,28.167264,1789586044.449220896,stamp,0,sut,planner_server,rosout,INFO,other,Destroying plugin GridBased of type NavfnPlanner,./src/navfn_planner.cpp,~NavfnPlanner,57
+455,28.171276,1789586044.453231812,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mDeactivating velocity_smoother[0m[0m,./src/lifecycle_manager.cpp,message,568
+456,28.171524,1789586044.453479528,stamp,0,sut,velocity_smoother,rosout,INFO,other,Deactivating,./src/velocity_smoother.cpp,on_deactivate,200
+457,28.171568,1789586044.453523874,stamp,0,sut,velocity_smoother,rosout,INFO,other,Destroying bond (velocity_smoother) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+458,28.186005,1789586044.467954636,stamp,0,sut,planner_server,rosout,INFO,other,Destroying bond (planner_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+459,28.186040,1789586044.467988968,stamp,0,sut,route_server,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (route_server),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+460,28.186057,1789586044.468006849,stamp,0,sut,route_server,rosout,INFO,other,Deactivating,./src/route_server.cpp,on_deactivate,138
+461,28.186074,1789586044.468023539,stamp,0,sut,route_server,rosout,INFO,other,Destroying bond (route_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+462,28.196184,1789586044.478129387,stamp,0,sut,route_server,rosout,INFO,other,Cleaning up,./src/route_server.cpp,on_cleanup,149
+463,28.208026,1789586044.489966631,stamp,0,sut,route_server,rosout,INFO,other,Destroying bond (route_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+464,28.208050,1789586044.489989996,stamp,0,sut,behavior_server,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (behavior_server),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+465,28.208062,1789586044.490002155,stamp,0,sut,behavior_server,rosout,INFO,other,Deactivating,./src/behavior_server.cpp,on_deactivate,212
+466,28.208079,1789586044.490019560,stamp,0,sut,behavior_server,rosout,INFO,other,Destroying bond (behavior_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+467,28.218184,1789586044.500120163,stamp,0,sut,behavior_server,rosout,INFO,other,Cleaning up,./src/behavior_server.cpp,on_cleanup,228
+468,28.219641,1789586044.501576424,stamp,0,sut,behavior_server,rosout,INFO,other,Destroying bond (behavior_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+469,28.219655,1789586044.501590014,stamp,0,sut,bt_navigator,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (bt_navigator),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+470,28.219664,1789586044.501599550,stamp,0,sut,bt_navigator,rosout,INFO,other,Cleaning up,./src/bt_navigator.cpp,on_cleanup,180
+471,28.283864,1789586044.565771818,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mDeactivating behavior_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+472,28.284053,1789586044.565961361,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 4 found for current state unconfigured,,,
+473,28.284063,1789586044.565971136,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 4 found for current state unconfigured,,,
+474,28.284069,1789586044.565977097,stamp,0,sut,behavior_server,rosout,ERROR,error,"Unable to start transition 4 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+475,28.284191,1789586044.566098928,stamp,0,sut,lifecycle_manager_navigation,rosout,ERROR,error,Failed to change state for node: behavior_server,./src/lifecycle_manager.cpp,changeStateForNode,251
+476,28.284216,1789586044.566124201,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mDeactivating route_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+477,28.291981,1789586044.573886156,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 4 found for current state unconfigured,,,
+478,28.291991,1789586044.573896170,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 4 found for current state unconfigured,,,
+479,28.291993,1789586044.573898315,stamp,0,sut,route_server,rosout,ERROR,error,"Unable to start transition 4 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+480,28.292196,1789586044.574100494,stamp,0,sut,lifecycle_manager_navigation,rosout,ERROR,error,Failed to change state for node: route_server,./src/lifecycle_manager.cpp,changeStateForNode,251
+481,28.292226,1789586044.574130774,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mDeactivating planner_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+482,28.292286,1789586044.574190617,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 4 found for current state unconfigured,,,
+483,28.292293,1789586044.574198246,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 4 found for current state unconfigured,,,
+484,28.292296,1789586044.574200630,stamp,0,sut,planner_server,rosout,ERROR,error,"Unable to start transition 4 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+485,28.292377,1789586044.574281931,stamp,0,sut,lifecycle_manager_navigation,rosout,ERROR,error,Failed to change state for node: planner_server,./src/lifecycle_manager.cpp,changeStateForNode,251
+486,28.292392,1789586044.574296713,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mDeactivating smoother_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+487,28.292446,1789586044.574350595,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 4 found for current state unconfigured,,,
+488,28.292452,1789586044.574356556,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 4 found for current state unconfigured,,,
+489,28.292454,1789586044.574358463,stamp,0,sut,smoother_server,rosout,ERROR,error,"Unable to start transition 4 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+490,28.292526,1789586044.574430943,stamp,0,sut,lifecycle_manager_navigation,rosout,ERROR,error,Failed to change state for node: smoother_server,./src/lifecycle_manager.cpp,changeStateForNode,251
+491,28.292537,1789586044.574441433,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mDeactivating controller_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+492,28.295554,1789586044.577457190,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 4 found for current state unconfigured,,,
+493,28.295560,1789586044.577463627,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 4 found for current state unconfigured,,,
+494,28.295562,1789586044.577465534,stamp,0,sut,controller_server,rosout,ERROR,error,"Unable to start transition 4 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+495,28.295758,1789586044.577661037,stamp,0,sut,lifecycle_manager_navigation,rosout,ERROR,error,Failed to change state for node: controller_server,./src/lifecycle_manager.cpp,changeStateForNode,251
+496,28.295786,1789586044.577689409,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCleaning up docking_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+497,28.295858,1789586044.577761650,stamp,0,sut,docking_server,rosout,INFO,other,Cleaning up docking_server,./src/docking_server.cpp,on_cleanup,149
+498,28.319768,1789586044.601661682,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCleaning up waypoint_follower[0m[0m,./src/lifecycle_manager.cpp,message,568
+499,28.319856,1789586044.601749659,stamp,0,sut,waypoint_follower,rosout,INFO,other,Cleaning up,./src/waypoint_follower.cpp,on_cleanup,169
+500,28.336652,1789586044.618537664,stamp,0,sut,bt_navigator,rosout,INFO,other,Completed Cleaning up,./src/bt_navigator.cpp,on_cleanup,193
+501,28.336717,1789586044.618603230,stamp,0,sut,bt_navigator,rosout,INFO,other,Destroying bond (bt_navigator) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+502,28.336743,1789586044.618628740,stamp,0,sut,waypoint_follower,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (waypoint_follower),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+503,28.336752,1789586044.618638039,stamp,0,sut,waypoint_follower,rosout,INFO,other,Destroying bond (waypoint_follower) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+504,28.336771,1789586044.618656635,stamp,0,sut,velocity_smoother,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (velocity_smoother),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+505,28.336785,1789586044.618670702,stamp,0,sut,velocity_smoother,rosout,INFO,other,Cleaning up,./src/velocity_smoother.cpp,on_cleanup,218
+506,28.336797,1789586044.618683338,stamp,0,sut,velocity_smoother,rosout,INFO,other,Destroying bond (velocity_smoother) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+507,28.336805,1789586044.618691444,stamp,0,sut,collision_monitor,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (collision_monitor),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+508,28.336818,1789586044.618703604,stamp,0,sut,collision_monitor,rosout,INFO,other,Cleaning up,./src/collision_monitor_node.cpp,on_cleanup,171
+509,28.336830,1789586044.618716478,stamp,0,sut,collision_monitor,rosout,INFO,other,[FootprintApproach]: Destroying Polygon,./src/polygon.cpp,~Polygon,49
+510,28.336841,1789586044.618727446,stamp,0,sut,collision_monitor,rosout,INFO,other,[scan]: Destroying Scan,./src/scan.cpp,~Scan,46
+511,28.337605,1789586044.619490385,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCleaning up bt_navigator[0m[0m,./src/lifecycle_manager.cpp,message,568
+512,28.337718,1789586044.619603395,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+513,28.337724,1789586044.619609833,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+514,28.337727,1789586044.619612217,stamp,0,sut,bt_navigator,rosout,ERROR,error,"Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+515,28.337814,1789586044.619699717,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCleaning up collision_monitor[0m[0m,./src/lifecycle_manager.cpp,message,568
+516,28.339037,1789586044.620921612,stamp,0,sut,collision_monitor,rosout,INFO,other,Destroying bond (collision_monitor) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+517,28.339068,1789586044.620952845,stamp,0,sut,docking_server,rosout,INFO,other,Running Nav2 LifecycleNode rcl preshutdown (docking_server),./src/lifecycle_node.cpp,on_rcl_preshutdown,127
+518,28.339076,1789586044.620960712,stamp,0,sut,docking_server,rosout,INFO,other,Destroying bond (docking_server) to lifecycle manager.,./src/lifecycle_node.cpp,destroyBond,149
+519,28.339082,1789586044.620967388,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_navigation),./src/lifecycle_manager.cpp,onRclPreshutdown,450
+520,28.340966,1789586044.622850180,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+521,28.340974,1789586044.622858524,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+522,28.340976,1789586044.622860193,stamp,0,sut,collision_monitor,rosout,ERROR,error,"Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+523,28.341113,1789586044.622997046,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCleaning up velocity_smoother[0m[0m,./src/lifecycle_manager.cpp,message,568
+524,28.342131,1789586044.624014378,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+525,28.342138,1789586044.624022245,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+526,28.342141,1789586044.624024630,stamp,0,sut,velocity_smoother,rosout,ERROR,error,"Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+527,28.342234,1789586044.624118090,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCleaning up behavior_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+528,28.342289,1789586044.624173164,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+529,28.342297,1789586044.624180794,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+530,28.342299,1789586044.624182940,stamp,0,sut,behavior_server,rosout,ERROR,error,"Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+531,28.342372,1789586044.624255657,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCleaning up route_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+532,28.342425,1789586044.624308348,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+533,28.342430,1789586044.624313593,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+534,28.342432,1789586044.624315500,stamp,0,sut,route_server,rosout,ERROR,error,"Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+535,28.342516,1789586044.624399424,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCleaning up planner_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+536,28.342576,1789586044.624459267,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+537,28.342582,1789586044.624465227,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+538,28.342584,1789586044.624467611,stamp,0,sut,planner_server,rosout,ERROR,error,"Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+539,28.342660,1789586044.624543428,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCleaning up smoother_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+540,28.342712,1789586044.624595642,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+541,28.342716,1789586044.624599934,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+542,28.342718,1789586044.624601603,stamp,0,sut,smoother_server,rosout,ERROR,error,"Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+543,28.342828,1789586044.624711990,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mCleaning up controller_server[0m[0m,./src/lifecycle_manager.cpp,message,568
+544,28.342894,1789586044.624777079,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+545,28.342897,1789586044.624780893,stamp,0,sut,rcl_lifecycle,stdout,WARN,warn,No transition matching 2 found for current state unconfigured,,,
+546,28.342899,1789586044.624782801,stamp,0,sut,controller_server,rosout,ERROR,error,"Unable to start transition 2 from current state unconfigured: Transition is not registered., at ./src/rcl_lifecycle.c:355",./src/lifecycle_node_interface_impl.cpp,change_state,423
+547,28.343001,1789586044.624884367,stamp,0,sut,lifecycle_manager_navigation,rosout,INFO,other,[34m[1mManaged nodes have been reset[0m[0m,./src/lifecycle_manager.cpp,message,568
+548,28.405608,1789586044.687465429,stamp,0,sut,lifecycle_manager_navigation,stdout,INFO,other,Destroying lifecycle_manager_navigation,,,
+549,28.415358,1789586044.697211266,stamp,0,sut,rclcpp,stdout,INFO,other,signal_handler(SIGINT/SIGTERM),,,
+550,28.415454,1789586044.697307348,stamp,0,sut,docking_server,stdout,INFO,other,"Destroying
+[INFO] [1789586044.701987758] [action.40a03e95]: [component_container_isolated-3] Magick: abort due to signal 11 (SIGSEGV) ""Segmentation Fault""...
+[INFO] [1789586044.768079602] [action.40a03e95]: [ERROR] [component_container_isolated-3]: process has died [pid 80, exit code -6, cmd '/opt/ros/jazzy/lib/rclcpp_components/component_container_isolated --ros-args --log-level info --ros-args -r __node:=nav2_container --params-file /tmp/launch_params_477rmpa3 --params-file /tmp/launch_params__kcitkas -r /tf:=tf -r /tf_static:=tf_static'].",,,
+551,28.633086,1789586044.914847612,stamp,0,sut,action.40a03e95,stdout,INFO,other,Process finished.,,,
+552,28.633487,1789586044.915248632,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,Waiting for process to quit...,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+553,28.633828,1789586044.915588617,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Pausing recording.,./src/rosbag2_transport/recorder.cpp,pause,556
+554,28.633868,1789586044.915628672,stamp,0,robovast,rosbag2_cpp,stdout,INFO,other,Writing remaining messages from cache to the bag. It may take a while,,,
+555,28.634523,1789586044.916283846,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586044.915588652] [rosbag2_recorder]: Pausing recording.,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+556,28.635734,1789586044.917494297,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586044.915628690] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+557,28.638208,1789586044.919966936,stamp,0,robovast,rosbag2_recorder,rosout,INFO,other,Recording stopped,./src/rosbag2_transport/recorder.cpp,stop,291
+558,28.638656,1789586044.920415401,stamp,0,robovast,rosbag2_recorder,stdout,INFO,other,Event publisher thread: Exited,,,
+559,28.638931,1789586044.920689821,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586044.919967017] [rosbag2_recorder]: Recording stopped,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+560,28.639659,1789586044.921417952,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,[INFO] [1789586044.920415358] [rosbag2_recorder]: Event publisher thread: Exited,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+561,28.799196,1789586045.080887556,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,Process finished.,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+562,28.804386,1789586045.086075783,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,Waiting for process to quit...,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+563,28.804579,1789586045.086268663,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,Process finished.,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+564,28.804791,1789586045.086479902,stamp,0,robovast,scenario_execution_ros,rosout,WARN,warn,Exception during shutdown of 'differential_drive_robot.tf_close_to': cannot use Destroyable because destruction was requested,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,warning,62
+565,28.899156,1789586045.180805206,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,Shutting down finished.,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+566,28.899404,1789586045.181053400,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,Waiting for process to quit...,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+567,28.899524,1789586045.181173563,stamp,0,robovast,scenario_execution_ros,rosout,INFO,other,Process finished.,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,info,44
+568,28.899658,1789586045.181306839,stamp,0,robovast,scenario_execution_ros,rosout,WARN,warn,Exception during shutdown of 'differential_drive_robot.tf_close_to': cannot use Destroyable because destruction was requested,/ws/install/scenario_execution_ros/lib/python3.12/site-packages/scenario_execution_ros/logging_ros.py,warning,62
+569,28.900933,1789586045.182581425,stamp,0,robovast,scenario_execution_ros,stdout,INFO,other,"Running post-run: /tmp/robovast_cleanup.sh /out
+[cleanup] Starting robovast cleanup (PID=164)...
+[cleanup] Process tree at cleanup start:
+    PID    PPID STAT COMMAND
+      1       0 Ss   /usr/bin/tini -- /bin/bash /config/entrypoint.sh
+      7       1 Sl   /usr/bin/python3 /opt/ros/jazzy/bin/ros2 run scenario_execution_ros scenario_execution_ros -o /out /config/nav_to_pose.osc --post-run /tmp/robovast_cleanup.sh --post-run /tmp/s3_upload.sh --scenario-parameter-file /config/batch-0-job-101.params.yaml --output-result-per-scenario --bt-log
+      9       7 S    tee -a /out/_jobs/batch-0/job-101/logs/system.log
+     37       1 S    /usr/bin/python3 /config/monitor_resources.py /out/_jobs/batch-0/job-101/resource_usage_main.csv
+     42       1 Sl   /usr/bin/python3 /opt/ros/jazzy/bin/ros2 bag record -o /out/_jobs/batch-0/job-101/logs/rosout_bag --storage mcap --topics /rosout /clock
+     53       7 Sl   /usr/bin/python3 /ws/install/scenario_execution_ros/lib/scenario_execution_ros/scenario_execution_ros -o /out /config/nav_to_pose.osc --post-run /tmp/robovast_cleanup.sh --post-run /tmp/s3_upload.sh --scenario-parameter-file /config/batch-0-job-101.params.yaml --output-result-per-scenario --bt-log
+    164      53 Ss   /bin/bash /tmp/robovast_cleanup.sh /out
+    165     164 R    ps -eo pid,ppid,stat,args
+[cleanup] rosbag: PID=42 state=S ppid=1 comm=ros2
+[cleanup] rosbag: sending INT to PID=42 (retry=INT/30/KILL/5)...
+Stopped process in pidfile '/tmp/rosbag.pid' (pid 42).
+[cleanup] rosbag: stopped successfully.
+[cleanup] monitor: PID=37 state=S ppid=1 comm=python3
+[cleanup] monitor: sending TERM to PID=37 (retry=TERM/10/KILL/5)...
+Stopped process in pidfile '/tmp/monitor.pid' (pid 37).
+[cleanup] monitor: stopped successfully.
+[cleanup] Cleanup finished.",,,
+570,,1789586045.447177887,stamp,0,robovast,scenario_execution_ros,stdout,INFO,other,"Running post-run: /tmp/s3_upload.sh /out
+[s3-upload] Starting S3 upload...
+[s3-upload] Setting up mc alias for S3 endpoint...
+Added `mystore` successfully.
+[s3-upload] Mirroring /out/ to mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/...
+`/out/_jobs/batch-0/job-101/distributions_simulation.json` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/distributions_simulation.json`
+`/out/_jobs/batch-0/job-101/distributions_main.json` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/distributions_main.json`
+`/out/_jobs/batch-0/job-101/logs/rosout_bag/metadata.yaml` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/logs/rosout_bag/metadata.yaml`
+`/out/_jobs/batch-0/job-101/distributions_sut.json` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/distributions_sut.json`
+`/out/_jobs/batch-0/job-101/logs/rosout_bag/rosout_bag_0.mcap` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/logs/rosout_bag/rosout_bag_0.mcap`
+`/out/_jobs/batch-0/job-101/logs/system.log` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/logs/system.log`
+`/out/_jobs/batch-0/job-101/logs/system_simulation.log` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/logs/system_simulation.log`
+`/out/_jobs/batch-0/job-101/logs/system_sut.log` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/logs/system_sut.log`
+`/out/_jobs/batch-0/job-101/resource_usage_main.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/resource_usage_main.csv`
+`/out/_jobs/batch-0/job-101/resource_usage_simulation.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/resource_usage_simulation.csv`
+`/out/_jobs/batch-0/job-101/sysinfo.yaml` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/sysinfo.yaml`
+`/out/_jobs/batch-0/job-101/resource_usage_sut.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/resource_usage_sut.csv`
+`/out/_jobs/batch-0/job-101/system_usage_main.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/system_usage_main.csv`
+`/out/_jobs/batch-0/job-101/system_usage_simulation.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/system_usage_simulation.csv`
+`/out/_jobs/batch-0/job-101/system_usage_sut.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/system_usage_sut.csv`
+`/out/tr-101/0/behaviors.jsonl` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/tr-101/0/behaviors.jsonl`
+`/out/tr-101/0/entities.json` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/tr-101/0/entities.json`
+`/out/tr-101/0/rosbag2/rosbag2_0.mcap` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/tr-101/0/rosbag2/rosbag2_0.mcap`
+`/out/tr-101/0/run.clock_map.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/tr-101/0/run.clock_map.csv`
+`/out/tr-101/0/rosbag2/metadata.yaml` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/tr-101/0/rosbag2/metadata.yaml`
+`/out/tr-101/0/sim_poses.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/tr-101/0/sim_poses.csv`
+`/out/tr-101/0/test.xml` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/tr-101/0/test.xml`
+┌──────────┬─────────────┬──────────┬─────────────┐
+│ Total    │ Transferred │ Duration │ Speed       │
+│ 4.52 MiB │ 4.52 MiB    │ 00m00s   │ 42.37 MiB/s │
+└──────────┴─────────────┴──────────┴─────────────┘
+[s3-upload] Mirror complete. Re-tagging executable files...
+[s3-upload] S3 upload finished.",,,
+571,,1789586046.516226053,stamp,0,sut,entrypoint,stdout,INFO,other,"Uploading sut artifacts left after the scenario finished...
+[s3-upload] Starting S3 upload...
+[s3-upload] Setting up mc alias for S3 endpoint...
+Added `mystore` successfully.
+[s3-upload] Mirroring /out/ to mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/...
+`/out/_jobs/batch-0/job-101/logs/system.log` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/logs/system.log`
+`/out/_jobs/batch-0/job-101/logs/system_sut.log` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/logs/system_sut.log`
+`/out/_jobs/batch-0/job-101/resource_usage_simulation.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/resource_usage_simulation.csv`
+`/out/_jobs/batch-0/job-101/resource_usage_sut.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/resource_usage_sut.csv`
+`/out/_jobs/batch-0/job-101/system_usage_simulation.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/system_usage_simulation.csv`
+`/out/_jobs/batch-0/job-101/system_usage_sut.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/_jobs/batch-0/job-101/system_usage_sut.csv`
+`/out/tr-101/0/sim_poses.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/tr-101/0/sim_poses.csv`
+`/out/tr-101/0/run.clock_map.csv` -> `mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/tr-101/0/run.clock_map.csv`
+┌────────────┬─────────────┬──────────┬────────────┐
+│ Total      │ Transferred │ Duration │ Speed      │
+│ 775.22 KiB │ 775.22 KiB  │ 00m00s   │ 7.59 MiB/s │
+└────────────┴─────────────┴──────────┴────────────┘
+[s3-upload] Mirror complete. Re-tagging executable files...
+[s3-upload] S3 upload finished.",,,
+572,,1789586046.689352036,stamp,0,simulation,roqsim.engine,stdout,INFO,other,SIGTERM: shutting down (SIGTERM again to force),,,
+573,,1789586046.692044973,stamp,0,simulation,roqsim.engine,stdout,INFO,other,"recording: 761 samples at 25.0 fps (30.4 s of sim time in 32.20 s wall, 0.94x real time) -> /out/tr-101/0/run.npz",,,
+574,,1789586046.705977917,stamp,0,simulation,roqsim.engine,stdout,INFO,other,"wrote run capture to /out/tr-101/0/capture: 761 samples, 2 joint + 2 pose tracks, 53.5 KiB",,,
+575,,1789586046.915735006,stamp,0,simulation,entrypoint,stdout,INFO,other,"Uploading simulation artifacts left after the scenario finished...
+[s3-upload] Starting S3 upload...
+[s3-upload] Setting up mc alias for S3 endpoint...
+Added `mystore` successfully.
+[s3-upload] Mirroring /out/ to mystore/random-hexagon-nav-to-pose-2026-09-16-20142397/...",,,

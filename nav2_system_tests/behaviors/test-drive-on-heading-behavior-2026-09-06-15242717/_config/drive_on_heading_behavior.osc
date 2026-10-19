@@ -1,0 +1,150 @@
+import osc.helpers
+import osc.os
+import osc.ros
+import osc.nav2
+import osc.remote
+import osc.sim
+import osc.dataops
+
+# Nav2 DRIVE_ON_HEADING BEHAVIOR test, ported from
+# nav2_system_tests/src/behaviors/drive_on_heading (main).
+# One trial = one /drive_on_heading action call with a target point, speed and time
+# allowance.
+#
+# DEVIATION FROM UPSTREAM -- stock behavior stack, full nav2 bringup. The upstream test
+# (drive_tester.py) launches tb3_sandbox + nav2 bringup with the Python tester
+# (DriveTest) driving the `behavior_server`'s /drive_on_heading action directly, over
+# four parameterizations (invalid costmap, valid costmap, impossible command, lethal
+# costmap). Here the same bringup runs (files/nav2_stack.launch.py + the hexagon world)
+# and the generic action_call primitive drives /drive_on_heading -- the same device as
+# the error_codes and behaviors_wait campaigns, because the scenario framework has no
+# typed drive_on_heading action.
+#
+# action_call returns SUCCESS only on STATUS_SUCCEEDED. For the invalid-costmap,
+# impossible-command, and lethal-costmap cases the server ABORTS, so action_call returns
+# FAILURE and those cells carry expect_success: false. The valid-costmap case SUCCEEDS,
+# so that cell carries expect_success: true and the scenario emits end. The analysis
+# additionally verifies the specific error_code from the recorded
+# /drive_on_heading/_action/status messages.
+#
+# NOT PORTED: The preempt-with-faster-command and cancel sub-cases inside the upstream
+# valid-costmap test (drive_tester.py's sendAndPreemptWithFasterCommand and
+# sendAndCancelCommand). action_call has no preemption or cancel entry point --
+# RosActionCall.shutdown() cancels only at scenario teardown -- and a mid-run preempt or
+# cancel cannot be sequenced (see wait_behavior.osc and scenario_nav2_behavior_test.osc
+# for the same limitation).
+#
+# NOT PORTED: The manual costmap publishing that upstream uses to trigger
+# costmap-dependent failures (sendFreeCostmap, sendOccupiedCostmap). The scenario
+# framework has no mechanism to publish arbitrary messages to /local_costmap/costmap_raw
+# before sending the action goal, so the costmap-related test cases (invalid costmap,
+# lethal costmap) rely on the stack's natural costmap state rather than upstream's
+# explicitly injected costmaps. The upstream "impossible target sign" check (a negative
+# target.x) is likewise not expressible as a distinct, separately-graded scenario cell:
+# it is one of three sub-assertions inside upstream's imperative Test C, which the
+# scenario can only reproduce as a single /drive_on_heading goal.
+#
+# UPSTREAM ODDITY worth recording: CMakeLists.txt sets
+# BT_NAVIGATOR_XML=navigate_to_pose_w_replanning_and_behavior.xml, a file that exists
+# neither in the navigation2 source tree nor in the installed nav2_bt_navigator share
+# directory (verified in the robovast image). It is immaterial to this test -- the
+# /drive_on_heading action is a behavior-server action, not a BT node -- but it is
+# recorded so the CSV row's BT column is not silently treated as loadable.
+
+scenario test_scenario:
+    timeout(600s)
+
+    map_file: string
+    mesh_file: string
+    start_pose: pose_3d
+    params_file: string
+
+    # The trial. doh_goal_data is a JSON goal literal:
+    # {"speed": <float>, "target": {"x": <float>, ...}, "time_allowance": {"sec": <int>, "nanosec": <int>}}.
+    # The doh_ prefix is load-bearing -- it keeps the parameter namespace apart from
+    # action_call's own __init__ arguments (action_name/action_type); see
+    # scenario_nav2_behavior_test.osc's header for the recursion that bare names cause.
+    doh_action_name: string
+    doh_action_type: string
+    doh_goal_data: string
+
+    # Carried for grading. expect_success is true for the valid-costmap cell (the drive
+    # succeeds) and false for the costmap-dependent and impossible-command cells (the
+    # server aborts).
+    nav2_test_id: string = ''
+    expect_success: bool = true
+
+    robot: differential_drive_robot
+
+    do serial:
+        serial:
+            timeout(120s)
+            wait_for_topics(topics: ['/clock'])
+            check_data(topic_name: '/scan_sim',
+                       topic_type: 'sensor_msgs.msg.LaserScan',
+                       member_name: 'range_max',
+                       comparison_operator: comparison_operator!gt,
+                       expected_value: '0.0',
+                       qos_profile: qos_preset_profiles!sensor_data)
+
+        delete_entity(entity: 'dynamic_0')
+
+        set_entity_state(entity: 'robot',
+                         pose: pose_3d(
+                             position: position_3d(x: start_pose.position.x,
+                                                   y: start_pose.position.y,
+                                                   z: 0.03m),
+                             orientation: start_pose.orientation))
+
+        parallel:
+            # The sut channel stages the per-configuration parameter file at this path.
+            ros_launch('', '/config/files/nav2_stack.launch.py',
+                [key_value('map', os.abspath(common.get_scenario_file_directory() + "/" + map_file)),
+                 key_value('params_file', common.get_scenario_file_directory() + '/' + params_file),
+                 key_value('autostart', 'true'),
+                 key_value('use_rviz', 'False'),
+                 key_value('laserscan_gaussian_noise_std_deviation', '0.0'),
+                 key_value('laserscan_random_drop_percentage', '0.0')],
+                wait_for_shutdown: false) with:
+                    remote('ipc:///ipc/sut')
+
+            parallel:
+                serial:
+                    robot.init_nav2(start_pose)
+                    bag_record([
+                            '/clock',
+                            '/tf',
+                            '/tf_static',
+                            '/map',
+                            '/global_costmap/costmap',
+                            '/local_costmap/costmap',
+                            '/amcl_pose',
+                            '/plan',
+                            '/scan',
+                            '/odom',
+                            '/collision',
+                            '/behavior_tree_log',
+                            '/drive_on_heading/_action/feedback',
+                            '/drive_on_heading/_action/status'
+                        ],
+                        hidden_topics: true,
+                        use_sim_time: true,
+                        timestamp_suffix: false)
+                    # THE TRIAL: one /drive_on_heading goal. Returns SUCCESS on
+                    # STATUS_SUCCEEDED (the drive completes) -- the same assertion
+                    # drive_tester.py's sendCommand() makes. The + '' is REQUIRED, see
+                    # scenario_nav2_behavior_test.osc.
+                    action_call(action_name: doh_action_name,
+                                action_type: doh_action_type,
+                                data: doh_goal_data + '')
+                    emit end
+                serial:
+                    one_of:
+                        log_check(values: ["Control loop missed its desired rate"]) with:
+                            repeat(10)
+                        check_data(topic_name: '/collision',
+                                   topic_type: 'std_msgs.msg.Bool',
+                                   member_name: 'data',
+                                   comparison_operator: comparison_operator!eq,
+                                   expected_value: 'True')
+                    emit fail

@@ -1,0 +1,2764 @@
+run_files:
+- _config/files/gazebo_launch.py
+- _config/files/world.sdf.xacro
+- _config/files/monitor_cam_launch.py
+- _config/files/collision_monitor.py
+- _config/files/nav2_stack.launch.py
+- _config/files/navigate_to_pose_w_replanning_and_recovery.xml
+- _config/files/nav2_launch.py
+- _config/files/nav2_gazebo.launch.py
+- _config/files/nav2/spawn_tb4.launch.py
+- _config/files/nav2/tb4_simulation_launch.py
+- _config/files/nav2/tb4_bridge.yaml
+- _config/files/models/cylinder.sdf.xacro
+- _config/files/models/box.sdf.xacro
+- _config/environments/hexagon/3d-mesh/hexagon.stl.yaml
+- _config/environments/hexagon/3d-mesh/hexagon.stl
+- _config/environments/hexagon/json-ld/floorplan.fpm.json.yaml
+- _config/environments/hexagon/json-ld/floorplan.fpm.json
+- _config/environments/hexagon/maps/hexagon.pgm
+- _config/environments/hexagon/maps/hexagon.yaml
+- _config/world/nav2.yaml
+scenario_file: scenario.osc
+metadata:
+  name: test_error_codes
+  title: Nav2 server error codes via stock plugins, TurtleBot 4 + Nav2, in roqsim
+    (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  - name: Ortega Sainz, Argentina
+    identifiers: 0000-0002-3873-4435
+  - name: Pasch, Frederik
+    identifiers: 0000-0002-2626-1538
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords:
+  - robotics
+  - navigation
+  - ROS2
+  - mujoco
+  - roqsim
+  - nav2
+  - turtlebot4
+  - error
+  - failure
+  description: "Reinterpretation of nav2's error_codes system test\n(nav2_system_tests/src/error_codes,\
+    \ jazzy). Where upstream launches only\ncontroller_server, planner_server and\
+    \ smoother_server with custom C++ error-code\nplugins, this campaign runs the\
+    \ full nav2 stack (files/nav2_stack.launch.py, the\nsame world as the sibling\
+    \ system_failure/test_failure_navigator.vast) and triggers\nSTOCK error codes\
+    \ that nav2 emits without any custom plugin: requesting a\nnon-existent controller/planner/smoother\
+    \ plugin id, or sending a goal the server\nrejects for a stock reason.\n\nMEANING\
+    \ OF A CELL: one configuration is one upstream error-code test case\n(error_codes.csv\
+    \ lines 32-37). The trial is a single direct action-call that the\nserver ABORTS\
+    \ with the error code in result.error_code, so action_call returns\nFAILURE and\
+    \ every cell carries expect_success: false. The analysis verifies the\nspecific\
+    \ error_code from the recorded /<action>/_action/status messages (which\ncontain\
+    \ result.error_code). expect_success being inverted is a graded-with correct\n\
+    fact, not a broken campaign -- see scenario_nav2_behavior_test.osc's header for\
+    \ the\nsame mechanism.\n\nPORTED CASE -> ERROR CODE:\n- FollowPath (CSV line 32)\
+    \  -> controller_id that no plugin matches -> INVALID_CONTROLLER (stock)\n- ComputePathToPose\
+    \ success/cancel (lines 33-34) -> planner_id that no plugin matches -> INVALID_PLANNER\
+    \ (stock)\n- ComputePathThroughPoses success/cancel (lines 35-36) -> empty goals\
+    \ -> NO_VIAPOINTS_GIVEN (stock)\n- SmoothPath (line 37)      -> smoother_id that\
+    \ no plugin matches -> INVALID_SMOOTHER (stock)\n\nNOT PORTED, each because the\
+    \ substrate cannot express it today -- recorded rather\nthan faked (see readme.md\
+    \ for the full list and reasons):\n- The two CANCEL cases (lines 34 and 36). action_call\
+    \ (the ONLY way to drive an\n  action in this scenario framework, which has no\
+    \ FollowPath/ComputePath* typed\n  actions) has no cancel entry point; RosActionCall.shutdown()\
+    \ cancels only at\n  scenario teardown.\n- The error codes that need a custom\
+    \ plugin goal or state (UNKNOWN, TF_ERROR,\n  PATIENCE_EXCEEDED, FAILED_TO_MAKE_PROGRESS,\
+    \ NO_VALID_CONTROL, CONTROLLER_TIMED_OUT,\n  START/GOAL_OCCUPIED, outside-map-bounds,\
+    \ INVALID_PATH, SMOOTHED_PATH_IN_COLLISION,\n  FAILED_TO_SMOOTH_PATH). Each is\
+    \ listed in readme.md with why the stock stack\n  cannot be made to emit it deterministically\
+    \ in a single scenario trial.\n"
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+configurations:
+- name: follow-path-invalid-controller
+  config:
+    params_file: follow-path-invalid-controller/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: error_codes/FollowPath/INVALID_CONTROLLER
+    expect_success: false
+    ec_action_name: /follow_path
+    ec_action_type: nav2_msgs.action.FollowPath
+    ec_goal_data: '{"path": {"poses": [{"header": {"frame_id": "map"}, "pose": {"position":
+      {"x": -2.0, "y": 0.5, "z": 0.0}, "orientation": {"w": 1.0}}}]}, "controller_id":
+      "no_such_controller", "goal_checker_id": "goal_checker", "progress_checker_id":
+      "progress_checker"}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - follow-path-invalid-controller/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T14:38:23.445289'
+  config_identifier: 7f4aa384b21b
+  sub_identifier:
+    block: e95849bd8bd6
+    run_files: 57069c042471
+    scenario_file: 021831ec9a62
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: follow-path-invalid-controller/0
+    success: 'false'
+    start_time: '2026-09-06T12:38:35.188242+00:00'
+    end_time: '2026-09-06T12:38:41.484915+00:00'
+    output_files:
+    - follow-path-invalid-controller/0/.robovast_rosbags_process_cache
+    - follow-path-invalid-controller/0/action_follow_path_status.csv
+    - follow-path-invalid-controller/0/behaviors.jsonl
+    - follow-path-invalid-controller/0/capture/capture.bin
+    - follow-path-invalid-controller/0/capture/capture.json
+    - follow-path-invalid-controller/0/costmaps.csv
+    - follow-path-invalid-controller/0/entities.json
+    - follow-path-invalid-controller/0/poses.csv
+    - follow-path-invalid-controller/0/resource_usage.csv
+    - follow-path-invalid-controller/0/rosbag2/metadata.yaml
+    - follow-path-invalid-controller/0/rosbag2/rosbag2_0.mcap
+    - follow-path-invalid-controller/0/rosbag2_collision.csv
+    - follow-path-invalid-controller/0/run.clock_map.csv
+    - follow-path-invalid-controller/0/run.npz
+    - follow-path-invalid-controller/0/run_log.csv
+    - follow-path-invalid-controller/0/sim_poses.csv
+    - follow-path-invalid-controller/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: follow-path-invalid-controller/1
+    success: 'false'
+    start_time: '2026-09-06T12:38:35.196056+00:00'
+    end_time: '2026-09-06T12:38:42.812065+00:00'
+    output_files:
+    - follow-path-invalid-controller/1/.robovast_rosbags_process_cache
+    - follow-path-invalid-controller/1/action_follow_path_status.csv
+    - follow-path-invalid-controller/1/behaviors.jsonl
+    - follow-path-invalid-controller/1/capture/capture.bin
+    - follow-path-invalid-controller/1/capture/capture.json
+    - follow-path-invalid-controller/1/costmaps.csv
+    - follow-path-invalid-controller/1/entities.json
+    - follow-path-invalid-controller/1/poses.csv
+    - follow-path-invalid-controller/1/resource_usage.csv
+    - follow-path-invalid-controller/1/rosbag2/metadata.yaml
+    - follow-path-invalid-controller/1/rosbag2/rosbag2_0.mcap
+    - follow-path-invalid-controller/1/rosbag2_collision.csv
+    - follow-path-invalid-controller/1/run.clock_map.csv
+    - follow-path-invalid-controller/1/run.npz
+    - follow-path-invalid-controller/1/run_log.csv
+    - follow-path-invalid-controller/1/sim_poses.csv
+    - follow-path-invalid-controller/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: follow-path-invalid-controller/2
+    success: 'false'
+    start_time: '2026-09-06T12:38:56.229716+00:00'
+    end_time: '2026-09-06T12:39:03.203641+00:00'
+    output_files:
+    - follow-path-invalid-controller/2/.robovast_rosbags_process_cache
+    - follow-path-invalid-controller/2/action_follow_path_status.csv
+    - follow-path-invalid-controller/2/behaviors.jsonl
+    - follow-path-invalid-controller/2/capture/capture.bin
+    - follow-path-invalid-controller/2/capture/capture.json
+    - follow-path-invalid-controller/2/costmaps.csv
+    - follow-path-invalid-controller/2/entities.json
+    - follow-path-invalid-controller/2/poses.csv
+    - follow-path-invalid-controller/2/resource_usage.csv
+    - follow-path-invalid-controller/2/rosbag2/metadata.yaml
+    - follow-path-invalid-controller/2/rosbag2/rosbag2_0.mcap
+    - follow-path-invalid-controller/2/rosbag2_collision.csv
+    - follow-path-invalid-controller/2/run.clock_map.csv
+    - follow-path-invalid-controller/2/run.npz
+    - follow-path-invalid-controller/2/run_log.csv
+    - follow-path-invalid-controller/2/sim_poses.csv
+    - follow-path-invalid-controller/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: follow-path-invalid-controller/3
+    success: 'false'
+    start_time: '2026-09-06T12:38:58.260961+00:00'
+    end_time: '2026-09-06T12:39:06.110648+00:00'
+    output_files:
+    - follow-path-invalid-controller/3/.robovast_rosbags_process_cache
+    - follow-path-invalid-controller/3/action_follow_path_status.csv
+    - follow-path-invalid-controller/3/behaviors.jsonl
+    - follow-path-invalid-controller/3/capture/capture.bin
+    - follow-path-invalid-controller/3/capture/capture.json
+    - follow-path-invalid-controller/3/costmaps.csv
+    - follow-path-invalid-controller/3/entities.json
+    - follow-path-invalid-controller/3/poses.csv
+    - follow-path-invalid-controller/3/resource_usage.csv
+    - follow-path-invalid-controller/3/rosbag2/metadata.yaml
+    - follow-path-invalid-controller/3/rosbag2/rosbag2_0.mcap
+    - follow-path-invalid-controller/3/rosbag2_collision.csv
+    - follow-path-invalid-controller/3/run.clock_map.csv
+    - follow-path-invalid-controller/3/run.npz
+    - follow-path-invalid-controller/3/run_log.csv
+    - follow-path-invalid-controller/3/sim_poses.csv
+    - follow-path-invalid-controller/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: follow-path-invalid-controller/4
+    success: 'false'
+    start_time: '2026-09-06T12:39:18.308823+00:00'
+    end_time: '2026-09-06T12:39:24.557497+00:00'
+    output_files:
+    - follow-path-invalid-controller/4/.robovast_rosbags_process_cache
+    - follow-path-invalid-controller/4/action_follow_path_status.csv
+    - follow-path-invalid-controller/4/behaviors.jsonl
+    - follow-path-invalid-controller/4/capture/capture.bin
+    - follow-path-invalid-controller/4/capture/capture.json
+    - follow-path-invalid-controller/4/costmaps.csv
+    - follow-path-invalid-controller/4/entities.json
+    - follow-path-invalid-controller/4/poses.csv
+    - follow-path-invalid-controller/4/resource_usage.csv
+    - follow-path-invalid-controller/4/rosbag2/metadata.yaml
+    - follow-path-invalid-controller/4/rosbag2/rosbag2_0.mcap
+    - follow-path-invalid-controller/4/rosbag2_collision.csv
+    - follow-path-invalid-controller/4/run.clock_map.csv
+    - follow-path-invalid-controller/4/run.npz
+    - follow-path-invalid-controller/4/run_log.csv
+    - follow-path-invalid-controller/4/sim_poses.csv
+    - follow-path-invalid-controller/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+- name: compute-path-to-pose-invalid-planner
+  config:
+    params_file: compute-path-to-pose-invalid-planner/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: error_codes/ComputePathToPose/INVALID_PLANNER
+    expect_success: false
+    ec_action_name: /compute_path_to_pose
+    ec_action_type: nav2_msgs.action.ComputePathToPose
+    ec_goal_data: '{"goal": {"header": {"frame_id": "map"}, "pose": {"position": {"x":
+      0.0, "y": 0.5, "z": 0.0}, "orientation": {"w": 1.0}}}, "planner_id": "no_such_planner",
+      "start": {"header": {"frame_id": "map"}, "pose": {"position": {"x": -2.0, "y":
+      -0.5, "z": 0.0}, "orientation": {"w": 1.0}}}}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - compute-path-to-pose-invalid-planner/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T14:38:23.445289'
+  config_identifier: 4fcd7a22b2c9
+  sub_identifier:
+    block: 8968702ac5f6
+    run_files: 57069c042471
+    scenario_file: 021831ec9a62
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: compute-path-to-pose-invalid-planner/0
+    success: 'false'
+    start_time: '2026-09-06T12:39:23.761828+00:00'
+    end_time: '2026-09-06T12:39:30.710468+00:00'
+    output_files:
+    - compute-path-to-pose-invalid-planner/0/.robovast_rosbags_process_cache
+    - compute-path-to-pose-invalid-planner/0/action_compute_path_to_pose_status.csv
+    - compute-path-to-pose-invalid-planner/0/behaviors.jsonl
+    - compute-path-to-pose-invalid-planner/0/capture/capture.bin
+    - compute-path-to-pose-invalid-planner/0/capture/capture.json
+    - compute-path-to-pose-invalid-planner/0/costmaps.csv
+    - compute-path-to-pose-invalid-planner/0/entities.json
+    - compute-path-to-pose-invalid-planner/0/poses.csv
+    - compute-path-to-pose-invalid-planner/0/resource_usage.csv
+    - compute-path-to-pose-invalid-planner/0/rosbag2/metadata.yaml
+    - compute-path-to-pose-invalid-planner/0/rosbag2/rosbag2_0.mcap
+    - compute-path-to-pose-invalid-planner/0/rosbag2_collision.csv
+    - compute-path-to-pose-invalid-planner/0/run.clock_map.csv
+    - compute-path-to-pose-invalid-planner/0/run.npz
+    - compute-path-to-pose-invalid-planner/0/run_log.csv
+    - compute-path-to-pose-invalid-planner/0/sim_poses.csv
+    - compute-path-to-pose-invalid-planner/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: compute-path-to-pose-invalid-planner/1
+    success: 'false'
+    start_time: '2026-09-06T12:39:41.420455+00:00'
+    end_time: '2026-09-06T12:39:48.469945+00:00'
+    output_files:
+    - compute-path-to-pose-invalid-planner/1/.robovast_rosbags_process_cache
+    - compute-path-to-pose-invalid-planner/1/action_compute_path_to_pose_status.csv
+    - compute-path-to-pose-invalid-planner/1/behaviors.jsonl
+    - compute-path-to-pose-invalid-planner/1/capture/capture.bin
+    - compute-path-to-pose-invalid-planner/1/capture/capture.json
+    - compute-path-to-pose-invalid-planner/1/costmaps.csv
+    - compute-path-to-pose-invalid-planner/1/entities.json
+    - compute-path-to-pose-invalid-planner/1/poses.csv
+    - compute-path-to-pose-invalid-planner/1/resource_usage.csv
+    - compute-path-to-pose-invalid-planner/1/rosbag2/metadata.yaml
+    - compute-path-to-pose-invalid-planner/1/rosbag2/rosbag2_0.mcap
+    - compute-path-to-pose-invalid-planner/1/rosbag2_collision.csv
+    - compute-path-to-pose-invalid-planner/1/run.clock_map.csv
+    - compute-path-to-pose-invalid-planner/1/run.npz
+    - compute-path-to-pose-invalid-planner/1/run_log.csv
+    - compute-path-to-pose-invalid-planner/1/sim_poses.csv
+    - compute-path-to-pose-invalid-planner/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: compute-path-to-pose-invalid-planner/2
+    success: 'false'
+    start_time: '2026-09-06T12:39:46.656131+00:00'
+    end_time: '2026-09-06T12:39:54.940129+00:00'
+    output_files:
+    - compute-path-to-pose-invalid-planner/2/.robovast_rosbags_process_cache
+    - compute-path-to-pose-invalid-planner/2/action_compute_path_to_pose_status.csv
+    - compute-path-to-pose-invalid-planner/2/behaviors.jsonl
+    - compute-path-to-pose-invalid-planner/2/capture/capture.bin
+    - compute-path-to-pose-invalid-planner/2/capture/capture.json
+    - compute-path-to-pose-invalid-planner/2/costmaps.csv
+    - compute-path-to-pose-invalid-planner/2/entities.json
+    - compute-path-to-pose-invalid-planner/2/poses.csv
+    - compute-path-to-pose-invalid-planner/2/resource_usage.csv
+    - compute-path-to-pose-invalid-planner/2/rosbag2/metadata.yaml
+    - compute-path-to-pose-invalid-planner/2/rosbag2/rosbag2_0.mcap
+    - compute-path-to-pose-invalid-planner/2/rosbag2_collision.csv
+    - compute-path-to-pose-invalid-planner/2/run.clock_map.csv
+    - compute-path-to-pose-invalid-planner/2/run.npz
+    - compute-path-to-pose-invalid-planner/2/run_log.csv
+    - compute-path-to-pose-invalid-planner/2/sim_poses.csv
+    - compute-path-to-pose-invalid-planner/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: compute-path-to-pose-invalid-planner/3
+    success: 'false'
+    start_time: '2026-09-06T12:40:05.036183+00:00'
+    end_time: '2026-09-06T12:40:10.984392+00:00'
+    output_files:
+    - compute-path-to-pose-invalid-planner/3/.robovast_rosbags_process_cache
+    - compute-path-to-pose-invalid-planner/3/action_compute_path_to_pose_status.csv
+    - compute-path-to-pose-invalid-planner/3/behaviors.jsonl
+    - compute-path-to-pose-invalid-planner/3/capture/capture.bin
+    - compute-path-to-pose-invalid-planner/3/capture/capture.json
+    - compute-path-to-pose-invalid-planner/3/costmaps.csv
+    - compute-path-to-pose-invalid-planner/3/entities.json
+    - compute-path-to-pose-invalid-planner/3/poses.csv
+    - compute-path-to-pose-invalid-planner/3/resource_usage.csv
+    - compute-path-to-pose-invalid-planner/3/rosbag2/metadata.yaml
+    - compute-path-to-pose-invalid-planner/3/rosbag2/rosbag2_0.mcap
+    - compute-path-to-pose-invalid-planner/3/rosbag2_collision.csv
+    - compute-path-to-pose-invalid-planner/3/run.clock_map.csv
+    - compute-path-to-pose-invalid-planner/3/run.npz
+    - compute-path-to-pose-invalid-planner/3/run_log.csv
+    - compute-path-to-pose-invalid-planner/3/sim_poses.csv
+    - compute-path-to-pose-invalid-planner/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: compute-path-to-pose-invalid-planner/4
+    success: 'false'
+    start_time: '2026-09-06T12:40:10.507380+00:00'
+    end_time: '2026-09-06T12:40:19.278863+00:00'
+    output_files:
+    - compute-path-to-pose-invalid-planner/4/.robovast_rosbags_process_cache
+    - compute-path-to-pose-invalid-planner/4/action_compute_path_to_pose_status.csv
+    - compute-path-to-pose-invalid-planner/4/behaviors.jsonl
+    - compute-path-to-pose-invalid-planner/4/capture/capture.bin
+    - compute-path-to-pose-invalid-planner/4/capture/capture.json
+    - compute-path-to-pose-invalid-planner/4/costmaps.csv
+    - compute-path-to-pose-invalid-planner/4/entities.json
+    - compute-path-to-pose-invalid-planner/4/poses.csv
+    - compute-path-to-pose-invalid-planner/4/resource_usage.csv
+    - compute-path-to-pose-invalid-planner/4/rosbag2/metadata.yaml
+    - compute-path-to-pose-invalid-planner/4/rosbag2/rosbag2_0.mcap
+    - compute-path-to-pose-invalid-planner/4/rosbag2_collision.csv
+    - compute-path-to-pose-invalid-planner/4/run.clock_map.csv
+    - compute-path-to-pose-invalid-planner/4/run.npz
+    - compute-path-to-pose-invalid-planner/4/run_log.csv
+    - compute-path-to-pose-invalid-planner/4/sim_poses.csv
+    - compute-path-to-pose-invalid-planner/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+- name: compute-path-through-poses-no-viapoints
+  config:
+    params_file: compute-path-through-poses-no-viapoints/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: error_codes/ComputePathThroughPoses/NO_VIAPOINTS_GIVEN
+    expect_success: false
+    ec_action_name: /compute_path_through_poses
+    ec_action_type: nav2_msgs.action.ComputePathThroughPoses
+    ec_goal_data: '{"goals": [], "planner_id": "GridBased", "start": {"header": {"frame_id":
+      "map"}, "pose": {"position": {"x": -2.0, "y": -0.5, "z": 0.0}, "orientation":
+      {"w": 1.0}}}}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - compute-path-through-poses-no-viapoints/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T14:38:23.445289'
+  config_identifier: 87fb4896add7
+  sub_identifier:
+    block: 56487661171f
+    run_files: 57069c042471
+    scenario_file: 021831ec9a62
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: compute-path-through-poses-no-viapoints/0
+    success: 'false'
+    start_time: '2026-09-06T12:40:26.573614+00:00'
+    end_time: '2026-09-06T12:40:33.920892+00:00'
+    output_files:
+    - compute-path-through-poses-no-viapoints/0/.robovast_rosbags_process_cache
+    - compute-path-through-poses-no-viapoints/0/action_compute_path_through_poses_status.csv
+    - compute-path-through-poses-no-viapoints/0/behaviors.jsonl
+    - compute-path-through-poses-no-viapoints/0/capture/capture.bin
+    - compute-path-through-poses-no-viapoints/0/capture/capture.json
+    - compute-path-through-poses-no-viapoints/0/costmaps.csv
+    - compute-path-through-poses-no-viapoints/0/entities.json
+    - compute-path-through-poses-no-viapoints/0/poses.csv
+    - compute-path-through-poses-no-viapoints/0/resource_usage.csv
+    - compute-path-through-poses-no-viapoints/0/rosbag2/metadata.yaml
+    - compute-path-through-poses-no-viapoints/0/rosbag2/rosbag2_0.mcap
+    - compute-path-through-poses-no-viapoints/0/rosbag2_collision.csv
+    - compute-path-through-poses-no-viapoints/0/run.clock_map.csv
+    - compute-path-through-poses-no-viapoints/0/run.npz
+    - compute-path-through-poses-no-viapoints/0/run_log.csv
+    - compute-path-through-poses-no-viapoints/0/sim_poses.csv
+    - compute-path-through-poses-no-viapoints/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: compute-path-through-poses-no-viapoints/1
+    success: 'false'
+    start_time: '2026-09-06T12:40:35.582810+00:00'
+    end_time: '2026-09-06T12:40:41.529721+00:00'
+    output_files:
+    - compute-path-through-poses-no-viapoints/1/.robovast_rosbags_process_cache
+    - compute-path-through-poses-no-viapoints/1/action_compute_path_through_poses_status.csv
+    - compute-path-through-poses-no-viapoints/1/behaviors.jsonl
+    - compute-path-through-poses-no-viapoints/1/capture/capture.bin
+    - compute-path-through-poses-no-viapoints/1/capture/capture.json
+    - compute-path-through-poses-no-viapoints/1/costmaps.csv
+    - compute-path-through-poses-no-viapoints/1/entities.json
+    - compute-path-through-poses-no-viapoints/1/poses.csv
+    - compute-path-through-poses-no-viapoints/1/resource_usage.csv
+    - compute-path-through-poses-no-viapoints/1/rosbag2/metadata.yaml
+    - compute-path-through-poses-no-viapoints/1/rosbag2/rosbag2_0.mcap
+    - compute-path-through-poses-no-viapoints/1/rosbag2_collision.csv
+    - compute-path-through-poses-no-viapoints/1/run.clock_map.csv
+    - compute-path-through-poses-no-viapoints/1/run.npz
+    - compute-path-through-poses-no-viapoints/1/run_log.csv
+    - compute-path-through-poses-no-viapoints/1/sim_poses.csv
+    - compute-path-through-poses-no-viapoints/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: compute-path-through-poses-no-viapoints/2
+    success: 'false'
+    start_time: '2026-09-06T12:40:51.651855+00:00'
+    end_time: '2026-09-06T12:40:57.899381+00:00'
+    output_files:
+    - compute-path-through-poses-no-viapoints/2/.robovast_rosbags_process_cache
+    - compute-path-through-poses-no-viapoints/2/action_compute_path_through_poses_status.csv
+    - compute-path-through-poses-no-viapoints/2/behaviors.jsonl
+    - compute-path-through-poses-no-viapoints/2/capture/capture.bin
+    - compute-path-through-poses-no-viapoints/2/capture/capture.json
+    - compute-path-through-poses-no-viapoints/2/costmaps.csv
+    - compute-path-through-poses-no-viapoints/2/entities.json
+    - compute-path-through-poses-no-viapoints/2/poses.csv
+    - compute-path-through-poses-no-viapoints/2/resource_usage.csv
+    - compute-path-through-poses-no-viapoints/2/rosbag2/metadata.yaml
+    - compute-path-through-poses-no-viapoints/2/rosbag2/rosbag2_0.mcap
+    - compute-path-through-poses-no-viapoints/2/rosbag2_collision.csv
+    - compute-path-through-poses-no-viapoints/2/run.clock_map.csv
+    - compute-path-through-poses-no-viapoints/2/run.npz
+    - compute-path-through-poses-no-viapoints/2/run_log.csv
+    - compute-path-through-poses-no-viapoints/2/sim_poses.csv
+    - compute-path-through-poses-no-viapoints/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: compute-path-through-poses-no-viapoints/3
+    success: 'false'
+    start_time: '2026-09-06T12:40:57.677863+00:00'
+    end_time: '2026-09-06T12:41:04.842670+00:00'
+    output_files:
+    - compute-path-through-poses-no-viapoints/3/.robovast_rosbags_process_cache
+    - compute-path-through-poses-no-viapoints/3/action_compute_path_through_poses_status.csv
+    - compute-path-through-poses-no-viapoints/3/behaviors.jsonl
+    - compute-path-through-poses-no-viapoints/3/capture/capture.bin
+    - compute-path-through-poses-no-viapoints/3/capture/capture.json
+    - compute-path-through-poses-no-viapoints/3/costmaps.csv
+    - compute-path-through-poses-no-viapoints/3/entities.json
+    - compute-path-through-poses-no-viapoints/3/poses.csv
+    - compute-path-through-poses-no-viapoints/3/resource_usage.csv
+    - compute-path-through-poses-no-viapoints/3/rosbag2/metadata.yaml
+    - compute-path-through-poses-no-viapoints/3/rosbag2/rosbag2_0.mcap
+    - compute-path-through-poses-no-viapoints/3/rosbag2_collision.csv
+    - compute-path-through-poses-no-viapoints/3/run.clock_map.csv
+    - compute-path-through-poses-no-viapoints/3/run.npz
+    - compute-path-through-poses-no-viapoints/3/run_log.csv
+    - compute-path-through-poses-no-viapoints/3/sim_poses.csv
+    - compute-path-through-poses-no-viapoints/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: compute-path-through-poses-no-viapoints/4
+    success: 'false'
+    start_time: '2026-09-06T12:41:14.748563+00:00'
+    end_time: '2026-09-06T12:41:21.298038+00:00'
+    output_files:
+    - compute-path-through-poses-no-viapoints/4/.robovast_rosbags_process_cache
+    - compute-path-through-poses-no-viapoints/4/action_compute_path_through_poses_status.csv
+    - compute-path-through-poses-no-viapoints/4/behaviors.jsonl
+    - compute-path-through-poses-no-viapoints/4/capture/capture.bin
+    - compute-path-through-poses-no-viapoints/4/capture/capture.json
+    - compute-path-through-poses-no-viapoints/4/costmaps.csv
+    - compute-path-through-poses-no-viapoints/4/entities.json
+    - compute-path-through-poses-no-viapoints/4/poses.csv
+    - compute-path-through-poses-no-viapoints/4/resource_usage.csv
+    - compute-path-through-poses-no-viapoints/4/rosbag2/metadata.yaml
+    - compute-path-through-poses-no-viapoints/4/rosbag2/rosbag2_0.mcap
+    - compute-path-through-poses-no-viapoints/4/rosbag2_collision.csv
+    - compute-path-through-poses-no-viapoints/4/run.clock_map.csv
+    - compute-path-through-poses-no-viapoints/4/run.npz
+    - compute-path-through-poses-no-viapoints/4/run_log.csv
+    - compute-path-through-poses-no-viapoints/4/sim_poses.csv
+    - compute-path-through-poses-no-viapoints/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+- name: smooth-path-invalid-smoother
+  config:
+    params_file: smooth-path-invalid-smoother/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: error_codes/SmoothPath/INVALID_SMOOTHER
+    expect_success: false
+    ec_action_name: /smooth_path
+    ec_action_type: nav2_msgs.action.SmoothPath
+    ec_goal_data: '{"path": {"poses": [{"header": {"frame_id": "map"}, "pose": {"position":
+      {"x": -2.0, "y": -0.5, "z": 0.0}, "orientation": {"w": 1.0}}}, {"header": {"frame_id":
+      "map"}, "pose": {"position": {"x": 0.0, "y": 0.5, "z": 0.0}, "orientation":
+      {"w": 1.0}}}]}, "smoother_id": "no_such_smoother"}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - smooth-path-invalid-smoother/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T14:38:23.445289'
+  config_identifier: 2c5329854f5a
+  sub_identifier:
+    block: 14bd6c574846
+    run_files: 57069c042471
+    scenario_file: 021831ec9a62
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: smooth-path-invalid-smoother/0
+    success: 'false'
+    start_time: '2026-09-06T12:41:20.777883+00:00'
+    end_time: '2026-09-06T12:41:27.298955+00:00'
+    output_files:
+    - smooth-path-invalid-smoother/0/.robovast_rosbags_process_cache
+    - smooth-path-invalid-smoother/0/action_smooth_path_status.csv
+    - smooth-path-invalid-smoother/0/behaviors.jsonl
+    - smooth-path-invalid-smoother/0/capture/capture.bin
+    - smooth-path-invalid-smoother/0/capture/capture.json
+    - smooth-path-invalid-smoother/0/costmaps.csv
+    - smooth-path-invalid-smoother/0/entities.json
+    - smooth-path-invalid-smoother/0/poses.csv
+    - smooth-path-invalid-smoother/0/resource_usage.csv
+    - smooth-path-invalid-smoother/0/rosbag2/metadata.yaml
+    - smooth-path-invalid-smoother/0/rosbag2/rosbag2_0.mcap
+    - smooth-path-invalid-smoother/0/rosbag2_collision.csv
+    - smooth-path-invalid-smoother/0/run.clock_map.csv
+    - smooth-path-invalid-smoother/0/run.npz
+    - smooth-path-invalid-smoother/0/run_log.csv
+    - smooth-path-invalid-smoother/0/sim_poses.csv
+    - smooth-path-invalid-smoother/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: smooth-path-invalid-smoother/1
+    success: 'false'
+    start_time: '2026-09-06T12:41:36.760990+00:00'
+    end_time: '2026-09-06T12:41:43.206949+00:00'
+    output_files:
+    - smooth-path-invalid-smoother/1/.robovast_rosbags_process_cache
+    - smooth-path-invalid-smoother/1/action_smooth_path_status.csv
+    - smooth-path-invalid-smoother/1/behaviors.jsonl
+    - smooth-path-invalid-smoother/1/capture/capture.bin
+    - smooth-path-invalid-smoother/1/capture/capture.json
+    - smooth-path-invalid-smoother/1/costmaps.csv
+    - smooth-path-invalid-smoother/1/entities.json
+    - smooth-path-invalid-smoother/1/poses.csv
+    - smooth-path-invalid-smoother/1/resource_usage.csv
+    - smooth-path-invalid-smoother/1/rosbag2/metadata.yaml
+    - smooth-path-invalid-smoother/1/rosbag2/rosbag2_0.mcap
+    - smooth-path-invalid-smoother/1/rosbag2_collision.csv
+    - smooth-path-invalid-smoother/1/run.clock_map.csv
+    - smooth-path-invalid-smoother/1/run.npz
+    - smooth-path-invalid-smoother/1/run_log.csv
+    - smooth-path-invalid-smoother/1/sim_poses.csv
+    - smooth-path-invalid-smoother/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: smooth-path-invalid-smoother/2
+    success: 'false'
+    start_time: '2026-09-06T12:41:43.844421+00:00'
+    end_time: '2026-09-06T12:41:50.293458+00:00'
+    output_files:
+    - smooth-path-invalid-smoother/2/.robovast_rosbags_process_cache
+    - smooth-path-invalid-smoother/2/action_smooth_path_status.csv
+    - smooth-path-invalid-smoother/2/behaviors.jsonl
+    - smooth-path-invalid-smoother/2/capture/capture.bin
+    - smooth-path-invalid-smoother/2/capture/capture.json
+    - smooth-path-invalid-smoother/2/costmaps.csv
+    - smooth-path-invalid-smoother/2/entities.json
+    - smooth-path-invalid-smoother/2/poses.csv
+    - smooth-path-invalid-smoother/2/resource_usage.csv
+    - smooth-path-invalid-smoother/2/rosbag2/metadata.yaml
+    - smooth-path-invalid-smoother/2/rosbag2/rosbag2_0.mcap
+    - smooth-path-invalid-smoother/2/rosbag2_collision.csv
+    - smooth-path-invalid-smoother/2/run.clock_map.csv
+    - smooth-path-invalid-smoother/2/run.npz
+    - smooth-path-invalid-smoother/2/run_log.csv
+    - smooth-path-invalid-smoother/2/sim_poses.csv
+    - smooth-path-invalid-smoother/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: smooth-path-invalid-smoother/3
+    success: 'false'
+    start_time: '2026-09-06T12:41:59.849595+00:00'
+    end_time: '2026-09-06T12:42:06.295367+00:00'
+    output_files:
+    - smooth-path-invalid-smoother/3/.robovast_rosbags_process_cache
+    - smooth-path-invalid-smoother/3/action_smooth_path_status.csv
+    - smooth-path-invalid-smoother/3/behaviors.jsonl
+    - smooth-path-invalid-smoother/3/capture/capture.bin
+    - smooth-path-invalid-smoother/3/capture/capture.json
+    - smooth-path-invalid-smoother/3/costmaps.csv
+    - smooth-path-invalid-smoother/3/entities.json
+    - smooth-path-invalid-smoother/3/poses.csv
+    - smooth-path-invalid-smoother/3/resource_usage.csv
+    - smooth-path-invalid-smoother/3/rosbag2/metadata.yaml
+    - smooth-path-invalid-smoother/3/rosbag2/rosbag2_0.mcap
+    - smooth-path-invalid-smoother/3/rosbag2_collision.csv
+    - smooth-path-invalid-smoother/3/run.clock_map.csv
+    - smooth-path-invalid-smoother/3/run.npz
+    - smooth-path-invalid-smoother/3/run_log.csv
+    - smooth-path-invalid-smoother/3/sim_poses.csv
+    - smooth-path-invalid-smoother/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: smooth-path-invalid-smoother/4
+    success: 'false'
+    start_time: '2026-09-06T12:42:06.470997+00:00'
+    end_time: '2026-09-06T12:42:12.621025+00:00'
+    output_files:
+    - smooth-path-invalid-smoother/4/.robovast_rosbags_process_cache
+    - smooth-path-invalid-smoother/4/action_smooth_path_status.csv
+    - smooth-path-invalid-smoother/4/behaviors.jsonl
+    - smooth-path-invalid-smoother/4/capture/capture.bin
+    - smooth-path-invalid-smoother/4/capture/capture.json
+    - smooth-path-invalid-smoother/4/costmaps.csv
+    - smooth-path-invalid-smoother/4/entities.json
+    - smooth-path-invalid-smoother/4/poses.csv
+    - smooth-path-invalid-smoother/4/resource_usage.csv
+    - smooth-path-invalid-smoother/4/rosbag2/metadata.yaml
+    - smooth-path-invalid-smoother/4/rosbag2/rosbag2_0.mcap
+    - smooth-path-invalid-smoother/4/rosbag2_collision.csv
+    - smooth-path-invalid-smoother/4/run.clock_map.csv
+    - smooth-path-invalid-smoother/4/run.npz
+    - smooth-path-invalid-smoother/4/run_log.csv
+    - smooth-path-invalid-smoother/4/sim_poses.csv
+    - smooth-path-invalid-smoother/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/ComputePathThroughPoses_FeedbackMessage
+      - nav2_msgs/action/ComputePathToPose_FeedbackMessage
+      - nav2_msgs/action/FollowPath_FeedbackMessage
+      - nav2_msgs/action/SmoothPath_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+execution:
+  execution_time: '2026-09-06T12:42:27.810517+00:00'
+  robovast_version: 7e2a5ef
+  robovast_revision: 7e2a5ef
+  robovast_revision_source: baked
+  robovast_dirty: false
+  runs: 5
+  execution_type: cluster
+  image: ghcr.io/cps-test-lab/robovast:latest
+  images:
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim:latest
+    sut: ghcr.io/cps-test-lab/robovast:latest
+    scenario: ghcr.io/cps-test-lab/robovast:latest
+  image_revision: ghcr.io/cps-test-lab/robovast@sha256:680603a3471f94f059a6c587fe7b5eee5379db73b34cdbe3f05431d837c957e7
+  image_revisions:
+    scenario: ghcr.io/cps-test-lab/robovast@sha256:680603a3471f94f059a6c587fe7b5eee5379db73b34cdbe3f05431d837c957e7
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:fcae8d8aaa13535e714d3584bcfa9f2e05c46a1b673dea2c12bcae344254e240
+    sut: ghcr.io/cps-test-lab/robovast@sha256:680603a3471f94f059a6c587fe7b5eee5379db73b34cdbe3f05431d837c957e7
+    robovast: ghcr.io/cps-test-lab/robovast@sha256:680603a3471f94f059a6c587fe7b5eee5379db73b34cdbe3f05431d837c957e7
+    s3-init: ghcr.io/cps-test-lab/robovast-sidecar@sha256:59b3caf0f77840d133380d2ac8f1b6b6f51da2364743425124baf6405c075bd5
+  image_build_refs:
+    scenario:
+      revision: 46da431
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    simulation:
+      revision: f6f1298
+      source: https://github.com/cps-test-lab/robovast
+      roqsim_ref: b945677327a5683989c7920820e8c8bbb921c539
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    sut:
+      revision: 46da431
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+  env:
+    PYTHONUNBUFFERED: '1'
+  cluster_info:
+    cluster_config:
+      name: rke2
+      kwargs:
+        namespace: default
+    node_count: 1
+    node_labels:
+      node-7f7e372628b2:
+        beta.kubernetes.io/arch: amd64
+        beta.kubernetes.io/instance-type: rke2
+        beta.kubernetes.io/os: linux
+        kubernetes.io/arch: amd64
+        kubernetes.io/os: linux
+        node-role.kubernetes.io/control-plane: 'true'
+        node-role.kubernetes.io/etcd: 'true'
+        node.kubernetes.io/instance-type: rke2
+        robovast.io/build-node: 'true'
+        robovast.io/data-node: 'true'
+        robovast.io/node-id: node-7f7e372628b2
+  launch:
+    config_filter: ''
+    campaign_name: ''
+    runs: 5
+    postprocess: true
+    upload_to_share: false
+    show_gui: false
+    images:
+      scenario: ghcr.io/cps-test-lab/robovast@sha256:680603a3471f94f059a6c587fe7b5eee5379db73b34cdbe3f05431d837c957e7
+      simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:fcae8d8aaa13535e714d3584bcfa9f2e05c46a1b673dea2c12bcae344254e240
+      sut: ghcr.io/cps-test-lab/robovast@sha256:680603a3471f94f059a6c587fe7b5eee5379db73b34cdbe3f05431d837c957e7
+postprocessing:
+  generated_by: robovast
+  entries:
+  - output: ../compute-path-through-poses-no-viapoints/1/poses.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../compute-path-through-poses-no-viapoints/1/action_compute_path_through_poses_status.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: compute_path_through_poses
+  - output: ../compute-path-through-poses-no-viapoints/1/rosbag2_collision.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../compute-path-through-poses-no-viapoints/1/costmaps.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../compute-path-through-poses-no-viapoints/0/poses.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../compute-path-through-poses-no-viapoints/0/action_compute_path_through_poses_status.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: compute_path_through_poses
+  - output: ../compute-path-through-poses-no-viapoints/0/rosbag2_collision.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../compute-path-through-poses-no-viapoints/0/costmaps.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../compute-path-through-poses-no-viapoints/3/poses.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../compute-path-through-poses-no-viapoints/3/action_compute_path_through_poses_status.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: compute_path_through_poses
+  - output: ../compute-path-through-poses-no-viapoints/3/rosbag2_collision.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../compute-path-through-poses-no-viapoints/3/costmaps.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../compute-path-through-poses-no-viapoints/2/poses.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../compute-path-through-poses-no-viapoints/2/action_compute_path_through_poses_status.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: compute_path_through_poses
+  - output: ../compute-path-through-poses-no-viapoints/2/rosbag2_collision.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../compute-path-through-poses-no-viapoints/2/costmaps.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../compute-path-through-poses-no-viapoints/4/poses.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../compute-path-through-poses-no-viapoints/4/action_compute_path_through_poses_status.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: compute_path_through_poses
+  - output: ../compute-path-through-poses-no-viapoints/4/rosbag2_collision.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../compute-path-through-poses-no-viapoints/4/costmaps.csv
+    sources:
+    - ../compute-path-through-poses-no-viapoints/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../compute-path-to-pose-invalid-planner/1/poses.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../compute-path-to-pose-invalid-planner/1/action_compute_path_to_pose_status.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: compute_path_to_pose
+  - output: ../compute-path-to-pose-invalid-planner/1/rosbag2_collision.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../compute-path-to-pose-invalid-planner/1/costmaps.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../compute-path-to-pose-invalid-planner/2/poses.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../compute-path-to-pose-invalid-planner/2/action_compute_path_to_pose_status.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: compute_path_to_pose
+  - output: ../compute-path-to-pose-invalid-planner/2/rosbag2_collision.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../compute-path-to-pose-invalid-planner/2/costmaps.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../compute-path-to-pose-invalid-planner/0/poses.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../compute-path-to-pose-invalid-planner/0/action_compute_path_to_pose_status.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: compute_path_to_pose
+  - output: ../compute-path-to-pose-invalid-planner/0/rosbag2_collision.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../compute-path-to-pose-invalid-planner/0/costmaps.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../compute-path-to-pose-invalid-planner/3/poses.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../compute-path-to-pose-invalid-planner/3/action_compute_path_to_pose_status.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: compute_path_to_pose
+  - output: ../compute-path-to-pose-invalid-planner/3/rosbag2_collision.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../compute-path-to-pose-invalid-planner/3/costmaps.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../follow-path-invalid-controller/0/poses.csv
+    sources:
+    - ../follow-path-invalid-controller/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../follow-path-invalid-controller/0/action_follow_path_status.csv
+    sources:
+    - ../follow-path-invalid-controller/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_path
+  - output: ../follow-path-invalid-controller/0/rosbag2_collision.csv
+    sources:
+    - ../follow-path-invalid-controller/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../follow-path-invalid-controller/0/costmaps.csv
+    sources:
+    - ../follow-path-invalid-controller/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../compute-path-to-pose-invalid-planner/4/poses.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../compute-path-to-pose-invalid-planner/4/action_compute_path_to_pose_status.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: compute_path_to_pose
+  - output: ../compute-path-to-pose-invalid-planner/4/rosbag2_collision.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../compute-path-to-pose-invalid-planner/4/costmaps.csv
+    sources:
+    - ../compute-path-to-pose-invalid-planner/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../follow-path-invalid-controller/1/poses.csv
+    sources:
+    - ../follow-path-invalid-controller/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../follow-path-invalid-controller/1/action_follow_path_status.csv
+    sources:
+    - ../follow-path-invalid-controller/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_path
+  - output: ../follow-path-invalid-controller/1/rosbag2_collision.csv
+    sources:
+    - ../follow-path-invalid-controller/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../follow-path-invalid-controller/1/costmaps.csv
+    sources:
+    - ../follow-path-invalid-controller/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../follow-path-invalid-controller/2/poses.csv
+    sources:
+    - ../follow-path-invalid-controller/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../follow-path-invalid-controller/2/action_follow_path_status.csv
+    sources:
+    - ../follow-path-invalid-controller/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_path
+  - output: ../follow-path-invalid-controller/2/rosbag2_collision.csv
+    sources:
+    - ../follow-path-invalid-controller/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../follow-path-invalid-controller/2/costmaps.csv
+    sources:
+    - ../follow-path-invalid-controller/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../follow-path-invalid-controller/3/poses.csv
+    sources:
+    - ../follow-path-invalid-controller/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../follow-path-invalid-controller/3/action_follow_path_status.csv
+    sources:
+    - ../follow-path-invalid-controller/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_path
+  - output: ../follow-path-invalid-controller/3/rosbag2_collision.csv
+    sources:
+    - ../follow-path-invalid-controller/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../follow-path-invalid-controller/3/costmaps.csv
+    sources:
+    - ../follow-path-invalid-controller/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../smooth-path-invalid-smoother/0/poses.csv
+    sources:
+    - ../smooth-path-invalid-smoother/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../smooth-path-invalid-smoother/0/action_smooth_path_status.csv
+    sources:
+    - ../smooth-path-invalid-smoother/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: smooth_path
+  - output: ../smooth-path-invalid-smoother/0/rosbag2_collision.csv
+    sources:
+    - ../smooth-path-invalid-smoother/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../smooth-path-invalid-smoother/0/costmaps.csv
+    sources:
+    - ../smooth-path-invalid-smoother/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../follow-path-invalid-controller/4/poses.csv
+    sources:
+    - ../follow-path-invalid-controller/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../follow-path-invalid-controller/4/action_follow_path_status.csv
+    sources:
+    - ../follow-path-invalid-controller/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_path
+  - output: ../follow-path-invalid-controller/4/rosbag2_collision.csv
+    sources:
+    - ../follow-path-invalid-controller/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../follow-path-invalid-controller/4/costmaps.csv
+    sources:
+    - ../follow-path-invalid-controller/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../smooth-path-invalid-smoother/2/poses.csv
+    sources:
+    - ../smooth-path-invalid-smoother/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../smooth-path-invalid-smoother/2/action_smooth_path_status.csv
+    sources:
+    - ../smooth-path-invalid-smoother/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: smooth_path
+  - output: ../smooth-path-invalid-smoother/2/rosbag2_collision.csv
+    sources:
+    - ../smooth-path-invalid-smoother/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../smooth-path-invalid-smoother/2/costmaps.csv
+    sources:
+    - ../smooth-path-invalid-smoother/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../smooth-path-invalid-smoother/1/poses.csv
+    sources:
+    - ../smooth-path-invalid-smoother/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../smooth-path-invalid-smoother/1/action_smooth_path_status.csv
+    sources:
+    - ../smooth-path-invalid-smoother/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: smooth_path
+  - output: ../smooth-path-invalid-smoother/1/rosbag2_collision.csv
+    sources:
+    - ../smooth-path-invalid-smoother/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../smooth-path-invalid-smoother/1/costmaps.csv
+    sources:
+    - ../smooth-path-invalid-smoother/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../smooth-path-invalid-smoother/3/poses.csv
+    sources:
+    - ../smooth-path-invalid-smoother/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../smooth-path-invalid-smoother/3/action_smooth_path_status.csv
+    sources:
+    - ../smooth-path-invalid-smoother/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: smooth_path
+  - output: ../smooth-path-invalid-smoother/3/rosbag2_collision.csv
+    sources:
+    - ../smooth-path-invalid-smoother/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../smooth-path-invalid-smoother/3/costmaps.csv
+    sources:
+    - ../smooth-path-invalid-smoother/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../smooth-path-invalid-smoother/4/poses.csv
+    sources:
+    - ../smooth-path-invalid-smoother/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../smooth-path-invalid-smoother/4/action_smooth_path_status.csv
+    sources:
+    - ../smooth-path-invalid-smoother/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: smooth_path
+  - output: ../smooth-path-invalid-smoother/4/rosbag2_collision.csv
+    sources:
+    - ../smooth-path-invalid-smoother/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../smooth-path-invalid-smoother/4/costmaps.csv
+    sources:
+    - ../smooth-path-invalid-smoother/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../_jobs/batch-0/job-11/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-11/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-11/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-11/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-10/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-10/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-10/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-10/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-12/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-12/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-12/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-12/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-13/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-13/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-13/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-13/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-14/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-14/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-14/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-14/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-15/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-15/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-15/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-15/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-16/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-16/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-16/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-16/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-17/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-17/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-17/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-17/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-19/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-19/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-19/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-19/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-18/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-18/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-18/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-18/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-3/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-3/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-5/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-5/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-5/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-5/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-6/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-6/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-6/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-6/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-8/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-8/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-8/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-8/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-7/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-7/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-7/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-7/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-9/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-9/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-9/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-9/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: compute-path-through-poses-no-viapoints/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-10/resource_usage_main.csv
+    - _jobs/batch-0/job-10/resource_usage_simulation.csv
+    - _jobs/batch-0/job-10/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: compute-path-through-poses-no-viapoints/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-10/system_usage_main.csv
+    - _jobs/batch-0/job-10/system_usage_simulation.csv
+    - _jobs/batch-0/job-10/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: compute-path-through-poses-no-viapoints/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-11/resource_usage_main.csv
+    - _jobs/batch-0/job-11/resource_usage_simulation.csv
+    - _jobs/batch-0/job-11/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: compute-path-through-poses-no-viapoints/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-11/system_usage_main.csv
+    - _jobs/batch-0/job-11/system_usage_simulation.csv
+    - _jobs/batch-0/job-11/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: compute-path-through-poses-no-viapoints/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-12/resource_usage_main.csv
+    - _jobs/batch-0/job-12/resource_usage_simulation.csv
+    - _jobs/batch-0/job-12/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: compute-path-through-poses-no-viapoints/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-12/system_usage_main.csv
+    - _jobs/batch-0/job-12/system_usage_simulation.csv
+    - _jobs/batch-0/job-12/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: compute-path-through-poses-no-viapoints/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-13/resource_usage_main.csv
+    - _jobs/batch-0/job-13/resource_usage_simulation.csv
+    - _jobs/batch-0/job-13/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: compute-path-through-poses-no-viapoints/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-13/system_usage_main.csv
+    - _jobs/batch-0/job-13/system_usage_simulation.csv
+    - _jobs/batch-0/job-13/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: compute-path-through-poses-no-viapoints/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-14/resource_usage_main.csv
+    - _jobs/batch-0/job-14/resource_usage_simulation.csv
+    - _jobs/batch-0/job-14/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: compute-path-through-poses-no-viapoints/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-14/system_usage_main.csv
+    - _jobs/batch-0/job-14/system_usage_simulation.csv
+    - _jobs/batch-0/job-14/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: compute-path-to-pose-invalid-planner/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-5/resource_usage_main.csv
+    - _jobs/batch-0/job-5/resource_usage_simulation.csv
+    - _jobs/batch-0/job-5/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: compute-path-to-pose-invalid-planner/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-5/system_usage_main.csv
+    - _jobs/batch-0/job-5/system_usage_simulation.csv
+    - _jobs/batch-0/job-5/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: compute-path-to-pose-invalid-planner/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-6/resource_usage_main.csv
+    - _jobs/batch-0/job-6/resource_usage_simulation.csv
+    - _jobs/batch-0/job-6/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: compute-path-to-pose-invalid-planner/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-6/system_usage_main.csv
+    - _jobs/batch-0/job-6/system_usage_simulation.csv
+    - _jobs/batch-0/job-6/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: compute-path-to-pose-invalid-planner/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-7/resource_usage_main.csv
+    - _jobs/batch-0/job-7/resource_usage_simulation.csv
+    - _jobs/batch-0/job-7/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: compute-path-to-pose-invalid-planner/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-7/system_usage_main.csv
+    - _jobs/batch-0/job-7/system_usage_simulation.csv
+    - _jobs/batch-0/job-7/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: compute-path-to-pose-invalid-planner/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-8/resource_usage_main.csv
+    - _jobs/batch-0/job-8/resource_usage_simulation.csv
+    - _jobs/batch-0/job-8/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: compute-path-to-pose-invalid-planner/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-8/system_usage_main.csv
+    - _jobs/batch-0/job-8/system_usage_simulation.csv
+    - _jobs/batch-0/job-8/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: compute-path-to-pose-invalid-planner/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-9/resource_usage_main.csv
+    - _jobs/batch-0/job-9/resource_usage_simulation.csv
+    - _jobs/batch-0/job-9/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: compute-path-to-pose-invalid-planner/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-9/system_usage_main.csv
+    - _jobs/batch-0/job-9/system_usage_simulation.csv
+    - _jobs/batch-0/job-9/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: follow-path-invalid-controller/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/resource_usage_main.csv
+    - _jobs/batch-0/job-0/resource_usage_simulation.csv
+    - _jobs/batch-0/job-0/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: follow-path-invalid-controller/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/system_usage_main.csv
+    - _jobs/batch-0/job-0/system_usage_simulation.csv
+    - _jobs/batch-0/job-0/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: follow-path-invalid-controller/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/resource_usage_main.csv
+    - _jobs/batch-0/job-1/resource_usage_simulation.csv
+    - _jobs/batch-0/job-1/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: follow-path-invalid-controller/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/system_usage_main.csv
+    - _jobs/batch-0/job-1/system_usage_simulation.csv
+    - _jobs/batch-0/job-1/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: follow-path-invalid-controller/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/resource_usage_main.csv
+    - _jobs/batch-0/job-2/resource_usage_simulation.csv
+    - _jobs/batch-0/job-2/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: follow-path-invalid-controller/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/system_usage_main.csv
+    - _jobs/batch-0/job-2/system_usage_simulation.csv
+    - _jobs/batch-0/job-2/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: follow-path-invalid-controller/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/resource_usage_main.csv
+    - _jobs/batch-0/job-3/resource_usage_simulation.csv
+    - _jobs/batch-0/job-3/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: follow-path-invalid-controller/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/system_usage_main.csv
+    - _jobs/batch-0/job-3/system_usage_simulation.csv
+    - _jobs/batch-0/job-3/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: follow-path-invalid-controller/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/resource_usage_main.csv
+    - _jobs/batch-0/job-4/resource_usage_simulation.csv
+    - _jobs/batch-0/job-4/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: follow-path-invalid-controller/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/system_usage_main.csv
+    - _jobs/batch-0/job-4/system_usage_simulation.csv
+    - _jobs/batch-0/job-4/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: smooth-path-invalid-smoother/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-15/resource_usage_main.csv
+    - _jobs/batch-0/job-15/resource_usage_simulation.csv
+    - _jobs/batch-0/job-15/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: smooth-path-invalid-smoother/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-15/system_usage_main.csv
+    - _jobs/batch-0/job-15/system_usage_simulation.csv
+    - _jobs/batch-0/job-15/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: smooth-path-invalid-smoother/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-16/resource_usage_main.csv
+    - _jobs/batch-0/job-16/resource_usage_simulation.csv
+    - _jobs/batch-0/job-16/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: smooth-path-invalid-smoother/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-16/system_usage_main.csv
+    - _jobs/batch-0/job-16/system_usage_simulation.csv
+    - _jobs/batch-0/job-16/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: smooth-path-invalid-smoother/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-17/resource_usage_main.csv
+    - _jobs/batch-0/job-17/resource_usage_simulation.csv
+    - _jobs/batch-0/job-17/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: smooth-path-invalid-smoother/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-17/system_usage_main.csv
+    - _jobs/batch-0/job-17/system_usage_simulation.csv
+    - _jobs/batch-0/job-17/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: smooth-path-invalid-smoother/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-18/resource_usage_main.csv
+    - _jobs/batch-0/job-18/resource_usage_simulation.csv
+    - _jobs/batch-0/job-18/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: smooth-path-invalid-smoother/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-18/system_usage_main.csv
+    - _jobs/batch-0/job-18/system_usage_simulation.csv
+    - _jobs/batch-0/job-18/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: smooth-path-invalid-smoother/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-19/resource_usage_main.csv
+    - _jobs/batch-0/job-19/resource_usage_simulation.csv
+    - _jobs/batch-0/job-19/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: smooth-path-invalid-smoother/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-19/system_usage_main.csv
+    - _jobs/batch-0/job-19/system_usage_simulation.csv
+    - _jobs/batch-0/job-19/system_usage_sut.csv
+    plugin: system_usage
+    params: {}

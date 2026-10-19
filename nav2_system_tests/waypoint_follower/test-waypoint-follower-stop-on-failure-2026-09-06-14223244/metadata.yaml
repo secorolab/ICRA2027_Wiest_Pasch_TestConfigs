@@ -1,0 +1,949 @@
+run_files:
+- _config/files/gazebo_launch.py
+- _config/files/world.sdf.xacro
+- _config/files/monitor_cam_launch.py
+- _config/files/collision_monitor.py
+- _config/files/nav2_stack.launch.py
+- _config/files/navigate_to_pose_w_replanning_and_recovery.xml
+- _config/files/nav2_launch.py
+- _config/files/nav2_gazebo.launch.py
+- _config/files/nav2/spawn_tb4.launch.py
+- _config/files/nav2/tb4_simulation_launch.py
+- _config/files/nav2/tb4_bridge.yaml
+- _config/files/models/cylinder.sdf.xacro
+- _config/files/models/box.sdf.xacro
+- _config/environments/hexagon/3d-mesh/hexagon.stl.yaml
+- _config/environments/hexagon/3d-mesh/hexagon.stl
+- _config/environments/hexagon/json-ld/floorplan.fpm.json.yaml
+- _config/environments/hexagon/json-ld/floorplan.fpm.json
+- _config/environments/hexagon/maps/hexagon.pgm
+- _config/environments/hexagon/maps/hexagon.yaml
+- _config/world/nav2.yaml
+scenario_file: scenario.osc
+metadata:
+  name: test_waypoint_follower_stop_on_failure
+  title: Metamorphic waypoint follower sweep, TurtleBot 4 + Nav2, in roqsim (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  - name: Ortega Sainz, Argentina
+    identifiers: 0000-0002-3873-4435
+  - name: Pasch, Frederik
+    identifiers: 0000-0002-2626-1538
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords:
+  - robotics
+  - navigation
+  - ROS2
+  - mujoco
+  - roqsim
+  - nav2
+  - turtlebot4
+  - metamorphic
+  description: 'The metamorphic waypoint follower sweep replicating the upstream nav2
+
+    waypoint_follower system test (stop on failure with a bogus waypoint) in roqsim.
+
+    '
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+configurations:
+- name: mt-hexagon-stop-on-failure-bogus
+  config:
+    params_file: mt-hexagon-stop-on-failure-bogus/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_poses:
+    - position:
+        x: -0.52
+        y: -0.54
+    - position:
+        x: 100.0
+        y: 100.0
+    - position:
+        x: 0.58
+        y: 0.52
+  sut:
+    nav2.waypoint_follower.ros__parameters.stop_on_failure: true
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - mt-hexagon-stop-on-failure-bogus/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T14:22:32.651141'
+  config_identifier: a8e753062d0d
+  sub_identifier:
+    block: faf93fd6adf2
+    run_files: 57069c042471
+    scenario_file: 13234e9433a6
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: mt-hexagon-stop-on-failure-bogus/0
+    success: 'false'
+    start_time: '2026-09-06T12:22:52.984263+00:00'
+    end_time: '2026-09-06T12:23:04.753601+00:00'
+    output_files:
+    - mt-hexagon-stop-on-failure-bogus/0/.robovast_rosbags_process_cache
+    - mt-hexagon-stop-on-failure-bogus/0/action_follow_waypoints_feedback.csv
+    - mt-hexagon-stop-on-failure-bogus/0/action_follow_waypoints_status.csv
+    - mt-hexagon-stop-on-failure-bogus/0/action_navigate_to_pose_feedback.csv
+    - mt-hexagon-stop-on-failure-bogus/0/action_navigate_to_pose_status.csv
+    - mt-hexagon-stop-on-failure-bogus/0/behaviors.jsonl
+    - mt-hexagon-stop-on-failure-bogus/0/bt_coverage.csv
+    - mt-hexagon-stop-on-failure-bogus/0/capture/capture.bin
+    - mt-hexagon-stop-on-failure-bogus/0/capture/capture.json
+    - mt-hexagon-stop-on-failure-bogus/0/costmaps.csv
+    - mt-hexagon-stop-on-failure-bogus/0/entities.json
+    - mt-hexagon-stop-on-failure-bogus/0/nav2_behavior_tree.csv
+    - mt-hexagon-stop-on-failure-bogus/0/nav2_behaviors.csv
+    - mt-hexagon-stop-on-failure-bogus/0/poses.csv
+    - mt-hexagon-stop-on-failure-bogus/0/resource_usage.csv
+    - mt-hexagon-stop-on-failure-bogus/0/rosbag2/metadata.yaml
+    - mt-hexagon-stop-on-failure-bogus/0/rosbag2/rosbag2_0.mcap
+    - mt-hexagon-stop-on-failure-bogus/0/rosbag2_collision.csv
+    - mt-hexagon-stop-on-failure-bogus/0/run.clock_map.csv
+    - mt-hexagon-stop-on-failure-bogus/0/run.npz
+    - mt-hexagon-stop-on-failure-bogus/0/run_log.csv
+    - mt-hexagon-stop-on-failure-bogus/0/sim_poses.csv
+    - mt-hexagon-stop-on-failure-bogus/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/FollowWaypoints_FeedbackMessage
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: mt-hexagon-stop-on-failure-bogus/1
+    success: 'false'
+    start_time: '2026-09-06T12:22:52.985294+00:00'
+    end_time: '2026-09-06T12:23:06.053829+00:00'
+    output_files:
+    - mt-hexagon-stop-on-failure-bogus/1/.robovast_rosbags_process_cache
+    - mt-hexagon-stop-on-failure-bogus/1/action_follow_waypoints_feedback.csv
+    - mt-hexagon-stop-on-failure-bogus/1/action_follow_waypoints_status.csv
+    - mt-hexagon-stop-on-failure-bogus/1/action_navigate_to_pose_feedback.csv
+    - mt-hexagon-stop-on-failure-bogus/1/action_navigate_to_pose_status.csv
+    - mt-hexagon-stop-on-failure-bogus/1/behaviors.jsonl
+    - mt-hexagon-stop-on-failure-bogus/1/bt_coverage.csv
+    - mt-hexagon-stop-on-failure-bogus/1/capture/capture.bin
+    - mt-hexagon-stop-on-failure-bogus/1/capture/capture.json
+    - mt-hexagon-stop-on-failure-bogus/1/costmaps.csv
+    - mt-hexagon-stop-on-failure-bogus/1/entities.json
+    - mt-hexagon-stop-on-failure-bogus/1/nav2_behavior_tree.csv
+    - mt-hexagon-stop-on-failure-bogus/1/nav2_behaviors.csv
+    - mt-hexagon-stop-on-failure-bogus/1/poses.csv
+    - mt-hexagon-stop-on-failure-bogus/1/resource_usage.csv
+    - mt-hexagon-stop-on-failure-bogus/1/rosbag2/metadata.yaml
+    - mt-hexagon-stop-on-failure-bogus/1/rosbag2/rosbag2_0.mcap
+    - mt-hexagon-stop-on-failure-bogus/1/rosbag2_collision.csv
+    - mt-hexagon-stop-on-failure-bogus/1/run.clock_map.csv
+    - mt-hexagon-stop-on-failure-bogus/1/run.npz
+    - mt-hexagon-stop-on-failure-bogus/1/run_log.csv
+    - mt-hexagon-stop-on-failure-bogus/1/sim_poses.csv
+    - mt-hexagon-stop-on-failure-bogus/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/FollowWaypoints_FeedbackMessage
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: mt-hexagon-stop-on-failure-bogus/2
+    success: 'false'
+    start_time: '2026-09-06T12:23:20.866750+00:00'
+    end_time: '2026-09-06T12:23:34.924583+00:00'
+    output_files:
+    - mt-hexagon-stop-on-failure-bogus/2/.robovast_rosbags_process_cache
+    - mt-hexagon-stop-on-failure-bogus/2/action_follow_waypoints_feedback.csv
+    - mt-hexagon-stop-on-failure-bogus/2/action_follow_waypoints_status.csv
+    - mt-hexagon-stop-on-failure-bogus/2/action_navigate_to_pose_feedback.csv
+    - mt-hexagon-stop-on-failure-bogus/2/action_navigate_to_pose_status.csv
+    - mt-hexagon-stop-on-failure-bogus/2/behaviors.jsonl
+    - mt-hexagon-stop-on-failure-bogus/2/bt_coverage.csv
+    - mt-hexagon-stop-on-failure-bogus/2/capture/capture.bin
+    - mt-hexagon-stop-on-failure-bogus/2/capture/capture.json
+    - mt-hexagon-stop-on-failure-bogus/2/costmaps.csv
+    - mt-hexagon-stop-on-failure-bogus/2/entities.json
+    - mt-hexagon-stop-on-failure-bogus/2/nav2_behavior_tree.csv
+    - mt-hexagon-stop-on-failure-bogus/2/nav2_behaviors.csv
+    - mt-hexagon-stop-on-failure-bogus/2/poses.csv
+    - mt-hexagon-stop-on-failure-bogus/2/resource_usage.csv
+    - mt-hexagon-stop-on-failure-bogus/2/rosbag2/metadata.yaml
+    - mt-hexagon-stop-on-failure-bogus/2/rosbag2/rosbag2_0.mcap
+    - mt-hexagon-stop-on-failure-bogus/2/rosbag2_collision.csv
+    - mt-hexagon-stop-on-failure-bogus/2/run.clock_map.csv
+    - mt-hexagon-stop-on-failure-bogus/2/run.npz
+    - mt-hexagon-stop-on-failure-bogus/2/run_log.csv
+    - mt-hexagon-stop-on-failure-bogus/2/sim_poses.csv
+    - mt-hexagon-stop-on-failure-bogus/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/FollowWaypoints_FeedbackMessage
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: mt-hexagon-stop-on-failure-bogus/3
+    success: 'false'
+    start_time: '2026-09-06T12:23:22.862894+00:00'
+    end_time: '2026-09-06T12:23:35.816805+00:00'
+    output_files:
+    - mt-hexagon-stop-on-failure-bogus/3/.robovast_rosbags_process_cache
+    - mt-hexagon-stop-on-failure-bogus/3/action_follow_waypoints_feedback.csv
+    - mt-hexagon-stop-on-failure-bogus/3/action_follow_waypoints_status.csv
+    - mt-hexagon-stop-on-failure-bogus/3/action_navigate_to_pose_feedback.csv
+    - mt-hexagon-stop-on-failure-bogus/3/action_navigate_to_pose_status.csv
+    - mt-hexagon-stop-on-failure-bogus/3/behaviors.jsonl
+    - mt-hexagon-stop-on-failure-bogus/3/bt_coverage.csv
+    - mt-hexagon-stop-on-failure-bogus/3/capture/capture.bin
+    - mt-hexagon-stop-on-failure-bogus/3/capture/capture.json
+    - mt-hexagon-stop-on-failure-bogus/3/costmaps.csv
+    - mt-hexagon-stop-on-failure-bogus/3/entities.json
+    - mt-hexagon-stop-on-failure-bogus/3/nav2_behavior_tree.csv
+    - mt-hexagon-stop-on-failure-bogus/3/nav2_behaviors.csv
+    - mt-hexagon-stop-on-failure-bogus/3/poses.csv
+    - mt-hexagon-stop-on-failure-bogus/3/resource_usage.csv
+    - mt-hexagon-stop-on-failure-bogus/3/rosbag2/metadata.yaml
+    - mt-hexagon-stop-on-failure-bogus/3/rosbag2/rosbag2_0.mcap
+    - mt-hexagon-stop-on-failure-bogus/3/rosbag2_collision.csv
+    - mt-hexagon-stop-on-failure-bogus/3/run.clock_map.csv
+    - mt-hexagon-stop-on-failure-bogus/3/run.npz
+    - mt-hexagon-stop-on-failure-bogus/3/run_log.csv
+    - mt-hexagon-stop-on-failure-bogus/3/sim_poses.csv
+    - mt-hexagon-stop-on-failure-bogus/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/FollowWaypoints_FeedbackMessage
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: mt-hexagon-stop-on-failure-bogus/4
+    success: 'false'
+    start_time: '2026-09-06T12:23:48.936091+00:00'
+    end_time: '2026-09-06T12:24:02.485561+00:00'
+    output_files:
+    - mt-hexagon-stop-on-failure-bogus/4/.robovast_rosbags_process_cache
+    - mt-hexagon-stop-on-failure-bogus/4/action_follow_waypoints_feedback.csv
+    - mt-hexagon-stop-on-failure-bogus/4/action_follow_waypoints_status.csv
+    - mt-hexagon-stop-on-failure-bogus/4/action_navigate_to_pose_feedback.csv
+    - mt-hexagon-stop-on-failure-bogus/4/action_navigate_to_pose_status.csv
+    - mt-hexagon-stop-on-failure-bogus/4/behaviors.jsonl
+    - mt-hexagon-stop-on-failure-bogus/4/bt_coverage.csv
+    - mt-hexagon-stop-on-failure-bogus/4/capture/capture.bin
+    - mt-hexagon-stop-on-failure-bogus/4/capture/capture.json
+    - mt-hexagon-stop-on-failure-bogus/4/costmaps.csv
+    - mt-hexagon-stop-on-failure-bogus/4/entities.json
+    - mt-hexagon-stop-on-failure-bogus/4/nav2_behavior_tree.csv
+    - mt-hexagon-stop-on-failure-bogus/4/nav2_behaviors.csv
+    - mt-hexagon-stop-on-failure-bogus/4/poses.csv
+    - mt-hexagon-stop-on-failure-bogus/4/resource_usage.csv
+    - mt-hexagon-stop-on-failure-bogus/4/rosbag2/metadata.yaml
+    - mt-hexagon-stop-on-failure-bogus/4/rosbag2/rosbag2_0.mcap
+    - mt-hexagon-stop-on-failure-bogus/4/rosbag2_collision.csv
+    - mt-hexagon-stop-on-failure-bogus/4/run.clock_map.csv
+    - mt-hexagon-stop-on-failure-bogus/4/run.npz
+    - mt-hexagon-stop-on-failure-bogus/4/run_log.csv
+    - mt-hexagon-stop-on-failure-bogus/4/sim_poses.csv
+    - mt-hexagon-stop-on-failure-bogus/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/FollowWaypoints_FeedbackMessage
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+execution:
+  execution_time: '2026-09-06T12:24:16.833787+00:00'
+  robovast_version: 7e2a5ef
+  robovast_revision: 7e2a5ef
+  robovast_revision_source: baked
+  robovast_dirty: false
+  runs: 5
+  execution_type: cluster
+  image: ghcr.io/cps-test-lab/robovast:latest
+  images:
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim:latest
+    sut: ghcr.io/cps-test-lab/robovast:latest
+    scenario: ghcr.io/cps-test-lab/robovast:latest
+  image_revision: ghcr.io/cps-test-lab/robovast@sha256:53cea2700177ba350e19bc9b273b0f9ad011eea2acae6796c938a93a5f76b463
+  image_revisions:
+    scenario: ghcr.io/cps-test-lab/robovast@sha256:53cea2700177ba350e19bc9b273b0f9ad011eea2acae6796c938a93a5f76b463
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:fcae8d8aaa13535e714d3584bcfa9f2e05c46a1b673dea2c12bcae344254e240
+    sut: ghcr.io/cps-test-lab/robovast@sha256:53cea2700177ba350e19bc9b273b0f9ad011eea2acae6796c938a93a5f76b463
+    robovast: ghcr.io/cps-test-lab/robovast@sha256:53cea2700177ba350e19bc9b273b0f9ad011eea2acae6796c938a93a5f76b463
+    s3-init: ghcr.io/cps-test-lab/robovast-sidecar@sha256:3799dc2973d4f46b39b39efd88b2f56a1b7881d7f2182d92a02a4fc72a5515d6
+  image_build_refs:
+    scenario:
+      revision: f6f1298
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    simulation:
+      revision: f6f1298
+      source: https://github.com/cps-test-lab/robovast
+      roqsim_ref: b945677327a5683989c7920820e8c8bbb921c539
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    sut:
+      revision: f6f1298
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+  env:
+    PYTHONUNBUFFERED: '1'
+  cluster_info:
+    cluster_config:
+      name: rke2
+      kwargs:
+        namespace: default
+    node_count: 1
+    node_labels:
+      node-7f7e372628b2:
+        beta.kubernetes.io/arch: amd64
+        beta.kubernetes.io/instance-type: rke2
+        beta.kubernetes.io/os: linux
+        kubernetes.io/arch: amd64
+        kubernetes.io/os: linux
+        node-role.kubernetes.io/control-plane: 'true'
+        node-role.kubernetes.io/etcd: 'true'
+        node.kubernetes.io/instance-type: rke2
+        robovast.io/build-node: 'true'
+        robovast.io/data-node: 'true'
+        robovast.io/node-id: node-7f7e372628b2
+  launch:
+    config_filter: ''
+    campaign_name: ''
+    runs: 5
+    postprocess: true
+    upload_to_share: false
+    show_gui: false
+    images:
+      scenario: ghcr.io/cps-test-lab/robovast@sha256:53cea2700177ba350e19bc9b273b0f9ad011eea2acae6796c938a93a5f76b463
+      simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:fcae8d8aaa13535e714d3584bcfa9f2e05c46a1b673dea2c12bcae344254e240
+      sut: ghcr.io/cps-test-lab/robovast@sha256:53cea2700177ba350e19bc9b273b0f9ad011eea2acae6796c938a93a5f76b463
+postprocessing:
+  generated_by: robovast
+  entries:
+  - output: ../mt-hexagon-stop-on-failure-bogus/0/poses.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../mt-hexagon-stop-on-failure-bogus/0/action_follow_waypoints_feedback.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_waypoints
+  - output: ../mt-hexagon-stop-on-failure-bogus/0/action_follow_waypoints_status.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_waypoints
+  - output: ../mt-hexagon-stop-on-failure-bogus/0/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../mt-hexagon-stop-on-failure-bogus/0/action_navigate_to_pose_status.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../mt-hexagon-stop-on-failure-bogus/0/rosbag2_collision.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../mt-hexagon-stop-on-failure-bogus/0/nav2_behavior_tree.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/0/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../mt-hexagon-stop-on-failure-bogus/0/costmaps.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../mt-hexagon-stop-on-failure-bogus/2/poses.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../mt-hexagon-stop-on-failure-bogus/2/action_follow_waypoints_feedback.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_waypoints
+  - output: ../mt-hexagon-stop-on-failure-bogus/2/action_follow_waypoints_status.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_waypoints
+  - output: ../mt-hexagon-stop-on-failure-bogus/2/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../mt-hexagon-stop-on-failure-bogus/2/action_navigate_to_pose_status.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../mt-hexagon-stop-on-failure-bogus/2/rosbag2_collision.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../mt-hexagon-stop-on-failure-bogus/2/nav2_behavior_tree.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/2/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../mt-hexagon-stop-on-failure-bogus/2/costmaps.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../mt-hexagon-stop-on-failure-bogus/3/poses.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../mt-hexagon-stop-on-failure-bogus/3/action_follow_waypoints_feedback.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_waypoints
+  - output: ../mt-hexagon-stop-on-failure-bogus/3/action_follow_waypoints_status.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_waypoints
+  - output: ../mt-hexagon-stop-on-failure-bogus/3/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../mt-hexagon-stop-on-failure-bogus/3/action_navigate_to_pose_status.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../mt-hexagon-stop-on-failure-bogus/3/rosbag2_collision.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../mt-hexagon-stop-on-failure-bogus/3/nav2_behavior_tree.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/3/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../mt-hexagon-stop-on-failure-bogus/3/costmaps.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../mt-hexagon-stop-on-failure-bogus/1/poses.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../mt-hexagon-stop-on-failure-bogus/1/action_follow_waypoints_feedback.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_waypoints
+  - output: ../mt-hexagon-stop-on-failure-bogus/1/action_follow_waypoints_status.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_waypoints
+  - output: ../mt-hexagon-stop-on-failure-bogus/1/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../mt-hexagon-stop-on-failure-bogus/1/action_navigate_to_pose_status.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../mt-hexagon-stop-on-failure-bogus/1/rosbag2_collision.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../mt-hexagon-stop-on-failure-bogus/1/nav2_behavior_tree.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/1/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../mt-hexagon-stop-on-failure-bogus/1/costmaps.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../mt-hexagon-stop-on-failure-bogus/4/poses.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../mt-hexagon-stop-on-failure-bogus/4/action_follow_waypoints_feedback.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_waypoints
+  - output: ../mt-hexagon-stop-on-failure-bogus/4/action_follow_waypoints_status.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: follow_waypoints
+  - output: ../mt-hexagon-stop-on-failure-bogus/4/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../mt-hexagon-stop-on-failure-bogus/4/action_navigate_to_pose_status.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../mt-hexagon-stop-on-failure-bogus/4/rosbag2_collision.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../mt-hexagon-stop-on-failure-bogus/4/nav2_behavior_tree.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/4/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../mt-hexagon-stop-on-failure-bogus/4/costmaps.csv
+    sources:
+    - ../mt-hexagon-stop-on-failure-bogus/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../_jobs/batch-0/job-3/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-3/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: mt-hexagon-stop-on-failure-bogus/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/resource_usage_main.csv
+    - _jobs/batch-0/job-0/resource_usage_simulation.csv
+    - _jobs/batch-0/job-0/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: mt-hexagon-stop-on-failure-bogus/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/system_usage_main.csv
+    - _jobs/batch-0/job-0/system_usage_simulation.csv
+    - _jobs/batch-0/job-0/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: mt-hexagon-stop-on-failure-bogus/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/resource_usage_main.csv
+    - _jobs/batch-0/job-1/resource_usage_simulation.csv
+    - _jobs/batch-0/job-1/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: mt-hexagon-stop-on-failure-bogus/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/system_usage_main.csv
+    - _jobs/batch-0/job-1/system_usage_simulation.csv
+    - _jobs/batch-0/job-1/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: mt-hexagon-stop-on-failure-bogus/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/resource_usage_main.csv
+    - _jobs/batch-0/job-2/resource_usage_simulation.csv
+    - _jobs/batch-0/job-2/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: mt-hexagon-stop-on-failure-bogus/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/system_usage_main.csv
+    - _jobs/batch-0/job-2/system_usage_simulation.csv
+    - _jobs/batch-0/job-2/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: mt-hexagon-stop-on-failure-bogus/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/resource_usage_main.csv
+    - _jobs/batch-0/job-3/resource_usage_simulation.csv
+    - _jobs/batch-0/job-3/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: mt-hexagon-stop-on-failure-bogus/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/system_usage_main.csv
+    - _jobs/batch-0/job-3/system_usage_simulation.csv
+    - _jobs/batch-0/job-3/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: mt-hexagon-stop-on-failure-bogus/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/resource_usage_main.csv
+    - _jobs/batch-0/job-4/resource_usage_simulation.csv
+    - _jobs/batch-0/job-4/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: mt-hexagon-stop-on-failure-bogus/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/system_usage_main.csv
+    - _jobs/batch-0/job-4/system_usage_simulation.csv
+    - _jobs/batch-0/job-4/system_usage_sut.csv
+    plugin: system_usage
+    params: {}

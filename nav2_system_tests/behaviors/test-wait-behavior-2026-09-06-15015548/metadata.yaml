@@ -1,0 +1,2217 @@
+run_files:
+- _config/files/gazebo_launch.py
+- _config/files/world.sdf.xacro
+- _config/files/monitor_cam_launch.py
+- _config/files/collision_monitor.py
+- _config/files/nav2_stack.launch.py
+- _config/files/navigate_to_pose_w_replanning_and_recovery.xml
+- _config/files/nav2_launch.py
+- _config/files/nav2_gazebo.launch.py
+- _config/files/nav2/spawn_tb4.launch.py
+- _config/files/nav2/tb4_simulation_launch.py
+- _config/files/nav2/tb4_bridge.yaml
+- _config/files/models/cylinder.sdf.xacro
+- _config/files/models/box.sdf.xacro
+- _config/environments/hexagon/3d-mesh/hexagon.stl.yaml
+- _config/environments/hexagon/3d-mesh/hexagon.stl
+- _config/environments/hexagon/json-ld/floorplan.fpm.json.yaml
+- _config/environments/hexagon/json-ld/floorplan.fpm.json
+- _config/environments/hexagon/maps/hexagon.pgm
+- _config/environments/hexagon/maps/hexagon.yaml
+- _config/world/nav2.yaml
+scenario_file: scenario.osc
+metadata:
+  name: test_wait_behavior
+  title: Nav2 wait-behavior server test, TurtleBot 4 + Nav2, in roqsim (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  - name: Ortega Sainz, Argentina
+    identifiers: 0000-0002-3873-4435
+  - name: Pasch, Frederik
+    identifiers: 0000-0002-2626-1538
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords:
+  - robotics
+  - navigation
+  - ROS2
+  - mujoco
+  - roqsim
+  - nav2
+  - turtlebot4
+  - behavior
+  - wait
+  description: 'Replication of nav2''s wait-behavior system test
+
+    (nav2_system_tests/src/behaviors/wait, main). Where upstream drives the /wait
+
+    action with a C++ tester (wait_behavior_tester.cpp) against a tb3 Gazebo world,
+
+    this campaign runs the full nav2 stack (files/nav2_stack.launch.py, the same
+
+    hexagon world as the sibling error_codes and system_failure campaigns) and drives
+
+    /wait with the generic action_call primitive.
+
+
+    MEANING OF A CELL: one configuration is one upstream wait parameterization
+
+    (nav2_system_tests.csv lines 23-26, test case `test_wait_behavior`). The wait
+    behavior
+
+    SUCCEEDS after its configured duration, so every ported cell carries
+
+    expect_success: true and action_call returns SUCCESS -- the same assertion
+
+    wait_behavior_tester.cpp''s behaviorTest() makes. The analysis additionally verifies
+
+    the upstream `elapsed >= wait_time` assertion from the recorded /wait/_action
+
+    timestamps (not expressible in the scenario; see wait_behavior.osc header).
+
+
+    PORTED CASE -> DURATION:
+
+    - Wait 1 (CSV line 23) -> 1.0 s
+
+    - Wait 2 (CSV line 24) -> 2.0 s
+
+    - Wait 5 (CSV line 25) -> 5.0 s
+
+
+    NOT PORTED: Wait 10 + cancel (CSV line 26). behaviorTestCancel() sends a /wait
+    goal
+
+    then async_cancel_all_goals and asserts the goal was canceled; a mid-run cancel
+
+    cannot be sequenced in this scenario framework (action_call has no cancel entry
+
+    point -- RosActionCall.shutdown() cancels only at scenario teardown). Recorded,
+
+    not faked, in readme.md.
+
+
+    UPSTREAM ODDITY worth recording: upstream CMakeLists.txt sets
+
+    BT_NAVIGATOR_XML=navigate_to_pose_w_replanning_and_behavior.xml, a file that exists
+
+    neither in the navigation2 source tree nor in the installed nav2_bt_navigator
+    share
+
+    directory (verified in the robovast image). It is immaterial here -- /wait is
+    a
+
+    behavior-server action, not a BT node -- but the CSV row''s BT column therefore
+    names
+
+    a file that cannot be loaded.
+
+    '
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+configurations:
+- name: wait1
+  config:
+    params_file: wait1/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: test_wait_behavior/Wait1
+    expect_success: true
+    wait_action_name: /wait
+    wait_action_type: nav2_msgs.action.Wait
+    wait_goal_data: '{"time": {"sec": 1, "nanosec": 0}}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - wait1/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T15:01:56.696641'
+  config_identifier: e431daa8c05a
+  sub_identifier:
+    block: 29ed25a1e444
+    run_files: 57069c042471
+    scenario_file: 0be731206591
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: wait1/0
+    success: 'true'
+    start_time: '2026-09-06T13:02:16.826650+00:00'
+    end_time: '2026-09-06T13:02:24.584379+00:00'
+    output_files:
+    - wait1/0/.robovast_rosbags_process_cache
+    - wait1/0/action_wait_feedback.csv
+    - wait1/0/action_wait_status.csv
+    - wait1/0/behaviors.jsonl
+    - wait1/0/capture/capture.bin
+    - wait1/0/capture/capture.json
+    - wait1/0/costmaps.csv
+    - wait1/0/entities.json
+    - wait1/0/poses.csv
+    - wait1/0/resource_usage.csv
+    - wait1/0/rosbag2/metadata.yaml
+    - wait1/0/rosbag2/rosbag2_0.mcap
+    - wait1/0/rosbag2_collision.csv
+    - wait1/0/run.clock_map.csv
+    - wait1/0/run.npz
+    - wait1/0/run_log.csv
+    - wait1/0/sim_poses.csv
+    - wait1/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait1/1
+    success: 'true'
+    start_time: '2026-09-06T13:02:16.826612+00:00'
+    end_time: '2026-09-06T13:02:24.184361+00:00'
+    output_files:
+    - wait1/1/.robovast_rosbags_process_cache
+    - wait1/1/action_wait_feedback.csv
+    - wait1/1/action_wait_status.csv
+    - wait1/1/behaviors.jsonl
+    - wait1/1/capture/capture.bin
+    - wait1/1/capture/capture.json
+    - wait1/1/costmaps.csv
+    - wait1/1/entities.json
+    - wait1/1/poses.csv
+    - wait1/1/resource_usage.csv
+    - wait1/1/rosbag2/metadata.yaml
+    - wait1/1/rosbag2/rosbag2_0.mcap
+    - wait1/1/rosbag2_collision.csv
+    - wait1/1/run.clock_map.csv
+    - wait1/1/run.npz
+    - wait1/1/run_log.csv
+    - wait1/1/sim_poses.csv
+    - wait1/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait1/2
+    success: 'true'
+    start_time: '2026-09-06T13:02:39.908245+00:00'
+    end_time: '2026-09-06T13:02:48.067507+00:00'
+    output_files:
+    - wait1/2/.robovast_rosbags_process_cache
+    - wait1/2/action_wait_feedback.csv
+    - wait1/2/action_wait_status.csv
+    - wait1/2/behaviors.jsonl
+    - wait1/2/capture/capture.bin
+    - wait1/2/capture/capture.json
+    - wait1/2/costmaps.csv
+    - wait1/2/entities.json
+    - wait1/2/poses.csv
+    - wait1/2/resource_usage.csv
+    - wait1/2/rosbag2/metadata.yaml
+    - wait1/2/rosbag2/rosbag2_0.mcap
+    - wait1/2/rosbag2_collision.csv
+    - wait1/2/run.clock_map.csv
+    - wait1/2/run.npz
+    - wait1/2/run_log.csv
+    - wait1/2/sim_poses.csv
+    - wait1/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait1/3
+    success: 'true'
+    start_time: '2026-09-06T13:02:39.888772+00:00'
+    end_time: '2026-09-06T13:02:47.355628+00:00'
+    output_files:
+    - wait1/3/.robovast_rosbags_process_cache
+    - wait1/3/action_wait_feedback.csv
+    - wait1/3/action_wait_status.csv
+    - wait1/3/behaviors.jsonl
+    - wait1/3/capture/capture.bin
+    - wait1/3/capture/capture.json
+    - wait1/3/costmaps.csv
+    - wait1/3/entities.json
+    - wait1/3/poses.csv
+    - wait1/3/resource_usage.csv
+    - wait1/3/rosbag2/metadata.yaml
+    - wait1/3/rosbag2/rosbag2_0.mcap
+    - wait1/3/rosbag2_collision.csv
+    - wait1/3/run.clock_map.csv
+    - wait1/3/run.npz
+    - wait1/3/run_log.csv
+    - wait1/3/sim_poses.csv
+    - wait1/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait1/4
+    success: 'true'
+    start_time: '2026-09-06T13:03:03.985796+00:00'
+    end_time: '2026-09-06T13:03:11.650959+00:00'
+    output_files:
+    - wait1/4/.robovast_rosbags_process_cache
+    - wait1/4/action_wait_feedback.csv
+    - wait1/4/action_wait_status.csv
+    - wait1/4/behaviors.jsonl
+    - wait1/4/capture/capture.bin
+    - wait1/4/capture/capture.json
+    - wait1/4/costmaps.csv
+    - wait1/4/entities.json
+    - wait1/4/poses.csv
+    - wait1/4/resource_usage.csv
+    - wait1/4/rosbag2/metadata.yaml
+    - wait1/4/rosbag2/rosbag2_0.mcap
+    - wait1/4/rosbag2_collision.csv
+    - wait1/4/run.clock_map.csv
+    - wait1/4/run.npz
+    - wait1/4/run_log.csv
+    - wait1/4/sim_poses.csv
+    - wait1/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+- name: wait2
+  config:
+    params_file: wait2/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: test_wait_behavior/Wait2
+    expect_success: true
+    wait_action_name: /wait
+    wait_action_type: nav2_msgs.action.Wait
+    wait_goal_data: '{"time": {"sec": 2, "nanosec": 0}}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - wait2/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T15:01:56.696641'
+  config_identifier: 9f6d69b4668f
+  sub_identifier:
+    block: 66c56c389c4d
+    run_files: 57069c042471
+    scenario_file: 0be731206591
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: wait2/0
+    success: 'true'
+    start_time: '2026-09-06T13:03:03.986301+00:00'
+    end_time: '2026-09-06T13:03:12.332297+00:00'
+    output_files:
+    - wait2/0/.robovast_rosbags_process_cache
+    - wait2/0/action_wait_feedback.csv
+    - wait2/0/action_wait_status.csv
+    - wait2/0/behaviors.jsonl
+    - wait2/0/capture/capture.bin
+    - wait2/0/capture/capture.json
+    - wait2/0/costmaps.csv
+    - wait2/0/entities.json
+    - wait2/0/poses.csv
+    - wait2/0/resource_usage.csv
+    - wait2/0/rosbag2/metadata.yaml
+    - wait2/0/rosbag2/rosbag2_0.mcap
+    - wait2/0/rosbag2_collision.csv
+    - wait2/0/run.clock_map.csv
+    - wait2/0/run.npz
+    - wait2/0/run_log.csv
+    - wait2/0/sim_poses.csv
+    - wait2/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait2/1
+    success: 'true'
+    start_time: '2026-09-06T13:03:27.125538+00:00'
+    end_time: '2026-09-06T13:03:35.996414+00:00'
+    output_files:
+    - wait2/1/.robovast_rosbags_process_cache
+    - wait2/1/action_wait_feedback.csv
+    - wait2/1/action_wait_status.csv
+    - wait2/1/behaviors.jsonl
+    - wait2/1/capture/capture.bin
+    - wait2/1/capture/capture.json
+    - wait2/1/costmaps.csv
+    - wait2/1/entities.json
+    - wait2/1/poses.csv
+    - wait2/1/resource_usage.csv
+    - wait2/1/rosbag2/metadata.yaml
+    - wait2/1/rosbag2/rosbag2_0.mcap
+    - wait2/1/rosbag2_collision.csv
+    - wait2/1/run.clock_map.csv
+    - wait2/1/run.npz
+    - wait2/1/run_log.csv
+    - wait2/1/sim_poses.csv
+    - wait2/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait2/2
+    success: 'true'
+    start_time: '2026-09-06T13:03:27.123452+00:00'
+    end_time: '2026-09-06T13:03:35.949412+00:00'
+    output_files:
+    - wait2/2/.robovast_rosbags_process_cache
+    - wait2/2/action_wait_feedback.csv
+    - wait2/2/action_wait_status.csv
+    - wait2/2/behaviors.jsonl
+    - wait2/2/capture/capture.bin
+    - wait2/2/capture/capture.json
+    - wait2/2/costmaps.csv
+    - wait2/2/entities.json
+    - wait2/2/poses.csv
+    - wait2/2/resource_usage.csv
+    - wait2/2/rosbag2/metadata.yaml
+    - wait2/2/rosbag2/rosbag2_0.mcap
+    - wait2/2/rosbag2_collision.csv
+    - wait2/2/run.clock_map.csv
+    - wait2/2/run.npz
+    - wait2/2/run_log.csv
+    - wait2/2/sim_poses.csv
+    - wait2/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait2/3
+    success: 'true'
+    start_time: '2026-09-06T13:03:51.211434+00:00'
+    end_time: '2026-09-06T13:04:00.025216+00:00'
+    output_files:
+    - wait2/3/.robovast_rosbags_process_cache
+    - wait2/3/action_wait_feedback.csv
+    - wait2/3/action_wait_status.csv
+    - wait2/3/behaviors.jsonl
+    - wait2/3/capture/capture.bin
+    - wait2/3/capture/capture.json
+    - wait2/3/costmaps.csv
+    - wait2/3/entities.json
+    - wait2/3/poses.csv
+    - wait2/3/resource_usage.csv
+    - wait2/3/rosbag2/metadata.yaml
+    - wait2/3/rosbag2/rosbag2_0.mcap
+    - wait2/3/rosbag2_collision.csv
+    - wait2/3/run.clock_map.csv
+    - wait2/3/run.npz
+    - wait2/3/run_log.csv
+    - wait2/3/sim_poses.csv
+    - wait2/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait2/4
+    success: 'true'
+    start_time: '2026-09-06T13:03:51.205097+00:00'
+    end_time: '2026-09-06T13:03:59.454389+00:00'
+    output_files:
+    - wait2/4/.robovast_rosbags_process_cache
+    - wait2/4/action_wait_feedback.csv
+    - wait2/4/action_wait_status.csv
+    - wait2/4/behaviors.jsonl
+    - wait2/4/capture/capture.bin
+    - wait2/4/capture/capture.json
+    - wait2/4/costmaps.csv
+    - wait2/4/entities.json
+    - wait2/4/poses.csv
+    - wait2/4/resource_usage.csv
+    - wait2/4/rosbag2/metadata.yaml
+    - wait2/4/rosbag2/rosbag2_0.mcap
+    - wait2/4/rosbag2_collision.csv
+    - wait2/4/run.clock_map.csv
+    - wait2/4/run.npz
+    - wait2/4/run_log.csv
+    - wait2/4/sim_poses.csv
+    - wait2/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+- name: wait5
+  config:
+    params_file: wait5/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: test_wait_behavior/Wait5
+    expect_success: true
+    wait_action_name: /wait
+    wait_action_type: nav2_msgs.action.Wait
+    wait_goal_data: '{"time": {"sec": 5, "nanosec": 0}}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - wait5/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T15:01:56.696641'
+  config_identifier: 2f7411500db6
+  sub_identifier:
+    block: 19ebd085d99b
+    run_files: 57069c042471
+    scenario_file: 0be731206591
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: wait5/0
+    success: 'true'
+    start_time: '2026-09-06T13:04:13.334926+00:00'
+    end_time: '2026-09-06T13:04:24.925469+00:00'
+    output_files:
+    - wait5/0/.robovast_rosbags_process_cache
+    - wait5/0/action_wait_feedback.csv
+    - wait5/0/action_wait_status.csv
+    - wait5/0/behaviors.jsonl
+    - wait5/0/capture/capture.bin
+    - wait5/0/capture/capture.json
+    - wait5/0/costmaps.csv
+    - wait5/0/entities.json
+    - wait5/0/poses.csv
+    - wait5/0/resource_usage.csv
+    - wait5/0/rosbag2/metadata.yaml
+    - wait5/0/rosbag2/rosbag2_0.mcap
+    - wait5/0/rosbag2_collision.csv
+    - wait5/0/run.clock_map.csv
+    - wait5/0/run.npz
+    - wait5/0/run_log.csv
+    - wait5/0/sim_poses.csv
+    - wait5/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait5/1
+    success: 'true'
+    start_time: '2026-09-06T13:04:16.318765+00:00'
+    end_time: '2026-09-06T13:04:30.064629+00:00'
+    output_files:
+    - wait5/1/.robovast_rosbags_process_cache
+    - wait5/1/action_wait_feedback.csv
+    - wait5/1/action_wait_status.csv
+    - wait5/1/behaviors.jsonl
+    - wait5/1/capture/capture.bin
+    - wait5/1/capture/capture.json
+    - wait5/1/costmaps.csv
+    - wait5/1/entities.json
+    - wait5/1/poses.csv
+    - wait5/1/resource_usage.csv
+    - wait5/1/rosbag2/metadata.yaml
+    - wait5/1/rosbag2/rosbag2_0.mcap
+    - wait5/1/rosbag2_collision.csv
+    - wait5/1/run.clock_map.csv
+    - wait5/1/run.npz
+    - wait5/1/run_log.csv
+    - wait5/1/sim_poses.csv
+    - wait5/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait5/2
+    success: 'true'
+    start_time: '2026-09-06T13:04:40.437766+00:00'
+    end_time: '2026-09-06T13:04:52.623321+00:00'
+    output_files:
+    - wait5/2/.robovast_rosbags_process_cache
+    - wait5/2/action_wait_feedback.csv
+    - wait5/2/action_wait_status.csv
+    - wait5/2/behaviors.jsonl
+    - wait5/2/capture/capture.bin
+    - wait5/2/capture/capture.json
+    - wait5/2/costmaps.csv
+    - wait5/2/entities.json
+    - wait5/2/poses.csv
+    - wait5/2/resource_usage.csv
+    - wait5/2/rosbag2/metadata.yaml
+    - wait5/2/rosbag2/rosbag2_0.mcap
+    - wait5/2/rosbag2_collision.csv
+    - wait5/2/run.clock_map.csv
+    - wait5/2/run.npz
+    - wait5/2/run_log.csv
+    - wait5/2/sim_poses.csv
+    - wait5/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait5/3
+    success: 'true'
+    start_time: '2026-09-06T13:04:44.378054+00:00'
+    end_time: '2026-09-06T13:04:56.043068+00:00'
+    output_files:
+    - wait5/3/.robovast_rosbags_process_cache
+    - wait5/3/action_wait_feedback.csv
+    - wait5/3/action_wait_status.csv
+    - wait5/3/behaviors.jsonl
+    - wait5/3/capture/capture.bin
+    - wait5/3/capture/capture.json
+    - wait5/3/costmaps.csv
+    - wait5/3/entities.json
+    - wait5/3/poses.csv
+    - wait5/3/resource_usage.csv
+    - wait5/3/rosbag2/metadata.yaml
+    - wait5/3/rosbag2/rosbag2_0.mcap
+    - wait5/3/rosbag2_collision.csv
+    - wait5/3/run.clock_map.csv
+    - wait5/3/run.npz
+    - wait5/3/run_log.csv
+    - wait5/3/sim_poses.csv
+    - wait5/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: wait5/4
+    success: 'true'
+    start_time: '2026-09-06T13:05:07.592545+00:00'
+    end_time: '2026-09-06T13:05:19.146919+00:00'
+    output_files:
+    - wait5/4/.robovast_rosbags_process_cache
+    - wait5/4/action_wait_feedback.csv
+    - wait5/4/action_wait_status.csv
+    - wait5/4/behaviors.jsonl
+    - wait5/4/capture/capture.bin
+    - wait5/4/capture/capture.json
+    - wait5/4/costmaps.csv
+    - wait5/4/entities.json
+    - wait5/4/poses.csv
+    - wait5/4/resource_usage.csv
+    - wait5/4/rosbag2/metadata.yaml
+    - wait5/4/rosbag2/rosbag2_0.mcap
+    - wait5/4/rosbag2_collision.csv
+    - wait5/4/run.clock_map.csv
+    - wait5/4/run.npz
+    - wait5/4/run_log.csv
+    - wait5/4/sim_poses.csv
+    - wait5/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Wait_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+execution:
+  execution_time: '2026-09-06T13:05:34.639368+00:00'
+  robovast_version: 7e2a5ef
+  robovast_revision: 7e2a5ef
+  robovast_revision_source: baked
+  robovast_dirty: false
+  runs: 5
+  execution_type: cluster
+  image: ghcr.io/cps-test-lab/robovast:latest
+  images:
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim:latest
+    sut: ghcr.io/cps-test-lab/robovast:latest
+    scenario: ghcr.io/cps-test-lab/robovast:latest
+  image_revision: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+  image_revisions:
+    scenario: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:de660b6d52cdb60833d7ce31414ebb8fa0b7cc3b7751126d5c8962e14a3d3e62
+    sut: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+    robovast: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+    s3-init: ghcr.io/cps-test-lab/robovast-sidecar@sha256:f6567f4aa4be2af1c4f9a2a738f0c66415556373811351418c4719e476c43d68
+  image_build_refs:
+    scenario:
+      revision: 50bcb1e
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    simulation:
+      revision: 50bcb1e
+      source: https://github.com/cps-test-lab/robovast
+      roqsim_ref: d944d606d02d519ce90870078c5255c6aca6b107
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    sut:
+      revision: 50bcb1e
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+  env:
+    PYTHONUNBUFFERED: '1'
+  cluster_info:
+    cluster_config:
+      name: rke2
+      kwargs:
+        namespace: default
+    node_count: 1
+    node_labels:
+      node-7f7e372628b2:
+        beta.kubernetes.io/arch: amd64
+        beta.kubernetes.io/instance-type: rke2
+        beta.kubernetes.io/os: linux
+        kubernetes.io/arch: amd64
+        kubernetes.io/os: linux
+        node-role.kubernetes.io/control-plane: 'true'
+        node-role.kubernetes.io/etcd: 'true'
+        node.kubernetes.io/instance-type: rke2
+        robovast.io/build-node: 'true'
+        robovast.io/data-node: 'true'
+        robovast.io/node-id: node-7f7e372628b2
+  launch:
+    config_filter: ''
+    campaign_name: ''
+    runs: 5
+    postprocess: true
+    upload_to_share: false
+    show_gui: false
+    images:
+      scenario: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+      simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:de660b6d52cdb60833d7ce31414ebb8fa0b7cc3b7751126d5c8962e14a3d3e62
+      sut: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+postprocessing:
+  generated_by: robovast
+  entries:
+  - output: ../wait1/0/poses.csv
+    sources:
+    - ../wait1/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait1/0/action_wait_feedback.csv
+    sources:
+    - ../wait1/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait1/0/action_wait_status.csv
+    sources:
+    - ../wait1/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait1/0/rosbag2_collision.csv
+    sources:
+    - ../wait1/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait1/0/costmaps.csv
+    sources:
+    - ../wait1/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait1/1/poses.csv
+    sources:
+    - ../wait1/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait1/1/action_wait_feedback.csv
+    sources:
+    - ../wait1/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait1/1/action_wait_status.csv
+    sources:
+    - ../wait1/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait1/1/rosbag2_collision.csv
+    sources:
+    - ../wait1/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait1/1/costmaps.csv
+    sources:
+    - ../wait1/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait1/2/poses.csv
+    sources:
+    - ../wait1/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait1/2/action_wait_feedback.csv
+    sources:
+    - ../wait1/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait1/2/action_wait_status.csv
+    sources:
+    - ../wait1/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait1/2/rosbag2_collision.csv
+    sources:
+    - ../wait1/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait1/2/costmaps.csv
+    sources:
+    - ../wait1/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait1/3/poses.csv
+    sources:
+    - ../wait1/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait1/3/action_wait_feedback.csv
+    sources:
+    - ../wait1/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait1/3/action_wait_status.csv
+    sources:
+    - ../wait1/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait1/3/rosbag2_collision.csv
+    sources:
+    - ../wait1/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait1/3/costmaps.csv
+    sources:
+    - ../wait1/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait1/4/poses.csv
+    sources:
+    - ../wait1/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait1/4/action_wait_feedback.csv
+    sources:
+    - ../wait1/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait1/4/action_wait_status.csv
+    sources:
+    - ../wait1/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait1/4/rosbag2_collision.csv
+    sources:
+    - ../wait1/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait1/4/costmaps.csv
+    sources:
+    - ../wait1/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait2/0/poses.csv
+    sources:
+    - ../wait2/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait2/0/action_wait_feedback.csv
+    sources:
+    - ../wait2/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait2/0/action_wait_status.csv
+    sources:
+    - ../wait2/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait2/0/rosbag2_collision.csv
+    sources:
+    - ../wait2/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait2/0/costmaps.csv
+    sources:
+    - ../wait2/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait2/1/poses.csv
+    sources:
+    - ../wait2/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait2/1/action_wait_feedback.csv
+    sources:
+    - ../wait2/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait2/1/action_wait_status.csv
+    sources:
+    - ../wait2/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait2/1/rosbag2_collision.csv
+    sources:
+    - ../wait2/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait2/1/costmaps.csv
+    sources:
+    - ../wait2/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait2/2/poses.csv
+    sources:
+    - ../wait2/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait2/2/action_wait_feedback.csv
+    sources:
+    - ../wait2/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait2/2/action_wait_status.csv
+    sources:
+    - ../wait2/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait2/2/rosbag2_collision.csv
+    sources:
+    - ../wait2/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait2/2/costmaps.csv
+    sources:
+    - ../wait2/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait2/3/poses.csv
+    sources:
+    - ../wait2/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait2/3/action_wait_feedback.csv
+    sources:
+    - ../wait2/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait2/3/action_wait_status.csv
+    sources:
+    - ../wait2/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait2/3/rosbag2_collision.csv
+    sources:
+    - ../wait2/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait2/3/costmaps.csv
+    sources:
+    - ../wait2/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait2/4/poses.csv
+    sources:
+    - ../wait2/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait2/4/action_wait_feedback.csv
+    sources:
+    - ../wait2/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait2/4/action_wait_status.csv
+    sources:
+    - ../wait2/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait2/4/rosbag2_collision.csv
+    sources:
+    - ../wait2/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait2/4/costmaps.csv
+    sources:
+    - ../wait2/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait5/0/poses.csv
+    sources:
+    - ../wait5/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait5/0/action_wait_feedback.csv
+    sources:
+    - ../wait5/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait5/0/action_wait_status.csv
+    sources:
+    - ../wait5/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait5/0/rosbag2_collision.csv
+    sources:
+    - ../wait5/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait5/0/costmaps.csv
+    sources:
+    - ../wait5/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait5/1/poses.csv
+    sources:
+    - ../wait5/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait5/1/action_wait_feedback.csv
+    sources:
+    - ../wait5/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait5/1/action_wait_status.csv
+    sources:
+    - ../wait5/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait5/1/rosbag2_collision.csv
+    sources:
+    - ../wait5/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait5/1/costmaps.csv
+    sources:
+    - ../wait5/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait5/2/poses.csv
+    sources:
+    - ../wait5/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait5/2/action_wait_feedback.csv
+    sources:
+    - ../wait5/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait5/2/action_wait_status.csv
+    sources:
+    - ../wait5/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait5/2/rosbag2_collision.csv
+    sources:
+    - ../wait5/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait5/2/costmaps.csv
+    sources:
+    - ../wait5/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait5/3/poses.csv
+    sources:
+    - ../wait5/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait5/3/action_wait_feedback.csv
+    sources:
+    - ../wait5/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait5/3/action_wait_status.csv
+    sources:
+    - ../wait5/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait5/3/rosbag2_collision.csv
+    sources:
+    - ../wait5/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait5/3/costmaps.csv
+    sources:
+    - ../wait5/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../wait5/4/poses.csv
+    sources:
+    - ../wait5/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../wait5/4/action_wait_feedback.csv
+    sources:
+    - ../wait5/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait5/4/action_wait_status.csv
+    sources:
+    - ../wait5/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: wait
+  - output: ../wait5/4/rosbag2_collision.csv
+    sources:
+    - ../wait5/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../wait5/4/costmaps.csv
+    sources:
+    - ../wait5/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../_jobs/batch-0/job-1/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-10/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-10/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-10/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-10/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-11/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-11/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-11/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-11/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-12/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-12/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-12/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-12/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-13/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-13/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-13/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-13/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-14/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-14/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-14/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-14/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-3/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-3/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-5/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-5/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-5/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-5/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-6/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-6/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-6/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-6/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-8/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-8/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-8/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-8/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-7/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-7/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-7/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-7/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-9/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-9/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-9/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-9/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: wait1/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/resource_usage_main.csv
+    - _jobs/batch-0/job-0/resource_usage_simulation.csv
+    - _jobs/batch-0/job-0/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait1/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/system_usage_main.csv
+    - _jobs/batch-0/job-0/system_usage_simulation.csv
+    - _jobs/batch-0/job-0/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait1/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/resource_usage_main.csv
+    - _jobs/batch-0/job-1/resource_usage_simulation.csv
+    - _jobs/batch-0/job-1/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait1/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/system_usage_main.csv
+    - _jobs/batch-0/job-1/system_usage_simulation.csv
+    - _jobs/batch-0/job-1/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait1/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/resource_usage_main.csv
+    - _jobs/batch-0/job-2/resource_usage_simulation.csv
+    - _jobs/batch-0/job-2/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait1/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/system_usage_main.csv
+    - _jobs/batch-0/job-2/system_usage_simulation.csv
+    - _jobs/batch-0/job-2/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait1/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/resource_usage_main.csv
+    - _jobs/batch-0/job-3/resource_usage_simulation.csv
+    - _jobs/batch-0/job-3/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait1/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/system_usage_main.csv
+    - _jobs/batch-0/job-3/system_usage_simulation.csv
+    - _jobs/batch-0/job-3/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait1/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/resource_usage_main.csv
+    - _jobs/batch-0/job-4/resource_usage_simulation.csv
+    - _jobs/batch-0/job-4/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait1/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/system_usage_main.csv
+    - _jobs/batch-0/job-4/system_usage_simulation.csv
+    - _jobs/batch-0/job-4/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait2/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-5/resource_usage_main.csv
+    - _jobs/batch-0/job-5/resource_usage_simulation.csv
+    - _jobs/batch-0/job-5/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait2/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-5/system_usage_main.csv
+    - _jobs/batch-0/job-5/system_usage_simulation.csv
+    - _jobs/batch-0/job-5/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait2/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-6/resource_usage_main.csv
+    - _jobs/batch-0/job-6/resource_usage_simulation.csv
+    - _jobs/batch-0/job-6/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait2/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-6/system_usage_main.csv
+    - _jobs/batch-0/job-6/system_usage_simulation.csv
+    - _jobs/batch-0/job-6/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait2/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-7/resource_usage_main.csv
+    - _jobs/batch-0/job-7/resource_usage_simulation.csv
+    - _jobs/batch-0/job-7/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait2/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-7/system_usage_main.csv
+    - _jobs/batch-0/job-7/system_usage_simulation.csv
+    - _jobs/batch-0/job-7/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait2/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-8/resource_usage_main.csv
+    - _jobs/batch-0/job-8/resource_usage_simulation.csv
+    - _jobs/batch-0/job-8/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait2/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-8/system_usage_main.csv
+    - _jobs/batch-0/job-8/system_usage_simulation.csv
+    - _jobs/batch-0/job-8/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait2/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-9/resource_usage_main.csv
+    - _jobs/batch-0/job-9/resource_usage_simulation.csv
+    - _jobs/batch-0/job-9/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait2/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-9/system_usage_main.csv
+    - _jobs/batch-0/job-9/system_usage_simulation.csv
+    - _jobs/batch-0/job-9/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait5/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-10/resource_usage_main.csv
+    - _jobs/batch-0/job-10/resource_usage_simulation.csv
+    - _jobs/batch-0/job-10/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait5/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-10/system_usage_main.csv
+    - _jobs/batch-0/job-10/system_usage_simulation.csv
+    - _jobs/batch-0/job-10/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait5/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-11/resource_usage_main.csv
+    - _jobs/batch-0/job-11/resource_usage_simulation.csv
+    - _jobs/batch-0/job-11/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait5/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-11/system_usage_main.csv
+    - _jobs/batch-0/job-11/system_usage_simulation.csv
+    - _jobs/batch-0/job-11/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait5/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-12/resource_usage_main.csv
+    - _jobs/batch-0/job-12/resource_usage_simulation.csv
+    - _jobs/batch-0/job-12/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait5/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-12/system_usage_main.csv
+    - _jobs/batch-0/job-12/system_usage_simulation.csv
+    - _jobs/batch-0/job-12/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait5/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-13/resource_usage_main.csv
+    - _jobs/batch-0/job-13/resource_usage_simulation.csv
+    - _jobs/batch-0/job-13/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait5/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-13/system_usage_main.csv
+    - _jobs/batch-0/job-13/system_usage_simulation.csv
+    - _jobs/batch-0/job-13/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: wait5/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-14/resource_usage_main.csv
+    - _jobs/batch-0/job-14/resource_usage_simulation.csv
+    - _jobs/batch-0/job-14/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: wait5/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-14/system_usage_main.csv
+    - _jobs/batch-0/job-14/system_usage_simulation.csv
+    - _jobs/batch-0/job-14/system_usage_sut.csv
+    plugin: system_usage
+    params: {}

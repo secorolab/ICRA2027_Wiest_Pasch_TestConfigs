@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="1" name="scenario_execution" tests="1" time="166.77613">
+  <testcase classname="tests.scenario" name="test_scenario" time="166.77613">
+    <properties>
+      <property name="start_time" value="1788824059.091131"/>
+    </properties>
+    <failure message="execution failed.">-^- test_scenario [*]
+    {-} test_scenario [*]
+        {-} serial [*]
+            -^- timeout
+                {-} serial
+                    --&gt; wait_for_topics
+                    --&gt; check_data
+            --&gt; set_entity_state
+            --&gt; set_entity_state
+            /_/ parallel [*]
+                --&gt; remote(ipc:///ipc/sut)
+                /_/ parallel [*]
+                    {-} serial [*]
+                        --&gt; differential_drive_robot.init_nav2
+                        --&gt; bag_record
+                        /_/ parallel [*]
+                            {-} serial [*]
+                                --&gt; differential_drive_robot.nav_through_poses [*] -- Current: nav2_msgs.action.NavigateThroughPoses_Feedback(current_pose=geometry_msgs.msg.PoseStamped(header=std_msgs.msg.Header(stamp=builtin_interfaces.msg.Time(sec=163, nanosec=442000000), frame_id='map'), pose=geometry_msgs.msg.Pose(position=geometry_msgs.msg.Point(x=-1.61153492271381, y=-1.2138625796495326, z=0.0), orientation=geometry_msgs.msg.Quaternion(x=0.0, y=0.0, z=0.9995046590404147, w=-0.03147120201873987))), navigation_time=builtin_interfaces.msg.Duration(sec=155, nanosec=138000000), estimated_time_remaining=builtin_interfaces.msg.Duration(sec=24, nanosec=688342802), number_of_recoveries=14, distance_remaining=6.290990352630615, number_of_poses_remaining=3)
+                                --&gt; emit end
+                            {-} serial [✓]
+                                --&gt; differential_drive_robot.tf_close_to
+                                --&gt; set_entity_state [✓] -- service response received
+                    {-} serial [✓]
+                        /_/ one_of [✓]
+                            -^- repeat [-] -- running [status: 5 success from 10]
+                                --&gt; log_check [-] -- Found string 'Control loop missed its desired rate' in 'Control loop missed its desired rate of 20.0000 Hz. Current loop rate is 6.0241 Hz.'
+                            --&gt; check_data [✓] -- Found expected value in received message.
+                        --&gt; emit fail [✓]
+</failure>
+  </testcase>
+</testsuite>

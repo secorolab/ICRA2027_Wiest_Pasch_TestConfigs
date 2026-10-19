@@ -1,0 +1,155 @@
+import osc.helpers
+import osc.ros
+import osc.nav2
+import osc.os
+import osc.remote
+import osc.sim
+import osc.dataops
+
+# Nav2 BEHAVIOR-TREE system test, ported from nav2_system_tests/src/behavior_tree
+# (main). One trial = one NavigateToPose goal against the full nav2 stack, with the
+# stock recovery tree loaded, recording /behavior_tree_log for behavior-tree coverage.
+#
+# DEVIATION FROM UPSTREAM -- blackbox runtime instead of whitebox in-process. Upstream
+# (test_behavior_tree_node.cpp) is a gtest that instantiates the tree in-process: a
+# BehaviorTreeFactory registers the nav2 builtin BT plugins, a ServerHandler stands up
+# DUMMY action servers (ComputePathToPose, FollowPath, Spin, Wait, BackUp, ...) with
+# injectable failure/running ranges, the tree is ticked manually (tree.tickOnce()), and
+# the assertions read the dummy servers' goal counts and the tree's final NodeStatus.
+# The robovast scenario framework is BLACKBOX: it runs the REAL stack (bt_navigator,
+# planner_server, controller_server, behavior_server) and can only send a navigation goal
+# and observe the outcome -- it cannot inject per-node failure ranges, tick the tree by
+# hand, or read the dummy servers. So the runtime analogs below drive a real
+# NavigateToPose goal and grade by the action result + ground-truth arrival, while the
+# recovery elicitation is observed through /behavior_tree_log (BT coverage).
+#
+# PORTED RUNTIME ANALOGS (the behavioral essence of two upstream cases):
+# - bt-all-success  <- TestAllSuccess: a REACHABLE goal; the recovery tree's
+#                      PipelineSequence (ComputePathToPose + FollowPath) succeeds and the
+#                      tree returns SUCCESS. robot.nav_to_pose returns STATUS_SUCCEEDED.
+# - bt-all-failure  <- TestAllFailure: an UNREACHABLE goal (outside the map);
+#                      ComputePathToPose fails, NavigateRecovery fires the recovery
+#                      subtree (GoalUpdated -> RoundRobin: ClearingActions, Spin, Wait,
+#                      BackUp), the retries exhaust, and the tree returns FAILURE.
+#                      robot.nav_to_pose returns non-SUCCESS (abort). This is the runtime
+#                      case that ELICITS the recovery nodes -- the BT coverage cells show
+#                      Spin/Wait/BackUp actually ticking, which a successful run never
+#                      reaches.
+#
+# NOT PORTED (whitebox/unit -- recorded in readme.md): the XML-parse and ID-extraction
+# tests (TestBTXMLFiles, TestWrongBTFormatXML, TestExtractBehaviorTreeID, the
+# duplicate-ID and unique-ID registration tests, TestSkipFilesWithMissingID) -- these
+# need in-process factory parsing, no robot or scenario is involved -- and the
+# dummy-server recovery-LOGIC tests (TestNavigateSubtreeRecoveries,
+# TestNavigateRecoverySimple, TestNavigateRecoveryComplex, TestRecoverySubtreeGoalUpdated)
+# -- these inject per-server failure/running ranges and mid-tick goal updates, which a
+# blackbox scenario cannot express. Their recovery BEHAVIOUR (Spin/Wait/BackUp firing) is
+# the observable the bt-all-failure config surfaces.
+
+scenario test_scenario:
+    timeout(1800s)
+
+    map_file: string
+    mesh_file: string
+
+    start_pose: pose_3d
+    goal_pose: pose_3d
+    params_file: string
+    spawn_height: length = 0.03m
+
+    # Carried for grading/documentation. expect_success is true for the reachable-goal
+    # cell (the tree SUCCEEDS) and false for the unreachable-goal cell (the tree FAILS
+    # after exhausting recovery). The scenario verdict (emit end only on
+    # STATUS_SUCCEEDED) plus the post-hoc BtCoverage ground-truth arrival grade the run.
+    nav2_test_id: string = ''
+    expect_success: bool = true
+
+    static_objects: list of spawn_entity
+    dynamic_objects: list of spawn_entity
+    spawn_trigger_point: position_3d = position_3d(x: 1000.0m, y: 1000.0m)
+    spawn_trigger_threshold: length = 1.5m
+    use_rviz: string = "False"
+    laserscan_gaussian_noise_std_deviation: string = '0.0'
+    laserscan_random_drop_percentage: string = '0.0'
+
+    robot: differential_drive_robot
+
+    do serial:
+        serial:
+            timeout(120s)
+            wait_for_topics(topics: ['/clock'])
+            check_data(topic_name: '/scan_sim',
+                       topic_type: 'sensor_msgs.msg.LaserScan',
+                       member_name: 'range_max',
+                       comparison_operator: comparison_operator!gt,
+                       expected_value: '0.0',
+                       qos_profile: qos_preset_profiles!sensor_data)
+
+        delete_entity(entity: 'dynamic_0')
+
+        set_entity_state(entity: 'robot',
+                         pose: pose_3d(
+                             position: position_3d(x: start_pose.position.x,
+                                                   y: start_pose.position.y,
+                                                   z: spawn_height),
+                             orientation: start_pose.orientation))
+
+        parallel:
+            # The sut channel stages the per-configuration parameter file at this path.
+            ros_launch('', '/config/files/nav2_stack.launch.py',
+                [key_value('map', os.abspath(common.get_scenario_file_directory() + "/" + map_file)),
+                 key_value('params_file', common.get_scenario_file_directory() + '/' + params_file),
+                 key_value('autostart', 'true'),
+                 key_value('use_rviz', use_rviz),
+                 key_value('laserscan_gaussian_noise_std_deviation', laserscan_gaussian_noise_std_deviation),
+                 key_value('laserscan_random_drop_percentage', laserscan_random_drop_percentage)],
+                wait_for_shutdown: false) with:
+                    remote('ipc:///ipc/sut')
+
+            parallel:
+                serial:
+                    robot.init_nav2(start_pose)
+                    bag_record([
+                            '/clock',
+                            '/tf',
+                            '/tf_static',
+                            '/map',
+                            '/global_costmap/costmap',
+                            '/local_costmap/costmap',
+                            '/amcl_pose',
+                            '/plan',
+                            '/scan',
+                            '/odom',
+                            '/collision',
+                            '/behavior_tree_log',
+                            '/navigate_to_pose/_action/feedback',
+                            '/navigate_to_pose/_action/status'
+                        ],
+                        hidden_topics: true,
+                        use_sim_time: true,
+                        timestamp_suffix: false)
+                    parallel:
+                        serial:
+                            # THE TRIAL: one NavigateToPose goal. Returns SUCCESS on
+                            # STATUS_SUCCEEDED (the recovery tree's PipelineSequence
+                            # completes) -- the runtime analog of upstream's
+                            # tree.tickOnce() loop. emit end marks a passing run.
+                            robot.nav_to_pose(goal_pose)
+                            emit end
+                        serial:
+                            robot.tf_close_to(
+                                reference_point: spawn_trigger_point,
+                                threshold: spawn_trigger_threshold,
+                                robot_frame_id: 'nav2_turtlebot4_base_link_gt')
+                            spawn_entity(entity_name: 'dynamic_0', uri: '',
+                                         initial_pose: pose_3d())
+                serial:
+                    one_of:
+                        log_check(values: ["Control loop missed its desired rate"]) with:
+                            repeat(10)
+                        check_data(topic_name: '/collision',
+                                   topic_type: 'std_msgs.msg.Bool',
+                                   member_name: 'data',
+                                   comparison_operator: comparison_operator!eq,
+                                   expected_value: 'True')
+                    emit fail

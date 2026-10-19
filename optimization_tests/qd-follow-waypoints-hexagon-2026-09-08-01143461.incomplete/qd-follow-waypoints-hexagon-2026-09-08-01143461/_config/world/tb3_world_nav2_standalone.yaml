@@ -1,0 +1,49 @@
+# The ROS 2 `turtlebot3_world` wired for nav2 + AMCL: a hexagonal room 5.080 m flat-to-flat inside its
+# wall, with nine columns of r = 0.15 m on a 3x3 grid at 1.1 m spacing, holding 15.63 m^2 of navigable
+# space at a 0.175 m robot radius.
+#
+#   map     environments/tb3_world/maps/tb3_world.yaml, projected from this scene at the 0.2 m scan
+#           height. A map whose obstacles are not this world's is a localization defect, not a factor.
+#   image   the world comes from the installed scene package, not from run_files, so the campaign
+#           image must carry a roqsim that has it.
+#
+#   roqsim sim world/tb3_world_nav2_standalone.yaml --no-communication
+
+extends: roqsim_scenes:tb3_world
+
+sim:
+  pacing: realtime
+  view:
+    lookat: [0.0, 0.0, 0.0]
+    distance: 12.0
+    azimuth: 90.0
+    elevation: -55.0
+
+components:
+  # 0.540 m to the inner wall (the apothem is 2.54 m) and 0.750 m to the nearest column's surface, at
+  # (0, -1.1): the wall is what binds. The scenario teleports the robot to the configuration's
+  # start_pose before nav2 launches, so this pose only has to be free.
+  - spawn_robot: {model: turtlebot4, pose: {position: {x: 0.0, y: -2.0}, orientation: {yaw: 0.0}}}
+    name: robot
+    components:
+    - lidar: {topics: {scan: /scan}}
+    - ground_truth_pose: {child_frame: nav2_turtlebot4_base_link_gt, rate_hz: 60.0}
+    # `floor` is the baked scene's ground plane, which a wheeled robot rides by design.
+    - contact_monitor: {ignore: [floor], min_force: 1.0}
+
+  - boxes:
+      instances: []
+    name: static_obstacles
+
+  - boxes:
+      instances:
+      - {name: dynamic_0, pose: {position: {x: 40.0, y: 40.0}}, size: [0.5, 0.5, 1.0]}
+    name: dynamic_obstacles
+
+  - cylinder: {pose: {position: {x: 6.5, y: 0.75}}, radius: 1.5, height: 1.0, motion: static}
+    name: curve_0
+    enabled: false
+
+  - ros2_bridge: {publish_static_tf: false}
+
+  - sim_interfaces: {}

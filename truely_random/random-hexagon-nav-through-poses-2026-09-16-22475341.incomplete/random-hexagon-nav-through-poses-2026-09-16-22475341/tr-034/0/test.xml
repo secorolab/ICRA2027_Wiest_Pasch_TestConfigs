@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="1" name="scenario_execution" tests="1" time="8.300438">
+  <testcase classname="tests.scenario" name="test_scenario" time="8.300438">
+    <properties>
+      <property name="start_time" value="1789592766.084278"/>
+    </properties>
+    <failure message="execution failed.">-^- test_scenario [*]
+    {-} test_scenario [*]
+        {-} serial [*]
+            -^- timeout
+                {-} serial
+                    --&gt; wait_for_topics
+                    --&gt; check_data
+            --&gt; delete_entity
+            --&gt; set_entity_state
+            /_/ parallel [*]
+                --&gt; remote(ipc:///ipc/sut)
+                /_/ parallel [*]
+                    {-} serial [*]
+                        --&gt; differential_drive_robot.init_nav2
+                        --&gt; bag_record
+                        /_/ parallel [*]
+                            {-} serial [*]
+                                --&gt; differential_drive_robot.nav_through_poses [*] -- Executing navigation to ([{'position': {'x': 0.377, 'y': 0.516, 'z': 0.0}, 'orientation': {'roll': 0.0, 'pitch': 0.0, 'yaw': 1.08478}}, {'position': {'x': 1.436, 'y': -0.636, 'z': 0.0}, 'orientation': {'roll': 0.0, 'pitch': 0.0, 'yaw': 2.577189}}, {'position': {'x': 0.437, 'y': -0.898, 'z': 0.0}, 'orientation': {'roll': 0.0, 'pitch': 0.0, 'yaw': 1.149384}}]).
+                                --&gt; emit end
+                            {-} serial [✓]
+                                --&gt; differential_drive_robot.tf_close_to
+                                --&gt; spawn_entity [✓] -- Entity 'dynamic_0' spawned successfully.
+                    {-} serial [✓]
+                        /_/ one_of [✓]
+                            -^- repeat [-] -- running [status: 0 success from 10]
+                                --&gt; log_check [-] -- Waiting for log
+                            --&gt; check_data [✓] -- Found expected value in received message.
+                        --&gt; emit fail [✓]
+</failure>
+  </testcase>
+</testsuite>

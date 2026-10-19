@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="1" name="scenario_execution" tests="1" time="141.348912">
+  <testcase classname="tests.scenario" name="test_scenario" time="141.348912">
+    <properties>
+      <property name="start_time" value="1788835156.966279"/>
+    </properties>
+    <failure message="execution failed.">-^- test_scenario [✕]
+    {-} test_scenario [✕]
+        {-} serial [✕]
+            -^- timeout
+                {-} serial
+                    --&gt; wait_for_topics
+                    --&gt; check_data
+            --&gt; set_entity_state
+            --&gt; set_entity_state
+            /_/ parallel [✕]
+                --&gt; remote(ipc:///ipc/sut)
+                /_/ parallel [✕]
+                    {-} serial [✕]
+                        --&gt; differential_drive_robot.init_nav2
+                        --&gt; bag_record
+                        /_/ parallel [✕]
+                            {-} serial [✕]
+                                --&gt; differential_drive_robot.nav_through_poses [✕] -- Goal aborted, expected succeeded.
+                                --&gt; emit end
+                            {-} serial
+                                --&gt; differential_drive_robot.tf_close_to
+                                --&gt; set_entity_state
+                    {-} serial [-]
+                        /_/ one_of [-]
+                            -^- repeat [-] -- running [status: 7 success from 10]
+                                --&gt; log_check [-] -- Found string 'Control loop missed its desired rate' in 'Control loop missed its desired rate of 20.0000 Hz. Current loop rate is 7.9365 Hz.'
+                            --&gt; check_data [-] -- Received message does not contain expected value. Check: False eq True
+                        --&gt; emit fail
+</failure>
+  </testcase>
+</testsuite>

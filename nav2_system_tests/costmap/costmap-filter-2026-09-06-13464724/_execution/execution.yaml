@@ -1,0 +1,66 @@
+execution_time: '2026-09-06T11:51:30.845967+00:00'
+robovast_version: 7e2a5ef
+robovast_revision: 7e2a5ef
+robovast_revision_source: baked
+robovast_dirty: false
+runs: 5
+execution_type: cluster
+image: ghcr.io/cps-test-lab/robovast:latest
+images:
+  simulation: ghcr.io/cps-test-lab/robovast-roqsim:latest
+  sut: ghcr.io/cps-test-lab/robovast:latest
+  scenario: ghcr.io/cps-test-lab/robovast:latest
+image_revision: ghcr.io/cps-test-lab/robovast@sha256:d02f2c151fddef1ad239b2370f3a1f62d7ff865a01c58b61f00d18130a84e0dc
+image_revisions:
+  scenario: ghcr.io/cps-test-lab/robovast@sha256:d02f2c151fddef1ad239b2370f3a1f62d7ff865a01c58b61f00d18130a84e0dc
+  simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:86f05e6335c68af061180c09b80215fbde76ac27d051797e1d4cb14c16e56214
+  sut: ghcr.io/cps-test-lab/robovast@sha256:d02f2c151fddef1ad239b2370f3a1f62d7ff865a01c58b61f00d18130a84e0dc
+  robovast: ghcr.io/cps-test-lab/robovast@sha256:d02f2c151fddef1ad239b2370f3a1f62d7ff865a01c58b61f00d18130a84e0dc
+  s3-init: ghcr.io/cps-test-lab/robovast-sidecar@sha256:3a226c28f278e5cb29a9994968dc2a1272dffa21e92aa17aacec1a3474b93a3b
+image_build_refs:
+  scenario:
+    revision: b7aa8cd
+    source: https://github.com/cps-test-lab/robovast
+    scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+    scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+    base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+    ubuntu_snapshot: 20260819T003043Z
+    ros_snapshot: '2026-06-18'
+  simulation:
+    revision: b7aa8cd
+    source: https://github.com/cps-test-lab/robovast
+    roqsim_ref: 38d870533f2e8dac2bb4b03e3d276e3404e3ef62
+    scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+    scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+    base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+    ubuntu_snapshot: 20260819T003043Z
+    ros_snapshot: '2026-06-18'
+  sut:
+    revision: b7aa8cd
+    source: https://github.com/cps-test-lab/robovast
+    scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+    scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+    base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+    ubuntu_snapshot: 20260819T003043Z
+    ros_snapshot: '2026-06-18'
+env:
+  PYTHONUNBUFFERED: '1'
+cluster_info:
+  cluster_config:
+    name: rke2
+    kwargs:
+      namespace: default
+  node_count: 1
+  node_labels:
+    node-7f7e372628b2:
+      beta.kubernetes.io/arch: amd64
+      beta.kubernetes.io/instance-type: rke2
+      beta.kubernetes.io/os: linux
+      kubernetes.io/arch: amd64
+      kubernetes.io/os: linux
+      node-role.kubernetes.io/control-plane: 'true'
+      node-role.kubernetes.io/etcd: 'true'
+      node.kubernetes.io/instance-type: rke2
+      robovast.io/build-node: 'true'
+      robovast.io/data-node: 'true'
+      robovast.io/node-id: node-7f7e372628b2

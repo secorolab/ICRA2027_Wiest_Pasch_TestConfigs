@@ -1,0 +1,224 @@
+version: 3
+metadata:
+  name: test_wait_behavior
+  title: Nav2 wait-behavior server test, TurtleBot 4 + Nav2, in roqsim (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  - name: Ortega Sainz, Argentina
+    identifiers: 0000-0002-3873-4435
+  - name: Pasch, Frederik
+    identifiers: 0000-0002-2626-1538
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords: [robotics, navigation, ROS2, mujoco, roqsim, nav2, turtlebot4, behavior, wait]
+  description: |
+    Replication of nav2's wait-behavior system test
+    (nav2_system_tests/src/behaviors/wait, main). Where upstream drives the /wait
+    action with a C++ tester (wait_behavior_tester.cpp) against a tb3 Gazebo world,
+    this campaign runs the full nav2 stack (files/nav2_stack.launch.py, the same
+    hexagon world as the sibling error_codes and system_failure campaigns) and drives
+    /wait with the generic action_call primitive.
+
+    MEANING OF A CELL: one configuration is one upstream wait parameterization
+    (nav2_system_tests.csv lines 23-26, test case `test_wait_behavior`). The wait behavior
+    SUCCEEDS after its configured duration, so every ported cell carries
+    expect_success: true and action_call returns SUCCESS -- the same assertion
+    wait_behavior_tester.cpp's behaviorTest() makes. The analysis additionally verifies
+    the upstream `elapsed >= wait_time` assertion from the recorded /wait/_action
+    timestamps (not expressible in the scenario; see wait_behavior.osc header).
+
+    PORTED CASE -> DURATION:
+    - Wait 1 (CSV line 23) -> 1.0 s
+    - Wait 2 (CSV line 24) -> 2.0 s
+    - Wait 5 (CSV line 25) -> 5.0 s
+
+    NOT PORTED: Wait 10 + cancel (CSV line 26). behaviorTestCancel() sends a /wait goal
+    then async_cancel_all_goals and asserts the goal was canceled; a mid-run cancel
+    cannot be sequenced in this scenario framework (action_call has no cancel entry
+    point -- RosActionCall.shutdown() cancels only at scenario teardown). Recorded,
+    not faked, in readme.md.
+
+    UPSTREAM ODDITY worth recording: upstream CMakeLists.txt sets
+    BT_NAVIGATOR_XML=navigate_to_pose_w_replanning_and_behavior.xml, a file that exists
+    neither in the navigation2 source tree nor in the installed nav2_bt_navigator share
+    directory (verified in the robovast image). It is immaterial here -- /wait is a
+    behavior-server action, not a BT node -- but the CSV row's BT column therefore names
+    a file that cannot be loaded.
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+
+configuration:
+# --- Wait 1 (nav2_system_tests.csv line 23) ----------------------------------------
+- name: wait1
+  parameters:
+  - params_file: files/nav2_params.yaml
+  - map_file: environments/hexagon/maps/hexagon.yaml
+  - mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+  - start_pose:
+      position: {x: -2.0, y: -0.5}
+  - nav2_test_id: test_wait_behavior/Wait1
+  - expect_success: true
+  - wait_action_name: '/wait'
+  - wait_action_type: nav2_msgs.action.Wait
+  - wait_goal_data: '{"time": {"sec": 1, "nanosec": 0}}'
+  sim:
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+
+# --- Wait 2 (nav2_system_tests.csv line 24) ----------------------------------------
+- name: wait2
+  parameters:
+  - params_file: files/nav2_params.yaml
+  - map_file: environments/hexagon/maps/hexagon.yaml
+  - mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+  - start_pose:
+      position: {x: -2.0, y: -0.5}
+  - nav2_test_id: test_wait_behavior/Wait2
+  - expect_success: true
+  - wait_action_name: '/wait'
+  - wait_action_type: nav2_msgs.action.Wait
+  - wait_goal_data: '{"time": {"sec": 2, "nanosec": 0}}'
+  sim:
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+
+# --- Wait 5 (nav2_system_tests.csv line 25) ----------------------------------------
+- name: wait5
+  parameters:
+  - params_file: files/nav2_params.yaml
+  - map_file: environments/hexagon/maps/hexagon.yaml
+  - mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+  - start_pose:
+      position: {x: -2.0, y: -0.5}
+  - nav2_test_id: test_wait_behavior/Wait5
+  - expect_success: true
+  - wait_action_name: '/wait'
+  - wait_action_type: nav2_msgs.action.Wait
+  - wait_goal_data: '{"time": {"sec": 5, "nanosec": 0}}'
+  sim:
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+
+execution:
+  containers:
+    simulation:
+      backend: roqsim
+      config: world/nav2.yaml
+      resources:
+        cpu: 1.0
+        memory: 6Gi
+    sut:
+      image: family:robovast
+      config_files:
+        nav2: files/nav2_params.yaml
+      resources:
+        cpu: 4
+        memory: 6Gi
+    scenario:
+      image: family:robovast
+      resources:
+        cpu: 1.75
+        memory: 4Gi
+  mode: ros2
+  runs: 5
+  timeout: 240
+  scenario_file: wait_behavior.osc
+  run_files:
+  - "files/*.py"
+  - "files/*.yaml"
+  - "files/*.xacro"
+  - "files/*.xml"
+  - "files/nav2/*.py"
+  - "files/nav2/*.yaml"
+  - "files/models/*.xacro"
+  - "environments/hexagon/maps/*"
+  - "environments/hexagon/3d-mesh/*"
+  - "environments/hexagon/json-ld/*"
+  env:
+  - PYTHONUNBUFFERED: "1"
+  local:
+    gui:
+      parameter_overrides:
+      - use_rviz: "True"
+
+results_processing:
+  postprocessing:
+  - rosbags_tf_to_csv:
+      frames: all
+      require: [base_link, odom, nav2_turtlebot4_base_link_gt]
+  - rosbags_action_to_csv:
+      action: wait
+  - rosbags_to_csv:
+      topics: [/collision]
+  - rosbags_nav2bt_to_csv
+  - nav2_bt_tree:
+      bt_xml: files/navigate_to_pose_w_replanning_and_recovery.xml
+  - search/bt_coverage.py:BtCoverage:
+      goal_x: 0.0
+      goal_y: 0.5
+      arrival_radius: 0.6
+  - rosbags_costmap_to_csv:
+      topics: [/map, /global_costmap/costmap, /local_costmap/costmap]
+
+visualization:
+  config:
+    panels:
+    - parameters: {title: Scenario parameters, height: "30%"}
+    - world: {title: World configuration, height: "15%"}
+    - map2d:
+        title: Map
+        map: {param: map_file}
+        markers:
+        - {kind: pose, param: start_pose, label: start, color: "#60a5fa"}
+  results:
+    run_view:
+      panels:
+      - nav2_behavior_tree:
+          title: Nav2 Behavior Tree
+          position: {anchor: top-left, width: 320, height: "calc(50% - 44px)"}
+          minimizable: true
+      - scenario_tree:
+          title: Scenario
+          position: {anchor: bottom-left, width: 320, height: "calc(50% - 44px)"}
+          minimizable: true
+          source: {table: behaviors}
+      - costmap:
+          title: Nav2 Costmap
+          position: {anchor: top-right, width: 320, height: 550}
+          minimizable: true
+          layers:
+            map: {topic: /map}
+            global: {topic: /global_costmap/costmap}
+            local: {topic: /local_costmap/costmap}
+            poses: {table: poses}
+      - log:
+          title: Run log
+          position: {anchor: bottom-center, width: "calc(100% - 680px)", height: 380}
+          minimizable: true
+          minimized: true
+    explorer:
+      notebooks:
+      - Analysis:
+          run: analysis/analysis_run.ipynb
+          config: analysis/analysis_config.ipynb
+          campaign: analysis/analysis_campaign.ipynb
+      - Resource Usage:
+          run: analysis/resource_usage_run.ipynb
+          config: analysis/resource_usage_config.ipynb

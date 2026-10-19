@@ -1,0 +1,260 @@
+version: 3
+metadata:
+  name: test_error_codes
+  title: Nav2 server error codes via stock plugins, TurtleBot 4 + Nav2, in roqsim (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  - name: Ortega Sainz, Argentina
+    identifiers: 0000-0002-3873-4435
+  - name: Pasch, Frederik
+    identifiers: 0000-0002-2626-1538
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords: [robotics, navigation, ROS2, mujoco, roqsim, nav2, turtlebot4, error, failure]
+  description: |
+    Reinterpretation of nav2's error_codes system test
+    (nav2_system_tests/src/error_codes, jazzy). Where upstream launches only
+    controller_server, planner_server and smoother_server with custom C++ error-code
+    plugins, this campaign runs the full nav2 stack (files/nav2_stack.launch.py, the
+    same world as the sibling system_failure/test_failure_navigator.vast) and triggers
+    STOCK error codes that nav2 emits without any custom plugin: requesting a
+    non-existent controller/planner/smoother plugin id, or sending a goal the server
+    rejects for a stock reason.
+
+    MEANING OF A CELL: one configuration is one upstream error-code test case
+    (error_codes.csv lines 32-37). The trial is a single direct action-call that the
+    server ABORTS with the error code in result.error_code, so action_call returns
+    FAILURE and every cell carries expect_success: false. The analysis verifies the
+    specific error_code from the recorded /<action>/_action/status messages (which
+    contain result.error_code). expect_success being inverted is a graded-with correct
+    fact, not a broken campaign -- see scenario_nav2_behavior_test.osc's header for the
+    same mechanism.
+
+    PORTED CASE -> ERROR CODE:
+    - FollowPath (CSV line 32)  -> controller_id that no plugin matches -> INVALID_CONTROLLER (stock)
+    - ComputePathToPose success/cancel (lines 33-34) -> planner_id that no plugin matches -> INVALID_PLANNER (stock)
+    - ComputePathThroughPoses success/cancel (lines 35-36) -> empty goals -> NO_VIAPOINTS_GIVEN (stock)
+    - SmoothPath (line 37)      -> smoother_id that no plugin matches -> INVALID_SMOOTHER (stock)
+
+    NOT PORTED, each because the substrate cannot express it today -- recorded rather
+    than faked (see readme.md for the full list and reasons):
+    - The two CANCEL cases (lines 34 and 36). action_call (the ONLY way to drive an
+      action in this scenario framework, which has no FollowPath/ComputePath* typed
+      actions) has no cancel entry point; RosActionCall.shutdown() cancels only at
+      scenario teardown.
+    - The error codes that need a custom plugin goal or state (UNKNOWN, TF_ERROR,
+      PATIENCE_EXCEEDED, FAILED_TO_MAKE_PROGRESS, NO_VALID_CONTROL, CONTROLLER_TIMED_OUT,
+      START/GOAL_OCCUPIED, outside-map-bounds, INVALID_PATH, SMOOTHED_PATH_IN_COLLISION,
+      FAILED_TO_SMOOTH_PATH). Each is listed in readme.md with why the stock stack
+      cannot be made to emit it deterministically in a single scenario trial.
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+
+configuration:
+# --- FollowPath (error_codes.csv line 32) ----------------------------------------
+# controller_id "no_such_controller" matches no registered controller plugin; the
+# controller server aborts the goal with INVALID_CONTROLLER (controller_server.cpp).
+- name: follow-path-invalid-controller
+  parameters:
+  - params_file: files/nav2_params.yaml
+  - map_file: environments/hexagon/maps/hexagon.yaml
+  - mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+  - start_pose:
+      position: {x: -2.0, y: -0.5}
+  - nav2_test_id: error_codes/FollowPath/INVALID_CONTROLLER
+  - expect_success: false
+  - ec_action_name: '/follow_path'
+  - ec_action_type: nav2_msgs.action.FollowPath
+  - ec_goal_data: '{"path": {"poses": [{"header": {"frame_id": "map"}, "pose": {"position": {"x": -2.0, "y": 0.5, "z": 0.0}, "orientation": {"w": 1.0}}}]}, "controller_id": "no_such_controller", "goal_checker_id": "goal_checker", "progress_checker_id": "progress_checker"}'
+  sim:
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+
+# --- ComputePathToPose (error_codes.csv line 33) ---------------------------------
+# planner_id "no_such_planner" matches no registered planner plugin; the planner
+# server aborts the goal with INVALID_PLANNER (planner_server.cpp).
+- name: compute-path-to-pose-invalid-planner
+  parameters:
+  - params_file: files/nav2_params.yaml
+  - map_file: environments/hexagon/maps/hexagon.yaml
+  - mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+  - start_pose:
+      position: {x: -2.0, y: -0.5}
+  - nav2_test_id: error_codes/ComputePathToPose/INVALID_PLANNER
+  - expect_success: false
+  - ec_action_name: '/compute_path_to_pose'
+  - ec_action_type: nav2_msgs.action.ComputePathToPose
+  - ec_goal_data: '{"goal": {"header": {"frame_id": "map"}, "pose": {"position": {"x": 0.0, "y": 0.5, "z": 0.0}, "orientation": {"w": 1.0}}}, "planner_id": "no_such_planner", "start": {"header": {"frame_id": "map"}, "pose": {"position": {"x": -2.0, "y": -0.5, "z": 0.0}, "orientation": {"w": 1.0}}}}'
+  sim:
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+
+# --- ComputePathThroughPoses (error_codes.csv line 35) ---------------------------
+# Empty goals: the planner server aborts the goal with NO_VIAPOINTS_GIVEN, a stock
+# error reached without any custom plugin (planner_server.cpp).
+- name: compute-path-through-poses-no-viapoints
+  parameters:
+  - params_file: files/nav2_params.yaml
+  - map_file: environments/hexagon/maps/hexagon.yaml
+  - mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+  - start_pose:
+      position: {x: -2.0, y: -0.5}
+  - nav2_test_id: error_codes/ComputePathThroughPoses/NO_VIAPOINTS_GIVEN
+  - expect_success: false
+  - ec_action_name: '/compute_path_through_poses'
+  - ec_action_type: nav2_msgs.action.ComputePathThroughPoses
+  - ec_goal_data: '{"goals": [], "planner_id": "GridBased", "start": {"header": {"frame_id": "map"}, "pose": {"position": {"x": -2.0, "y": -0.5, "z": 0.0}, "orientation": {"w": 1.0}}}}'
+  sim:
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+
+# --- SmoothPath (error_codes.csv line 37) ----------------------------------------
+# smoother_id "no_such_smoother" matches no registered smoother plugin; the smoother
+# server aborts the goal with INVALID_SMOOTHER (nav2_smoother.cpp).
+- name: smooth-path-invalid-smoother
+  parameters:
+  - params_file: files/nav2_params.yaml
+  - map_file: environments/hexagon/maps/hexagon.yaml
+  - mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+  - start_pose:
+      position: {x: -2.0, y: -0.5}
+  - nav2_test_id: error_codes/SmoothPath/INVALID_SMOOTHER
+  - expect_success: false
+  - ec_action_name: '/smooth_path'
+  - ec_action_type: nav2_msgs.action.SmoothPath
+  - ec_goal_data: '{"path": {"poses": [{"header": {"frame_id": "map"}, "pose": {"position": {"x": -2.0, "y": -0.5, "z": 0.0}, "orientation": {"w": 1.0}}}, {"header": {"frame_id": "map"}, "pose": {"position": {"x": 0.0, "y": 0.5, "z": 0.0}, "orientation": {"w": 1.0}}}]}, "smoother_id": "no_such_smoother"}'
+  sim:
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+
+execution:
+  containers:
+    simulation:
+      backend: roqsim
+      config: world/nav2.yaml
+      resources:
+        cpu: 1.0
+        memory: 6Gi
+    sut:
+      image: family:robovast
+      config_files:
+        nav2: files/nav2_params.yaml
+      resources:
+        cpu: 4
+        memory: 6Gi
+    scenario:
+      image: family:robovast
+      resources:
+        cpu: 1.75
+        memory: 4Gi
+  mode: ros2
+  runs: 5
+  timeout: 240
+  scenario_file: error_codes.osc
+  run_files:
+  - "files/*.py"
+  - "files/*.yaml"
+  - "files/*.xacro"
+  - "files/*.xml"
+  - "files/nav2/*.py"
+  - "files/nav2/*.yaml"
+  - "files/models/*.xacro"
+  - "environments/hexagon/maps/*"
+  - "environments/hexagon/3d-mesh/*"
+  - "environments/hexagon/json-ld/*"
+  env:
+  - PYTHONUNBUFFERED: "1"
+  local:
+    gui:
+      parameter_overrides:
+      - use_rviz: "True"
+
+results_processing:
+  postprocessing:
+  - rosbags_tf_to_csv:
+      frames: all
+      require: [base_link, odom, nav2_turtlebot4_base_link_gt]
+  - rosbags_action_to_csv:
+      action: follow_path
+  - rosbags_action_to_csv:
+      action: compute_path_to_pose
+  - rosbags_action_to_csv:
+      action: compute_path_through_poses
+  - rosbags_action_to_csv:
+      action: smooth_path
+  - rosbags_to_csv:
+      topics: [/collision]
+  - rosbags_nav2bt_to_csv
+  - nav2_bt_tree:
+      bt_xml: files/navigate_to_pose_w_replanning_and_recovery.xml
+  - search/bt_coverage.py:BtCoverage:
+      goal_x: 0.0
+      goal_y: 0.5
+      arrival_radius: 0.6
+  - rosbags_costmap_to_csv:
+      topics: [/map, /global_costmap/costmap, /local_costmap/costmap]
+
+visualization:
+  config:
+    panels:
+    - parameters: {title: Scenario parameters, height: "30%"}
+    - world: {title: World configuration, height: "15%"}
+    - map2d:
+        title: Map
+        map: {param: map_file}
+        markers:
+        - {kind: pose, param: start_pose, label: start, color: "#60a5fa"}
+  results:
+    run_view:
+      panels:
+      - nav2_behavior_tree:
+          title: Nav2 Behavior Tree
+          position: {anchor: top-left, width: 320, height: "calc(50% - 44px)"}
+          minimizable: true
+      - scenario_tree:
+          title: Scenario
+          position: {anchor: bottom-left, width: 320, height: "calc(50% - 44px)"}
+          minimizable: true
+          source: {table: behaviors}
+      - costmap:
+          title: Nav2 Costmap
+          position: {anchor: top-right, width: 320, height: 550}
+          minimizable: true
+          layers:
+            map: {topic: /map}
+            global: {topic: /global_costmap/costmap}
+            local: {topic: /local_costmap/costmap}
+            poses: {table: poses}
+      - log:
+          title: Run log
+          position: {anchor: bottom-center, width: "calc(100% - 680px)", height: 380}
+          minimizable: true
+          minimized: true
+    explorer:
+      notebooks:
+      - Analysis:
+          run: analysis/analysis_run.ipynb
+          config: analysis/analysis_config.ipynb
+          campaign: analysis/analysis_campaign.ipynb
+      - Resource Usage:
+          run: analysis/resource_usage_run.ipynb
+          config: analysis/resource_usage_config.ipynb

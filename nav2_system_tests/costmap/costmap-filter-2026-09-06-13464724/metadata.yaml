@@ -1,0 +1,2303 @@
+run_files:
+- _config/files/gazebo_launch.py
+- _config/files/world.sdf.xacro
+- _config/files/nav2_bt.xml
+- _config/files/monitor_cam_launch.py
+- _config/files/collision_monitor.py
+- _config/files/nav2_stack.launch.py
+- _config/files/nav2_params.yaml
+- _config/files/nav2_gazebo.launch.py
+- _config/files/nav2/spawn_tb4.launch.py
+- _config/files/nav2/tb4_simulation_launch.py
+- _config/files/nav2/tb4_bridge.yaml
+- _config/files/models/cylinder.sdf.xacro
+- _config/files/models/box.sdf.xacro
+- _config/environments/speed_mask/maps/speed_mask_hexagon.yaml
+- _config/environments/speed_mask/maps/speed_mask.yaml
+- _config/environments/speed_mask/maps/speed_mask_hexagon.pgm
+- _config/environments/speed_mask/maps/speed_mask.pgm
+- _config/environments/hexagon/3d-mesh/hexagon.stl.yaml
+- _config/environments/hexagon/3d-mesh/hexagon.stl
+- _config/environments/hexagon/json-ld/floorplan.fpm.json.yaml
+- _config/environments/hexagon/json-ld/floorplan.fpm.json
+- _config/environments/hexagon/maps/hexagon.pgm
+- _config/environments/hexagon/maps/hexagon.yaml
+- _config/environments/keepout_mask/maps/keepout_mask.pgm
+- _config/environments/keepout_mask/maps/keepout_mask_hexagon.yaml
+- _config/environments/keepout_mask/maps/keepout_mask_hexagon.pgm
+- _config/environments/keepout_mask/maps/keepout_mask.yaml
+- _config/world/nav2.yaml
+scenario_file: scenario.osc
+metadata:
+  name: costmap_filter
+  title: Metamorphic navigation sweep, TurtleBot 4 + Nav2, in roqsim (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  - name: Ortega Sainz, Argentina
+    identifiers: 0000-0002-3873-4435
+  - name: Pasch, Frederik
+    identifiers: 0000-0002-2626-1538
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords:
+  - robotics
+  - navigation
+  - ROS2
+  - mujoco
+  - roqsim
+  - nav2
+  - turtlebot4
+  - metamorphic
+  description: 'The metamorphic navigation sweep for new test cases using the nav2
+    system tests as a base and varying syst. parameters.
+
+    '
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+configurations:
+- name: keepout-filter
+  config:
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: -0.5
+    params_file: keepout-filter/_config/files/costmap_filters/keepout_params.yaml
+  sut:
+    nav2_keepout.filter_mask_server.ros__parameters.yaml_filename: /config/environments/keepout_mask/maps/keepout_mask_hexagon.yaml
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - keepout-filter/_config/files/costmap_filters/keepout_params.yaml
+  - keepout-filter/_config/files/costmap_filters/speed_local_params.yaml
+  - keepout-filter/_config/files/costmap_filters/speed_global_params.yaml
+  created_at: '2026-09-06T13:46:48.782760'
+  config_identifier: 244f1b6cae6f
+  sub_identifier:
+    block: eeb99a1ad922
+    run_files: 1fbdde3a2620
+    scenario_file: a1e0ca1c6ba6
+    config_referenced_files: fa15530e1e7a
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 41dc614ba34a
+  transient_files: []
+  test_results:
+  - dir: keepout-filter/0
+    success: 'true'
+    start_time: '2026-09-06T11:46:58.914529+00:00'
+    end_time: '2026-09-06T11:47:19.633854+00:00'
+    output_files:
+    - keepout-filter/0/.robovast_rosbags_process_cache
+    - keepout-filter/0/action_navigate_to_pose_feedback.csv
+    - keepout-filter/0/action_navigate_to_pose_status.csv
+    - keepout-filter/0/behaviors.jsonl
+    - keepout-filter/0/bt_coverage.csv
+    - keepout-filter/0/capture/capture.bin
+    - keepout-filter/0/capture/capture.json
+    - keepout-filter/0/costmaps.csv
+    - keepout-filter/0/entities.json
+    - keepout-filter/0/nav2_behavior_tree.csv
+    - keepout-filter/0/nav2_behaviors.csv
+    - keepout-filter/0/poses.csv
+    - keepout-filter/0/resource_usage.csv
+    - keepout-filter/0/rosbag2/metadata.yaml
+    - keepout-filter/0/rosbag2/rosbag2_0.mcap
+    - keepout-filter/0/rosbag2_collision.csv
+    - keepout-filter/0/run.clock_map.csv
+    - keepout-filter/0/run.npz
+    - keepout-filter/0/run_log.csv
+    - keepout-filter/0/sim_poses.csv
+    - keepout-filter/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: keepout-filter/1
+    success: 'true'
+    start_time: '2026-09-06T11:46:58.914563+00:00'
+    end_time: '2026-09-06T11:47:20.312114+00:00'
+    output_files:
+    - keepout-filter/1/.robovast_rosbags_process_cache
+    - keepout-filter/1/action_navigate_to_pose_feedback.csv
+    - keepout-filter/1/action_navigate_to_pose_status.csv
+    - keepout-filter/1/behaviors.jsonl
+    - keepout-filter/1/bt_coverage.csv
+    - keepout-filter/1/capture/capture.bin
+    - keepout-filter/1/capture/capture.json
+    - keepout-filter/1/costmaps.csv
+    - keepout-filter/1/entities.json
+    - keepout-filter/1/nav2_behavior_tree.csv
+    - keepout-filter/1/nav2_behaviors.csv
+    - keepout-filter/1/poses.csv
+    - keepout-filter/1/resource_usage.csv
+    - keepout-filter/1/rosbag2/metadata.yaml
+    - keepout-filter/1/rosbag2/rosbag2_0.mcap
+    - keepout-filter/1/rosbag2_collision.csv
+    - keepout-filter/1/run.clock_map.csv
+    - keepout-filter/1/run.npz
+    - keepout-filter/1/run_log.csv
+    - keepout-filter/1/sim_poses.csv
+    - keepout-filter/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: keepout-filter/2
+    success: 'true'
+    start_time: '2026-09-06T11:47:35.271695+00:00'
+    end_time: '2026-09-06T11:47:56.418442+00:00'
+    output_files:
+    - keepout-filter/2/.robovast_rosbags_process_cache
+    - keepout-filter/2/action_navigate_to_pose_feedback.csv
+    - keepout-filter/2/action_navigate_to_pose_status.csv
+    - keepout-filter/2/behaviors.jsonl
+    - keepout-filter/2/bt_coverage.csv
+    - keepout-filter/2/capture/capture.bin
+    - keepout-filter/2/capture/capture.json
+    - keepout-filter/2/costmaps.csv
+    - keepout-filter/2/entities.json
+    - keepout-filter/2/nav2_behavior_tree.csv
+    - keepout-filter/2/nav2_behaviors.csv
+    - keepout-filter/2/poses.csv
+    - keepout-filter/2/resource_usage.csv
+    - keepout-filter/2/rosbag2/metadata.yaml
+    - keepout-filter/2/rosbag2/rosbag2_0.mcap
+    - keepout-filter/2/rosbag2_collision.csv
+    - keepout-filter/2/run.clock_map.csv
+    - keepout-filter/2/run.npz
+    - keepout-filter/2/run_log.csv
+    - keepout-filter/2/sim_poses.csv
+    - keepout-filter/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: keepout-filter/3
+    success: 'true'
+    start_time: '2026-09-06T11:47:35.034353+00:00'
+    end_time: '2026-09-06T11:47:56.299308+00:00'
+    output_files:
+    - keepout-filter/3/.robovast_rosbags_process_cache
+    - keepout-filter/3/action_navigate_to_pose_feedback.csv
+    - keepout-filter/3/action_navigate_to_pose_status.csv
+    - keepout-filter/3/behaviors.jsonl
+    - keepout-filter/3/bt_coverage.csv
+    - keepout-filter/3/capture/capture.bin
+    - keepout-filter/3/capture/capture.json
+    - keepout-filter/3/costmaps.csv
+    - keepout-filter/3/entities.json
+    - keepout-filter/3/nav2_behavior_tree.csv
+    - keepout-filter/3/nav2_behaviors.csv
+    - keepout-filter/3/poses.csv
+    - keepout-filter/3/resource_usage.csv
+    - keepout-filter/3/rosbag2/metadata.yaml
+    - keepout-filter/3/rosbag2/rosbag2_0.mcap
+    - keepout-filter/3/rosbag2_collision.csv
+    - keepout-filter/3/run.clock_map.csv
+    - keepout-filter/3/run.npz
+    - keepout-filter/3/run_log.csv
+    - keepout-filter/3/sim_poses.csv
+    - keepout-filter/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: keepout-filter/4
+    success: 'true'
+    start_time: '2026-09-06T11:48:12.182045+00:00'
+    end_time: '2026-09-06T11:48:34.332710+00:00'
+    output_files:
+    - keepout-filter/4/.robovast_rosbags_process_cache
+    - keepout-filter/4/action_navigate_to_pose_feedback.csv
+    - keepout-filter/4/action_navigate_to_pose_status.csv
+    - keepout-filter/4/behaviors.jsonl
+    - keepout-filter/4/bt_coverage.csv
+    - keepout-filter/4/capture/capture.bin
+    - keepout-filter/4/capture/capture.json
+    - keepout-filter/4/costmaps.csv
+    - keepout-filter/4/entities.json
+    - keepout-filter/4/nav2_behavior_tree.csv
+    - keepout-filter/4/nav2_behaviors.csv
+    - keepout-filter/4/poses.csv
+    - keepout-filter/4/resource_usage.csv
+    - keepout-filter/4/rosbag2/metadata.yaml
+    - keepout-filter/4/rosbag2/rosbag2_0.mcap
+    - keepout-filter/4/rosbag2_collision.csv
+    - keepout-filter/4/run.clock_map.csv
+    - keepout-filter/4/run.npz
+    - keepout-filter/4/run_log.csv
+    - keepout-filter/4/sim_poses.csv
+    - keepout-filter/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+- name: local-speed-filter
+  config:
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: -0.5
+    params_file: local-speed-filter/_config/files/costmap_filters/speed_local_params.yaml
+  sut:
+    nav2_speed_local.filter_mask_server.ros__parameters.yaml_filename: /config/environments/speed_mask/maps/speed_mask_hexagon.yaml
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - local-speed-filter/_config/files/costmap_filters/speed_local_params.yaml
+  - local-speed-filter/_config/files/costmap_filters/keepout_params.yaml
+  - local-speed-filter/_config/files/costmap_filters/speed_global_params.yaml
+  created_at: '2026-09-06T13:46:48.782760'
+  config_identifier: 9f2b384abadf
+  sub_identifier:
+    block: a86e71fe6e48
+    run_files: 1fbdde3a2620
+    scenario_file: a1e0ca1c6ba6
+    config_referenced_files: 14623a6fb27f
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 41dc614ba34a
+  transient_files: []
+  test_results:
+  - dir: local-speed-filter/0
+    success: 'true'
+    start_time: '2026-09-06T11:48:12.182014+00:00'
+    end_time: '2026-09-06T11:48:30.865617+00:00'
+    output_files:
+    - local-speed-filter/0/.robovast_rosbags_process_cache
+    - local-speed-filter/0/action_navigate_to_pose_feedback.csv
+    - local-speed-filter/0/action_navigate_to_pose_status.csv
+    - local-speed-filter/0/behaviors.jsonl
+    - local-speed-filter/0/bt_coverage.csv
+    - local-speed-filter/0/capture/capture.bin
+    - local-speed-filter/0/capture/capture.json
+    - local-speed-filter/0/costmaps.csv
+    - local-speed-filter/0/entities.json
+    - local-speed-filter/0/nav2_behavior_tree.csv
+    - local-speed-filter/0/nav2_behaviors.csv
+    - local-speed-filter/0/poses.csv
+    - local-speed-filter/0/resource_usage.csv
+    - local-speed-filter/0/rosbag2/metadata.yaml
+    - local-speed-filter/0/rosbag2/rosbag2_0.mcap
+    - local-speed-filter/0/rosbag2_collision.csv
+    - local-speed-filter/0/run.clock_map.csv
+    - local-speed-filter/0/run.npz
+    - local-speed-filter/0/run_log.csv
+    - local-speed-filter/0/sim_poses.csv
+    - local-speed-filter/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: local-speed-filter/1
+    success: 'true'
+    start_time: '2026-09-06T11:48:46.247970+00:00'
+    end_time: '2026-09-06T11:49:03.096740+00:00'
+    output_files:
+    - local-speed-filter/1/.robovast_rosbags_process_cache
+    - local-speed-filter/1/action_navigate_to_pose_feedback.csv
+    - local-speed-filter/1/action_navigate_to_pose_status.csv
+    - local-speed-filter/1/behaviors.jsonl
+    - local-speed-filter/1/bt_coverage.csv
+    - local-speed-filter/1/capture/capture.bin
+    - local-speed-filter/1/capture/capture.json
+    - local-speed-filter/1/costmaps.csv
+    - local-speed-filter/1/entities.json
+    - local-speed-filter/1/nav2_behavior_tree.csv
+    - local-speed-filter/1/nav2_behaviors.csv
+    - local-speed-filter/1/poses.csv
+    - local-speed-filter/1/resource_usage.csv
+    - local-speed-filter/1/rosbag2/metadata.yaml
+    - local-speed-filter/1/rosbag2/rosbag2_0.mcap
+    - local-speed-filter/1/rosbag2_collision.csv
+    - local-speed-filter/1/run.clock_map.csv
+    - local-speed-filter/1/run.npz
+    - local-speed-filter/1/run_log.csv
+    - local-speed-filter/1/sim_poses.csv
+    - local-speed-filter/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: local-speed-filter/2
+    success: 'true'
+    start_time: '2026-09-06T11:48:51.247053+00:00'
+    end_time: '2026-09-06T11:49:09.400043+00:00'
+    output_files:
+    - local-speed-filter/2/.robovast_rosbags_process_cache
+    - local-speed-filter/2/action_navigate_to_pose_feedback.csv
+    - local-speed-filter/2/action_navigate_to_pose_status.csv
+    - local-speed-filter/2/behaviors.jsonl
+    - local-speed-filter/2/bt_coverage.csv
+    - local-speed-filter/2/capture/capture.bin
+    - local-speed-filter/2/capture/capture.json
+    - local-speed-filter/2/costmaps.csv
+    - local-speed-filter/2/entities.json
+    - local-speed-filter/2/nav2_behavior_tree.csv
+    - local-speed-filter/2/nav2_behaviors.csv
+    - local-speed-filter/2/poses.csv
+    - local-speed-filter/2/resource_usage.csv
+    - local-speed-filter/2/rosbag2/metadata.yaml
+    - local-speed-filter/2/rosbag2/rosbag2_0.mcap
+    - local-speed-filter/2/rosbag2_collision.csv
+    - local-speed-filter/2/run.clock_map.csv
+    - local-speed-filter/2/run.npz
+    - local-speed-filter/2/run_log.csv
+    - local-speed-filter/2/sim_poses.csv
+    - local-speed-filter/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: local-speed-filter/3
+    success: 'true'
+    start_time: '2026-09-06T11:49:20.587698+00:00'
+    end_time: '2026-09-06T11:49:37.588699+00:00'
+    output_files:
+    - local-speed-filter/3/.robovast_rosbags_process_cache
+    - local-speed-filter/3/action_navigate_to_pose_feedback.csv
+    - local-speed-filter/3/action_navigate_to_pose_status.csv
+    - local-speed-filter/3/behaviors.jsonl
+    - local-speed-filter/3/bt_coverage.csv
+    - local-speed-filter/3/capture/capture.bin
+    - local-speed-filter/3/capture/capture.json
+    - local-speed-filter/3/costmaps.csv
+    - local-speed-filter/3/entities.json
+    - local-speed-filter/3/nav2_behavior_tree.csv
+    - local-speed-filter/3/nav2_behaviors.csv
+    - local-speed-filter/3/poses.csv
+    - local-speed-filter/3/resource_usage.csv
+    - local-speed-filter/3/rosbag2/metadata.yaml
+    - local-speed-filter/3/rosbag2/rosbag2_0.mcap
+    - local-speed-filter/3/rosbag2_collision.csv
+    - local-speed-filter/3/run.clock_map.csv
+    - local-speed-filter/3/run.npz
+    - local-speed-filter/3/run_log.csv
+    - local-speed-filter/3/sim_poses.csv
+    - local-speed-filter/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: local-speed-filter/4
+    success: 'true'
+    start_time: '2026-09-06T11:49:24.340293+00:00'
+    end_time: '2026-09-06T11:49:42.583831+00:00'
+    output_files:
+    - local-speed-filter/4/.robovast_rosbags_process_cache
+    - local-speed-filter/4/action_navigate_to_pose_feedback.csv
+    - local-speed-filter/4/action_navigate_to_pose_status.csv
+    - local-speed-filter/4/behaviors.jsonl
+    - local-speed-filter/4/bt_coverage.csv
+    - local-speed-filter/4/capture/capture.bin
+    - local-speed-filter/4/capture/capture.json
+    - local-speed-filter/4/costmaps.csv
+    - local-speed-filter/4/entities.json
+    - local-speed-filter/4/nav2_behavior_tree.csv
+    - local-speed-filter/4/nav2_behaviors.csv
+    - local-speed-filter/4/poses.csv
+    - local-speed-filter/4/resource_usage.csv
+    - local-speed-filter/4/rosbag2/metadata.yaml
+    - local-speed-filter/4/rosbag2/rosbag2_0.mcap
+    - local-speed-filter/4/rosbag2_collision.csv
+    - local-speed-filter/4/run.clock_map.csv
+    - local-speed-filter/4/run.npz
+    - local-speed-filter/4/run_log.csv
+    - local-speed-filter/4/sim_poses.csv
+    - local-speed-filter/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+- name: global-speed-filter
+  config:
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: -0.5
+    params_file: global-speed-filter/_config/files/costmap_filters/speed_global_params.yaml
+  sut:
+    nav2_speed_global.filter_mask_server.ros__parameters.yaml_filename: /config/environments/speed_mask/maps/speed_mask_hexagon.yaml
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - global-speed-filter/_config/files/costmap_filters/speed_global_params.yaml
+  - global-speed-filter/_config/files/costmap_filters/keepout_params.yaml
+  - global-speed-filter/_config/files/costmap_filters/speed_local_params.yaml
+  created_at: '2026-09-06T13:46:48.782760'
+  config_identifier: c772e15480dd
+  sub_identifier:
+    block: 1f3548554b78
+    run_files: 1fbdde3a2620
+    scenario_file: a1e0ca1c6ba6
+    config_referenced_files: ea0c10cfcaeb
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 41dc614ba34a
+  transient_files: []
+  test_results:
+  - dir: global-speed-filter/0
+    success: 'true'
+    start_time: '2026-09-06T11:49:54.457456+00:00'
+    end_time: '2026-09-06T11:50:10.597401+00:00'
+    output_files:
+    - global-speed-filter/0/.robovast_rosbags_process_cache
+    - global-speed-filter/0/action_navigate_to_pose_feedback.csv
+    - global-speed-filter/0/action_navigate_to_pose_status.csv
+    - global-speed-filter/0/behaviors.jsonl
+    - global-speed-filter/0/bt_coverage.csv
+    - global-speed-filter/0/capture/capture.bin
+    - global-speed-filter/0/capture/capture.json
+    - global-speed-filter/0/costmaps.csv
+    - global-speed-filter/0/entities.json
+    - global-speed-filter/0/nav2_behavior_tree.csv
+    - global-speed-filter/0/nav2_behaviors.csv
+    - global-speed-filter/0/poses.csv
+    - global-speed-filter/0/resource_usage.csv
+    - global-speed-filter/0/rosbag2/metadata.yaml
+    - global-speed-filter/0/rosbag2/rosbag2_0.mcap
+    - global-speed-filter/0/rosbag2_collision.csv
+    - global-speed-filter/0/run.clock_map.csv
+    - global-speed-filter/0/run.npz
+    - global-speed-filter/0/run_log.csv
+    - global-speed-filter/0/sim_poses.csv
+    - global-speed-filter/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: global-speed-filter/1
+    success: 'true'
+    start_time: '2026-09-06T11:49:58.453120+00:00'
+    end_time: '2026-09-06T11:50:15.398429+00:00'
+    output_files:
+    - global-speed-filter/1/.robovast_rosbags_process_cache
+    - global-speed-filter/1/action_navigate_to_pose_feedback.csv
+    - global-speed-filter/1/action_navigate_to_pose_status.csv
+    - global-speed-filter/1/behaviors.jsonl
+    - global-speed-filter/1/bt_coverage.csv
+    - global-speed-filter/1/capture/capture.bin
+    - global-speed-filter/1/capture/capture.json
+    - global-speed-filter/1/costmaps.csv
+    - global-speed-filter/1/entities.json
+    - global-speed-filter/1/nav2_behavior_tree.csv
+    - global-speed-filter/1/nav2_behaviors.csv
+    - global-speed-filter/1/poses.csv
+    - global-speed-filter/1/resource_usage.csv
+    - global-speed-filter/1/rosbag2/metadata.yaml
+    - global-speed-filter/1/rosbag2/rosbag2_0.mcap
+    - global-speed-filter/1/rosbag2_collision.csv
+    - global-speed-filter/1/run.clock_map.csv
+    - global-speed-filter/1/run.npz
+    - global-speed-filter/1/run_log.csv
+    - global-speed-filter/1/sim_poses.csv
+    - global-speed-filter/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: global-speed-filter/2
+    success: 'true'
+    start_time: '2026-09-06T11:50:27.093904+00:00'
+    end_time: '2026-09-06T11:50:44.853949+00:00'
+    output_files:
+    - global-speed-filter/2/.robovast_rosbags_process_cache
+    - global-speed-filter/2/action_navigate_to_pose_feedback.csv
+    - global-speed-filter/2/action_navigate_to_pose_status.csv
+    - global-speed-filter/2/behaviors.jsonl
+    - global-speed-filter/2/bt_coverage.csv
+    - global-speed-filter/2/capture/capture.bin
+    - global-speed-filter/2/capture/capture.json
+    - global-speed-filter/2/costmaps.csv
+    - global-speed-filter/2/entities.json
+    - global-speed-filter/2/nav2_behavior_tree.csv
+    - global-speed-filter/2/nav2_behaviors.csv
+    - global-speed-filter/2/poses.csv
+    - global-speed-filter/2/resource_usage.csv
+    - global-speed-filter/2/rosbag2/metadata.yaml
+    - global-speed-filter/2/rosbag2/rosbag2_0.mcap
+    - global-speed-filter/2/rosbag2_collision.csv
+    - global-speed-filter/2/run.clock_map.csv
+    - global-speed-filter/2/run.npz
+    - global-speed-filter/2/run_log.csv
+    - global-speed-filter/2/sim_poses.csv
+    - global-speed-filter/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: global-speed-filter/3
+    success: 'true'
+    start_time: '2026-09-06T11:50:30.977369+00:00'
+    end_time: '2026-09-06T11:50:46.721757+00:00'
+    output_files:
+    - global-speed-filter/3/.robovast_rosbags_process_cache
+    - global-speed-filter/3/action_navigate_to_pose_feedback.csv
+    - global-speed-filter/3/action_navigate_to_pose_status.csv
+    - global-speed-filter/3/behaviors.jsonl
+    - global-speed-filter/3/bt_coverage.csv
+    - global-speed-filter/3/capture/capture.bin
+    - global-speed-filter/3/capture/capture.json
+    - global-speed-filter/3/costmaps.csv
+    - global-speed-filter/3/entities.json
+    - global-speed-filter/3/nav2_behavior_tree.csv
+    - global-speed-filter/3/nav2_behaviors.csv
+    - global-speed-filter/3/poses.csv
+    - global-speed-filter/3/resource_usage.csv
+    - global-speed-filter/3/rosbag2/metadata.yaml
+    - global-speed-filter/3/rosbag2/rosbag2_0.mcap
+    - global-speed-filter/3/rosbag2_collision.csv
+    - global-speed-filter/3/run.clock_map.csv
+    - global-speed-filter/3/run.npz
+    - global-speed-filter/3/run_log.csv
+    - global-speed-filter/3/sim_poses.csv
+    - global-speed-filter/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: global-speed-filter/4
+    success: 'true'
+    start_time: '2026-09-06T11:50:59.638999+00:00'
+    end_time: '2026-09-06T11:51:16.586368+00:00'
+    output_files:
+    - global-speed-filter/4/.robovast_rosbags_process_cache
+    - global-speed-filter/4/action_navigate_to_pose_feedback.csv
+    - global-speed-filter/4/action_navigate_to_pose_status.csv
+    - global-speed-filter/4/behaviors.jsonl
+    - global-speed-filter/4/bt_coverage.csv
+    - global-speed-filter/4/capture/capture.bin
+    - global-speed-filter/4/capture/capture.json
+    - global-speed-filter/4/costmaps.csv
+    - global-speed-filter/4/entities.json
+    - global-speed-filter/4/nav2_behavior_tree.csv
+    - global-speed-filter/4/nav2_behaviors.csv
+    - global-speed-filter/4/poses.csv
+    - global-speed-filter/4/resource_usage.csv
+    - global-speed-filter/4/rosbag2/metadata.yaml
+    - global-speed-filter/4/rosbag2/rosbag2_0.mcap
+    - global-speed-filter/4/rosbag2_collision.csv
+    - global-speed-filter/4/run.clock_map.csv
+    - global-speed-filter/4/run.npz
+    - global-speed-filter/4/run_log.csv
+    - global-speed-filter/4/sim_poses.csv
+    - global-speed-filter/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+execution:
+  execution_time: '2026-09-06T11:51:30.845967+00:00'
+  robovast_version: 7e2a5ef
+  robovast_revision: 7e2a5ef
+  robovast_revision_source: baked
+  robovast_dirty: false
+  runs: 5
+  execution_type: cluster
+  image: ghcr.io/cps-test-lab/robovast:latest
+  images:
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim:latest
+    sut: ghcr.io/cps-test-lab/robovast:latest
+    scenario: ghcr.io/cps-test-lab/robovast:latest
+  image_revision: ghcr.io/cps-test-lab/robovast@sha256:d02f2c151fddef1ad239b2370f3a1f62d7ff865a01c58b61f00d18130a84e0dc
+  image_revisions:
+    scenario: ghcr.io/cps-test-lab/robovast@sha256:d02f2c151fddef1ad239b2370f3a1f62d7ff865a01c58b61f00d18130a84e0dc
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:86f05e6335c68af061180c09b80215fbde76ac27d051797e1d4cb14c16e56214
+    sut: ghcr.io/cps-test-lab/robovast@sha256:d02f2c151fddef1ad239b2370f3a1f62d7ff865a01c58b61f00d18130a84e0dc
+    robovast: ghcr.io/cps-test-lab/robovast@sha256:d02f2c151fddef1ad239b2370f3a1f62d7ff865a01c58b61f00d18130a84e0dc
+    s3-init: ghcr.io/cps-test-lab/robovast-sidecar@sha256:3a226c28f278e5cb29a9994968dc2a1272dffa21e92aa17aacec1a3474b93a3b
+  image_build_refs:
+    scenario:
+      revision: b7aa8cd
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    simulation:
+      revision: b7aa8cd
+      source: https://github.com/cps-test-lab/robovast
+      roqsim_ref: 38d870533f2e8dac2bb4b03e3d276e3404e3ef62
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    sut:
+      revision: b7aa8cd
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+  env:
+    PYTHONUNBUFFERED: '1'
+  cluster_info:
+    cluster_config:
+      name: rke2
+      kwargs:
+        namespace: default
+    node_count: 1
+    node_labels:
+      node-7f7e372628b2:
+        beta.kubernetes.io/arch: amd64
+        beta.kubernetes.io/instance-type: rke2
+        beta.kubernetes.io/os: linux
+        kubernetes.io/arch: amd64
+        kubernetes.io/os: linux
+        node-role.kubernetes.io/control-plane: 'true'
+        node-role.kubernetes.io/etcd: 'true'
+        node.kubernetes.io/instance-type: rke2
+        robovast.io/build-node: 'true'
+        robovast.io/data-node: 'true'
+        robovast.io/node-id: node-7f7e372628b2
+  launch:
+    config_filter: ''
+    campaign_name: ''
+    runs: 5
+    postprocess: true
+    upload_to_share: false
+    show_gui: false
+    images:
+      scenario: ghcr.io/cps-test-lab/robovast@sha256:d02f2c151fddef1ad239b2370f3a1f62d7ff865a01c58b61f00d18130a84e0dc
+      simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:86f05e6335c68af061180c09b80215fbde76ac27d051797e1d4cb14c16e56214
+      sut: ghcr.io/cps-test-lab/robovast@sha256:d02f2c151fddef1ad239b2370f3a1f62d7ff865a01c58b61f00d18130a84e0dc
+postprocessing:
+  generated_by: robovast
+  entries:
+  - output: ../global-speed-filter/0/poses.csv
+    sources:
+    - ../global-speed-filter/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../global-speed-filter/0/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../global-speed-filter/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../global-speed-filter/0/action_navigate_to_pose_status.csv
+    sources:
+    - ../global-speed-filter/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../global-speed-filter/0/rosbag2_collision.csv
+    sources:
+    - ../global-speed-filter/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../global-speed-filter/0/nav2_behavior_tree.csv
+    sources:
+    - ../global-speed-filter/0/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../global-speed-filter/0/costmaps.csv
+    sources:
+    - ../global-speed-filter/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../global-speed-filter/1/poses.csv
+    sources:
+    - ../global-speed-filter/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../global-speed-filter/1/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../global-speed-filter/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../global-speed-filter/1/action_navigate_to_pose_status.csv
+    sources:
+    - ../global-speed-filter/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../global-speed-filter/1/rosbag2_collision.csv
+    sources:
+    - ../global-speed-filter/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../global-speed-filter/1/nav2_behavior_tree.csv
+    sources:
+    - ../global-speed-filter/1/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../global-speed-filter/1/costmaps.csv
+    sources:
+    - ../global-speed-filter/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../global-speed-filter/2/poses.csv
+    sources:
+    - ../global-speed-filter/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../global-speed-filter/2/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../global-speed-filter/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../global-speed-filter/2/action_navigate_to_pose_status.csv
+    sources:
+    - ../global-speed-filter/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../global-speed-filter/2/rosbag2_collision.csv
+    sources:
+    - ../global-speed-filter/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../global-speed-filter/2/nav2_behavior_tree.csv
+    sources:
+    - ../global-speed-filter/2/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../global-speed-filter/2/costmaps.csv
+    sources:
+    - ../global-speed-filter/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../global-speed-filter/3/poses.csv
+    sources:
+    - ../global-speed-filter/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../global-speed-filter/3/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../global-speed-filter/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../global-speed-filter/3/action_navigate_to_pose_status.csv
+    sources:
+    - ../global-speed-filter/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../global-speed-filter/3/rosbag2_collision.csv
+    sources:
+    - ../global-speed-filter/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../global-speed-filter/3/nav2_behavior_tree.csv
+    sources:
+    - ../global-speed-filter/3/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../global-speed-filter/3/costmaps.csv
+    sources:
+    - ../global-speed-filter/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../global-speed-filter/4/poses.csv
+    sources:
+    - ../global-speed-filter/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../global-speed-filter/4/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../global-speed-filter/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../global-speed-filter/4/action_navigate_to_pose_status.csv
+    sources:
+    - ../global-speed-filter/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../global-speed-filter/4/rosbag2_collision.csv
+    sources:
+    - ../global-speed-filter/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../global-speed-filter/4/nav2_behavior_tree.csv
+    sources:
+    - ../global-speed-filter/4/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../global-speed-filter/4/costmaps.csv
+    sources:
+    - ../global-speed-filter/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../keepout-filter/0/poses.csv
+    sources:
+    - ../keepout-filter/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../keepout-filter/0/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../keepout-filter/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../keepout-filter/0/action_navigate_to_pose_status.csv
+    sources:
+    - ../keepout-filter/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../keepout-filter/0/rosbag2_collision.csv
+    sources:
+    - ../keepout-filter/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../keepout-filter/0/nav2_behavior_tree.csv
+    sources:
+    - ../keepout-filter/0/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../keepout-filter/0/costmaps.csv
+    sources:
+    - ../keepout-filter/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../keepout-filter/1/poses.csv
+    sources:
+    - ../keepout-filter/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../keepout-filter/1/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../keepout-filter/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../keepout-filter/1/action_navigate_to_pose_status.csv
+    sources:
+    - ../keepout-filter/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../keepout-filter/1/rosbag2_collision.csv
+    sources:
+    - ../keepout-filter/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../keepout-filter/1/nav2_behavior_tree.csv
+    sources:
+    - ../keepout-filter/1/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../keepout-filter/1/costmaps.csv
+    sources:
+    - ../keepout-filter/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../keepout-filter/2/poses.csv
+    sources:
+    - ../keepout-filter/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../keepout-filter/2/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../keepout-filter/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../keepout-filter/2/action_navigate_to_pose_status.csv
+    sources:
+    - ../keepout-filter/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../keepout-filter/2/rosbag2_collision.csv
+    sources:
+    - ../keepout-filter/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../keepout-filter/2/nav2_behavior_tree.csv
+    sources:
+    - ../keepout-filter/2/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../keepout-filter/2/costmaps.csv
+    sources:
+    - ../keepout-filter/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../local-speed-filter/1/poses.csv
+    sources:
+    - ../local-speed-filter/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../local-speed-filter/1/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../local-speed-filter/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../local-speed-filter/1/action_navigate_to_pose_status.csv
+    sources:
+    - ../local-speed-filter/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../local-speed-filter/1/rosbag2_collision.csv
+    sources:
+    - ../local-speed-filter/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../local-speed-filter/1/nav2_behavior_tree.csv
+    sources:
+    - ../local-speed-filter/1/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../local-speed-filter/1/costmaps.csv
+    sources:
+    - ../local-speed-filter/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../keepout-filter/3/poses.csv
+    sources:
+    - ../keepout-filter/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../keepout-filter/3/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../keepout-filter/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../keepout-filter/3/action_navigate_to_pose_status.csv
+    sources:
+    - ../keepout-filter/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../keepout-filter/3/rosbag2_collision.csv
+    sources:
+    - ../keepout-filter/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../keepout-filter/3/nav2_behavior_tree.csv
+    sources:
+    - ../keepout-filter/3/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../keepout-filter/3/costmaps.csv
+    sources:
+    - ../keepout-filter/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../local-speed-filter/0/poses.csv
+    sources:
+    - ../local-speed-filter/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../local-speed-filter/0/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../local-speed-filter/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../local-speed-filter/0/action_navigate_to_pose_status.csv
+    sources:
+    - ../local-speed-filter/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../local-speed-filter/0/rosbag2_collision.csv
+    sources:
+    - ../local-speed-filter/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../local-speed-filter/0/nav2_behavior_tree.csv
+    sources:
+    - ../local-speed-filter/0/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../local-speed-filter/0/costmaps.csv
+    sources:
+    - ../local-speed-filter/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../keepout-filter/4/poses.csv
+    sources:
+    - ../keepout-filter/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../keepout-filter/4/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../keepout-filter/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../keepout-filter/4/action_navigate_to_pose_status.csv
+    sources:
+    - ../keepout-filter/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../keepout-filter/4/rosbag2_collision.csv
+    sources:
+    - ../keepout-filter/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../keepout-filter/4/nav2_behavior_tree.csv
+    sources:
+    - ../keepout-filter/4/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../keepout-filter/4/costmaps.csv
+    sources:
+    - ../keepout-filter/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../local-speed-filter/3/poses.csv
+    sources:
+    - ../local-speed-filter/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../local-speed-filter/3/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../local-speed-filter/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../local-speed-filter/3/action_navigate_to_pose_status.csv
+    sources:
+    - ../local-speed-filter/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../local-speed-filter/3/rosbag2_collision.csv
+    sources:
+    - ../local-speed-filter/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../local-speed-filter/3/nav2_behavior_tree.csv
+    sources:
+    - ../local-speed-filter/3/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../local-speed-filter/3/costmaps.csv
+    sources:
+    - ../local-speed-filter/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../local-speed-filter/2/poses.csv
+    sources:
+    - ../local-speed-filter/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../local-speed-filter/2/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../local-speed-filter/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../local-speed-filter/2/action_navigate_to_pose_status.csv
+    sources:
+    - ../local-speed-filter/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../local-speed-filter/2/rosbag2_collision.csv
+    sources:
+    - ../local-speed-filter/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../local-speed-filter/2/nav2_behavior_tree.csv
+    sources:
+    - ../local-speed-filter/2/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../local-speed-filter/2/costmaps.csv
+    sources:
+    - ../local-speed-filter/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../local-speed-filter/4/poses.csv
+    sources:
+    - ../local-speed-filter/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../local-speed-filter/4/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../local-speed-filter/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../local-speed-filter/4/action_navigate_to_pose_status.csv
+    sources:
+    - ../local-speed-filter/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../local-speed-filter/4/rosbag2_collision.csv
+    sources:
+    - ../local-speed-filter/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../local-speed-filter/4/nav2_behavior_tree.csv
+    sources:
+    - ../local-speed-filter/4/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../local-speed-filter/4/costmaps.csv
+    sources:
+    - ../local-speed-filter/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../_jobs/batch-0/job-10/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-10/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-10/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-10/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-11/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-11/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-11/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-11/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-12/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-12/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-12/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-12/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-14/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-14/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-14/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-14/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-13/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-13/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-13/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-13/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-3/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-3/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-6/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-6/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-6/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-6/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-5/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-5/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-5/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-5/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-7/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-7/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-7/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-7/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-8/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-8/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-8/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-8/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-9/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-9/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-9/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-9/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: global-speed-filter/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-10/resource_usage_main.csv
+    - _jobs/batch-0/job-10/resource_usage_simulation.csv
+    - _jobs/batch-0/job-10/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: global-speed-filter/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-10/system_usage_main.csv
+    - _jobs/batch-0/job-10/system_usage_simulation.csv
+    - _jobs/batch-0/job-10/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: global-speed-filter/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-11/resource_usage_main.csv
+    - _jobs/batch-0/job-11/resource_usage_simulation.csv
+    - _jobs/batch-0/job-11/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: global-speed-filter/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-11/system_usage_main.csv
+    - _jobs/batch-0/job-11/system_usage_simulation.csv
+    - _jobs/batch-0/job-11/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: global-speed-filter/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-12/resource_usage_main.csv
+    - _jobs/batch-0/job-12/resource_usage_simulation.csv
+    - _jobs/batch-0/job-12/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: global-speed-filter/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-12/system_usage_main.csv
+    - _jobs/batch-0/job-12/system_usage_simulation.csv
+    - _jobs/batch-0/job-12/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: global-speed-filter/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-13/resource_usage_main.csv
+    - _jobs/batch-0/job-13/resource_usage_simulation.csv
+    - _jobs/batch-0/job-13/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: global-speed-filter/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-13/system_usage_main.csv
+    - _jobs/batch-0/job-13/system_usage_simulation.csv
+    - _jobs/batch-0/job-13/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: global-speed-filter/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-14/resource_usage_main.csv
+    - _jobs/batch-0/job-14/resource_usage_simulation.csv
+    - _jobs/batch-0/job-14/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: global-speed-filter/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-14/system_usage_main.csv
+    - _jobs/batch-0/job-14/system_usage_simulation.csv
+    - _jobs/batch-0/job-14/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: keepout-filter/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/resource_usage_main.csv
+    - _jobs/batch-0/job-0/resource_usage_simulation.csv
+    - _jobs/batch-0/job-0/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: keepout-filter/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/system_usage_main.csv
+    - _jobs/batch-0/job-0/system_usage_simulation.csv
+    - _jobs/batch-0/job-0/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: keepout-filter/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/resource_usage_main.csv
+    - _jobs/batch-0/job-1/resource_usage_simulation.csv
+    - _jobs/batch-0/job-1/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: keepout-filter/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/system_usage_main.csv
+    - _jobs/batch-0/job-1/system_usage_simulation.csv
+    - _jobs/batch-0/job-1/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: keepout-filter/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/resource_usage_main.csv
+    - _jobs/batch-0/job-2/resource_usage_simulation.csv
+    - _jobs/batch-0/job-2/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: keepout-filter/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/system_usage_main.csv
+    - _jobs/batch-0/job-2/system_usage_simulation.csv
+    - _jobs/batch-0/job-2/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: keepout-filter/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/resource_usage_main.csv
+    - _jobs/batch-0/job-3/resource_usage_simulation.csv
+    - _jobs/batch-0/job-3/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: keepout-filter/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/system_usage_main.csv
+    - _jobs/batch-0/job-3/system_usage_simulation.csv
+    - _jobs/batch-0/job-3/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: keepout-filter/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/resource_usage_main.csv
+    - _jobs/batch-0/job-4/resource_usage_simulation.csv
+    - _jobs/batch-0/job-4/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: keepout-filter/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/system_usage_main.csv
+    - _jobs/batch-0/job-4/system_usage_simulation.csv
+    - _jobs/batch-0/job-4/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: local-speed-filter/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-5/resource_usage_main.csv
+    - _jobs/batch-0/job-5/resource_usage_simulation.csv
+    - _jobs/batch-0/job-5/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: local-speed-filter/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-5/system_usage_main.csv
+    - _jobs/batch-0/job-5/system_usage_simulation.csv
+    - _jobs/batch-0/job-5/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: local-speed-filter/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-6/resource_usage_main.csv
+    - _jobs/batch-0/job-6/resource_usage_simulation.csv
+    - _jobs/batch-0/job-6/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: local-speed-filter/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-6/system_usage_main.csv
+    - _jobs/batch-0/job-6/system_usage_simulation.csv
+    - _jobs/batch-0/job-6/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: local-speed-filter/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-7/resource_usage_main.csv
+    - _jobs/batch-0/job-7/resource_usage_simulation.csv
+    - _jobs/batch-0/job-7/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: local-speed-filter/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-7/system_usage_main.csv
+    - _jobs/batch-0/job-7/system_usage_simulation.csv
+    - _jobs/batch-0/job-7/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: local-speed-filter/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-8/resource_usage_main.csv
+    - _jobs/batch-0/job-8/resource_usage_simulation.csv
+    - _jobs/batch-0/job-8/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: local-speed-filter/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-8/system_usage_main.csv
+    - _jobs/batch-0/job-8/system_usage_simulation.csv
+    - _jobs/batch-0/job-8/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: local-speed-filter/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-9/resource_usage_main.csv
+    - _jobs/batch-0/job-9/resource_usage_simulation.csv
+    - _jobs/batch-0/job-9/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: local-speed-filter/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-9/system_usage_main.csv
+    - _jobs/batch-0/job-9/system_usage_simulation.csv
+    - _jobs/batch-0/job-9/system_usage_sut.csv
+    plugin: system_usage
+    params: {}

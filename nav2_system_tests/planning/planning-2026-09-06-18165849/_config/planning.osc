@@ -1,0 +1,148 @@
+import osc.helpers
+import osc.ros
+import osc.nav2
+import osc.os
+import osc.remote
+import osc.sim
+import osc.dataops
+
+# Nav2 PLANNING system test, ported from nav2_system_tests/src/planning (main). One
+# trial = one NavigateToPose goal against the full nav2 stack, recording the planner's
+# /plan output and /behavior_tree_log for behavior-tree coverage.
+#
+# DEVIATION FROM UPSTREAM -- blackbox runtime instead of direct planner testing. Upstream
+# uses PlannerTester with synthetic costmaps and calls planner plugins and is_path_valid
+# directly. The robovast scenario framework runs the REAL planner through bt_navigator;
+# it cannot inject TestCostmap grids, call planner plugin methods directly, or configure
+# per-plugin cancellation callbacks. The runtime analog sends a real navigation goal and
+# records /plan for post-hoc path inspection.
+# The robovast scenario framework is BLACKBOX: it runs the REAL stack (bt_navigator,
+# planner_server, controller_server, behavior_server) and can only send a navigation goal
+# and observe the outcome -- it cannot inject per-node failure ranges, tick the tree by
+# hand, or read the dummy servers. So the runtime analogs below drive a real
+# NavigateToPose goal and grades by the action result + ground-truth arrival, while the
+# planner's path and BT execution are observed through /plan and /behavior_tree_log.
+#
+# PORTED RUNTIME ANALOG: a reachable goal exercises the configured planner through
+# ComputePathToPose, records its generated /plan, and completes the navigation BT. The
+# planner campaign's direct synthetic-costmap cases are documented as not portable.
+#
+# NOT PORTED (direct planner/unit -- recorded in readme.md): synthetic TestCostmap
+# suites, randomized endpoint sweeps, direct planner-plugin tests, is_path_valid service
+# tests, and cancellation tests. They require in-process PlannerTester access, synthetic
+# costmap injection, plugin selection, or cancellation callbacks unavailable to the
+# blackbox scenario framework.
+
+scenario test_scenario:
+    timeout(1800s)
+
+    map_file: string
+    mesh_file: string
+
+    start_pose: pose_3d
+    goal_pose: pose_3d
+    params_file: string
+    spawn_height: length = 0.03m
+
+    # Carried for grading/documentation. The runtime planner analog expects a reachable
+    # navigation goal and a successful planner/controller pipeline.
+    nav2_test_id: string = ''
+    expect_success: bool = true
+    planner_case: string = 'none'
+
+    static_objects: list of spawn_entity
+    dynamic_objects: list of spawn_entity
+    spawn_trigger_point: position_3d = position_3d(x: 1000.0m, y: 1000.0m)
+    spawn_trigger_threshold: length = 1.5m
+    use_rviz: string = "False"
+    laserscan_gaussian_noise_std_deviation: string = '0.0'
+    laserscan_random_drop_percentage: string = '0.0'
+
+    robot: differential_drive_robot
+
+    do serial:
+        serial:
+            timeout(120s)
+            wait_for_topics(topics: ['/clock'])
+            check_data(topic_name: '/scan_sim',
+                       topic_type: 'sensor_msgs.msg.LaserScan',
+                       member_name: 'range_max',
+                       comparison_operator: comparison_operator!gt,
+                       expected_value: '0.0',
+                       qos_profile: qos_preset_profiles!sensor_data)
+
+        delete_entity(entity: 'dynamic_0')
+
+        set_entity_state(entity: 'robot',
+                         pose: pose_3d(
+                             position: position_3d(x: start_pose.position.x,
+                                                   y: start_pose.position.y,
+                                                   z: spawn_height),
+                             orientation: start_pose.orientation))
+
+        parallel:
+            # The sut channel stages the per-configuration parameter file at this path.
+            ros_launch('', '/config/files/nav2_stack.launch.py',
+                [key_value('map', os.abspath(common.get_scenario_file_directory() + "/" + map_file)),
+                 key_value('params_file', common.get_scenario_file_directory() + '/' + params_file),
+                 key_value('planner_case', planner_case),
+                 key_value('autostart', 'true'),
+                 key_value('use_rviz', use_rviz),
+                 key_value('laserscan_gaussian_noise_std_deviation', laserscan_gaussian_noise_std_deviation),
+                 key_value('laserscan_random_drop_percentage', laserscan_random_drop_percentage)],
+                wait_for_shutdown: false) with:
+                    remote('ipc:///ipc/sut')
+
+            parallel:
+                serial:
+                    robot.init_nav2(start_pose)
+                    check_data(topic_name: '/planner_test/result',
+                               topic_type: 'std_msgs.msg.Bool',
+                               member_name: 'data',
+                               comparison_operator: comparison_operator!eq,
+                               expected_value: 'True')
+                    bag_record([
+                            '/clock',
+                            '/tf',
+                            '/tf_static',
+                            '/map',
+                            '/global_costmap/costmap',
+                            '/local_costmap/costmap',
+                            '/amcl_pose',
+                            '/plan',
+                            '/scan',
+                            '/odom',
+                            '/collision',
+                            '/behavior_tree_log',
+                            '/planner_test/result',
+                            '/navigate_to_pose/_action/feedback',
+                            '/navigate_to_pose/_action/status'
+                        ],
+                        hidden_topics: true,
+                        use_sim_time: true,
+                        timestamp_suffix: false)
+                    parallel:
+                        serial:
+                            # THE TRIAL: one NavigateToPose goal. Returns SUCCESS on
+                            # STATUS_SUCCEEDED (the recovery tree's PipelineSequence
+                            # completes) -- the runtime analog of upstream's
+                            # tree.tickOnce() loop. emit end marks a passing run.
+                            robot.nav_to_pose(goal_pose)
+                            emit end
+                        serial:
+                            robot.tf_close_to(
+                                reference_point: spawn_trigger_point,
+                                threshold: spawn_trigger_threshold,
+                                robot_frame_id: 'nav2_turtlebot4_base_link_gt')
+                            spawn_entity(entity_name: 'dynamic_0', uri: '',
+                                         initial_pose: pose_3d())
+                serial:
+                    one_of:
+                        log_check(values: ["Control loop missed its desired rate"]) with:
+                            repeat(10)
+                        check_data(topic_name: '/collision',
+                                   topic_type: 'std_msgs.msg.Bool',
+                                   member_name: 'data',
+                                   comparison_operator: comparison_operator!eq,
+                                   expected_value: 'True')
+                    emit fail

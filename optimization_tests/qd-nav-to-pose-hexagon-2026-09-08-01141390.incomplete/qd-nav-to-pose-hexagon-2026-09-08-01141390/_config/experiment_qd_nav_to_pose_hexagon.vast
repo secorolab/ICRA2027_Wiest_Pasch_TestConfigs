@@ -1,0 +1,148 @@
+version: 4
+metadata:
+  name: experiment_qd_nav_to_pose_hexagon
+  title: QD Nav2 behavior-tree coverage search -- navigate to pose -- tb3_world
+  description: |
+    Quality-diversity search over map-constrained start/goal paths, static obstacle count and
+    lateral placement, dynamic obstacle trigger/lateral placement, controller profile, fixed Navfn
+    global planner, and GridBased.use_astar. MPPI and DWB are the two controller profiles. The QD objective is raw
+    /behavior_tree_log node coverage of navigate_to_pose_w_replanning_and_recovery.xml.
+
+    The room is the ROS 2 `turtlebot3_world` (roqsim_scenes:tb3_world): a hexagonal room 5.080 m
+    flat-to-flat inside its wall, with nine columns of r = 0.15 m on a 3x3 grid at 1.1 m spacing. Its
+    occupancy grid is projected from that scene, so the map and the world hold the same obstacles. The
+    world resolves from the installed scene package rather than from run_files, so the campaign image
+    must carry a roqsim that has it.
+execution:
+  sizing: fixed
+  containers:
+    scenario:
+      image: family:robovast-roqsim
+      resources: {cpu: 2, memory: 1Gi}
+    sut:
+      image: family:robovast-roqsim
+      config_files: {mppi: files/nav2_params_mppi.yaml, dwb: files/nav2_params_dwb.yaml}
+      resources: {cpu: 3.25, memory: 2Gi}
+    simulation:
+      backend: roqsim
+      config: world/tb3_world_nav2_standalone.yaml
+      resources: {cpu: 2, memory: 2Gi}
+  mode: ros2
+  runs: 5
+  runs_per_job: 1
+  timeout: 1800
+  scenario_file: nav_to_pose_qd.osc
+  run_files:
+  - 'files/*'
+  - 'environments/*'
+  - 'environments/tb3_world/maps/*'
+  - 'world/*'
+plugins:
+- rosbags==0.11.5
+search:
+  strategy: qd
+  search_space:
+    path_length: {type: float, low: 2.0, high: 5.0}
+    static_obstacle_amount: {type: int, low: 0, high: 1}
+    static_obstacle_distance: {type: float, low: 0.0, high: 1.0}
+    dynamic_obstacle_trigger_distance: {type: float, low: 0.0, high: 1.0}
+    dynamic_obstacle_lateral_distance: {type: float, low: 0.0, high: 1.0}
+    controller_profile:
+      type: choice
+      values: ["files/nav2_params_mppi.yaml", "files/nav2_params_dwb.yaml"]
+    use_astar: {type: bool}
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi.yaml
+      map_file: environments/tb3_world/maps/tb3_world.yaml
+  variations:
+  - PathVariationRandom:
+      scenario: {start: start_pose, goal: goal_pose}
+      num_goal_poses: 1
+      path_length: $path_length
+      num_paths: 1
+      path_length_tolerance: 0.5
+      min_distance: 1.0
+      seed: 42
+      robot_diameter: 0.35
+  - ObstacleVariation:
+      scenario: {objects: static_objects}
+      sim: {instances: components.static_obstacles.instances}
+      obstacle_configs:
+      - amount: $static_obstacle_amount
+        max_distance: $static_obstacle_distance
+        model: file:///config/files/models/box.sdf.xacro
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+        size: [0.5, 0.5, 1.0]
+      seed: 42
+      robot_diameter: 0.35
+  - ObstacleVariationWithDistanceTrigger:
+      scenario:
+        objects: dynamic_objects
+        trigger_point: spawn_trigger_point
+        trigger_threshold: spawn_trigger_threshold
+      sim: {instances: components.dynamic_obstacles.instances}
+      trigger_distance: $dynamic_obstacle_trigger_distance
+      obstacle_configs:
+      - amount: 1
+        max_distance: $dynamic_obstacle_lateral_distance
+        model: file:///config/files/models/box.sdf.xacro
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+        size: [0.5, 0.5, 1.0]
+      entity_prefix: dynamic
+      seed: 42
+      robot_diameter: 0.35
+  - ParameterVariationList:
+      scenario: static_obstacle_distance
+      values: [$static_obstacle_distance]
+  - ParameterVariationList:
+      scenario: dynamic_obstacle_lateral_distance
+      values: [$dynamic_obstacle_lateral_distance]
+  - ParameterVariationList:
+      scenario: dynamic_obstacle_trigger_distance
+      values: [$dynamic_obstacle_trigger_distance]
+  - ParameterVariationList:
+      scenario: controller_profile
+      values: [$controller_profile]
+  - ParameterVariationList:
+      scenario: params_file
+      values: [$controller_profile]
+  - ParameterVariationList:
+      scenario: use_astar
+      values: [$use_astar]
+  - ParameterVariationList:
+      sut: mppi.planner_server.ros__parameters.GridBased.use_astar
+      values: [$use_astar]
+  - ParameterVariationList:
+      sut: dwb.planner_server.ros__parameters.GridBased.use_astar
+      values: [$use_astar]
+  extract:
+    plugin: search/search_bt_coverage_extract.py:SearchBtCoverageExtract
+    params:
+      bt_xml: files/navigate_to_pose_w_replanning_and_recovery.xml
+  objectives:
+  - {name: nav2_bt_coverage, direction: maximize}
+  per_batch: 8
+  budget: [batches: 15]
+  seed: 0
+  strategy_parameters:
+    archive:
+      type: grid
+      measures:
+        path_length: {low: 2.0, high: 5.0, bins: 12}
+        static_obstacle_amount: {low: 0, high: 1, bins: 2}
+        static_obstacle_distance: {low: 0.0, high: 1.0, bins: 5}
+        dynamic_obstacle_trigger_distance: {low: 0.0, high: 1.0, bins: 5}
+        dynamic_obstacle_lateral_distance: {low: 0.0, high: 1.0, bins: 5}
+        controller_profile: {low: 0, high: 1, bins: 2}
+        use_astar: {low: 0, high: 1, bins: 2}
+    sigma: 0.1
+results_processing:
+  postprocessing:
+  - rosbags_tf_to_csv:
+      frames: [base_link, nav2_turtlebot4_base_link_gt]
+  - rosbags_nav2bt_to_csv
+  - nav2_bt_tree:
+      bt_xml: files/navigate_to_pose_w_replanning_and_recovery.xml
+  - rosbags_action_to_csv:
+      action: navigate_to_pose

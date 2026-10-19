@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="1" name="scenario_execution" tests="1" time="32.846415">
+  <testcase classname="tests.scenario" name="test_scenario" time="32.846415">
+    <properties>
+      <property name="start_time" value="1788829434.350753"/>
+    </properties>
+    <failure message="execution failed.">-^- test_scenario [*]
+    {-} test_scenario [*]
+        {-} serial [*]
+            -^- timeout
+                {-} serial
+                    --&gt; wait_for_topics
+                    --&gt; check_data
+            --&gt; set_entity_state
+            --&gt; set_entity_state
+            /_/ parallel [*]
+                --&gt; remote(ipc:///ipc/sut)
+                /_/ parallel [*]
+                    {-} serial [*]
+                        --&gt; differential_drive_robot.init_nav2
+                        --&gt; bag_record
+                        /_/ parallel [*]
+                            {-} serial [*]
+                                --&gt; differential_drive_robot.nav_to_pose [*] -- Current: nav2_msgs.action.NavigateToPose_Feedback(current_pose=geometry_msgs.msg.PoseStamped(header=std_msgs.msg.Header(stamp=builtin_interfaces.msg.Time(sec=35, nanosec=142000000), frame_id='map'), pose=geometry_msgs.msg.Pose(position=geometry_msgs.msg.Point(x=-0.472868185007151, y=3.573274698476764, z=0.0), orientation=geometry_msgs.msg.Quaternion(x=0.0, y=0.0, z=-0.10961590067203861, w=0.9939740209481623))), navigation_time=builtin_interfaces.msg.Duration(sec=23, nanosec=104000000), estimated_time_remaining=builtin_interfaces.msg.Duration(sec=12, nanosec=691230690), number_of_recoveries=2, distance_remaining=2.357435941696167)
+                                --&gt; emit end
+                            {-} serial
+                                --&gt; differential_drive_robot.tf_close_to
+                                --&gt; set_entity_state
+                    {-} serial [✓]
+                        /_/ one_of [✓]
+                            -^- repeat [-] -- running [status: 0 success from 10]
+                                --&gt; log_check [-] -- Waiting for log
+                            --&gt; check_data [✓] -- Found expected value in received message.
+                        --&gt; emit fail [✓]
+</failure>
+  </testcase>
+</testsuite>

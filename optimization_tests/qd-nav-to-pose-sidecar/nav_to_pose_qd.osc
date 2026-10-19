@@ -1,0 +1,94 @@
+import osc.helpers
+import osc.ros
+import osc.nav2
+import osc.os
+import osc.remote
+import osc.sim
+import osc.dataops
+
+scenario test_scenario:
+    timeout(1800s)
+
+    map_file: string
+    params_file: string
+    start_pose: pose_3d
+    goal_pose: pose_3d
+    static_objects: list of spawn_entity
+    dynamic_objects: list of spawn_entity
+    spawn_trigger_point: position_3d = position_3d(x: 1000.0m, y: 1000.0m)
+    spawn_trigger_threshold: length = 1.5m
+    static_obstacle_distance: float = 0.0
+    dynamic_obstacle_lateral_distance: float = 0.0
+    dynamic_obstacle_trigger_distance: float = 0.0
+    controller_profile: string = ''
+    planner_profile: string = 'nav2_navfn_planner::NavfnPlanner'
+    use_astar: bool = false
+    use_rviz: string = 'False'
+    robot: differential_drive_robot
+
+    do serial:
+        serial:
+            timeout(120s)
+            wait_for_topics(topics: ['/clock'])
+            check_data(topic_name: '/scan',
+                       topic_type: 'sensor_msgs.msg.LaserScan',
+                       member_name: 'range_max',
+                       comparison_operator: comparison_operator!gt,
+                       expected_value: '0.0',
+                       qos_profile: qos_preset_profiles!sensor_data)
+
+        # The obstacle is compiled into the roqsim world, then hidden until the trigger.
+        set_entity_state(entity: 'dynamic_0', pose: pose_3d(
+            position: position_3d(x: 40.0m, y: 40.0m, z: 0.03m)))
+        set_entity_state(entity: 'robot', pose: pose_3d(
+            position: position_3d(x: start_pose.position.x,
+                                  y: start_pose.position.y,
+                                  z: 0.03m),
+            orientation: start_pose.orientation))
+
+        parallel:
+            ros_launch('', '/config/files/nav2_stack.launch.py',
+                [key_value('map', os.abspath(common.get_scenario_file_directory() + '/' + map_file)),
+                 key_value('params_file', common.get_scenario_file_directory() + '/' + params_file),
+                 key_value('autostart', 'true'),
+                 key_value('use_rviz', use_rviz),
+                 key_value('use_scan_modification', 'false')],
+                wait_for_shutdown: false) with:
+                    remote('ipc:///ipc/sut')
+            parallel:
+                serial:
+                    robot.init_nav2(start_pose)
+                    bag_record([
+                            '/clock', '/tf', '/tf_static', '/map',
+                            '/global_costmap/costmap', '/local_costmap/costmap',
+                            '/amcl_pose', '/plan', '/scan', '/odom', '/collision',
+                            '/behavior_tree_log',
+                            '/navigate_to_pose/_action/feedback',
+                            '/navigate_to_pose/_action/status'
+                        ],
+                        hidden_topics: true,
+                        use_sim_time: true,
+                        timestamp_suffix: false)
+                    parallel:
+                        serial:
+                            robot.nav_to_pose(goal_pose)
+                            emit end
+                        serial:
+                            robot.tf_close_to(
+                                reference_point: spawn_trigger_point,
+                                threshold: spawn_trigger_threshold,
+                                robot_frame_id: 'nav2_turtlebot4_base_link_gt')
+                            set_entity_state(entity: 'dynamic_0', pose: pose_3d(
+                                position: position_3d(x: spawn_trigger_point.x,
+                                                      y: spawn_trigger_point.y,
+                                                      z: 0.03m)))
+                serial:
+                    one_of:
+                        log_check(values: ['Control loop missed its desired rate']) with:
+                            repeat(10)
+                        check_data(topic_name: '/collision',
+                                   topic_type: 'std_msgs.msg.Bool',
+                                   member_name: 'data',
+                                   comparison_operator: comparison_operator!eq,
+                                   expected_value: 'True')
+                    emit fail

@@ -1,0 +1,4382 @@
+version: 4
+metadata:
+  name: random_secorolab_nav_to_pose
+  title: Truly random nav_to_pose configurations, TurtleBot 4 + Nav2, in roqsim (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords:
+  - robotics
+  - navigation
+  - ROS2
+  - mujoco
+  - roqsim
+  - nav2
+  - turtlebot4
+  - random
+  - nav_to_pose
+  description: "120 truly random nav_to_pose configurations for secorolab. Each randomly picks: a PathVariationRandom start/goal\
+    \ pose, controller (50/50 MPPI/DWB), planner (use_astar True/False), static obstacle (50 %, random pose, fixed 0.5\xD7\
+    0.5\xD71.0 m), dynamic obstacle (50 %, random pose, fixed 0.5\xD70.5\xD71.0 m, spawned when the robot is within a random\
+    \ 0\u20135 m trigger distance of its pose)."
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+configuration:
+- name: tr-000
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.008
+          y: -2.071
+        orientation:
+          yaw: -0.27602
+      goal_pose:
+        position:
+          x: -2.48
+          y: -4.42
+        orientation:
+          yaw: 0.089438
+      spawn_trigger_point:
+        x: -4.75
+        y: -3.25
+        z: 0.0
+      spawn_trigger_threshold: 2.53
+      dynamic_pose:
+        position:
+          x: -4.75
+          y: -3.25
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -3.35
+                  y: -3.45
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-001
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 3.953
+          y: 1.13
+        orientation:
+          yaw: -2.099382
+      goal_pose:
+        position:
+          x: 4.354
+          y: 5.74
+        orientation:
+          yaw: 1.788372
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-002
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.549
+          y: -1.409
+        orientation:
+          yaw: 0.062219
+      goal_pose:
+        position:
+          x: -2.765
+          y: -6.161
+        orientation:
+          yaw: -0.272558
+      spawn_trigger_point:
+        x: -1.7
+        y: 5.3
+        z: 0.0
+      spawn_trigger_threshold: 0.8
+      dynamic_pose:
+        position:
+          x: -1.7
+          y: 5.3
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-003
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.716
+          y: -1.736
+        orientation:
+          yaw: 2.003541
+      goal_pose:
+        position:
+          x: 0.577
+          y: 0.436
+        orientation:
+          yaw: -1.728529
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 2.45
+                  y: -5.1
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-004
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.534
+          y: 1.98
+        orientation:
+          yaw: -2.91547
+      goal_pose:
+        position:
+          x: -1.986
+          y: 3.373
+        orientation:
+          yaw: -0.802921
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-005
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.312
+          y: -3.51
+        orientation:
+          yaw: 2.855159
+      goal_pose:
+        position:
+          x: -0.277
+          y: -0.393
+        orientation:
+          yaw: -3.108682
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-006
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 2.693
+          y: -1.848
+        orientation:
+          yaw: 1.335397
+      goal_pose:
+        position:
+          x: 0.196
+          y: -3.647
+        orientation:
+          yaw: -1.019753
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-007
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 4.906
+          y: 2.127
+        orientation:
+          yaw: 3.079434
+      goal_pose:
+        position:
+          x: 1.877
+          y: 4.536
+        orientation:
+          yaw: -0.770244
+      spawn_trigger_point:
+        x: 3.2
+        y: -3.35
+        z: 0.0
+      spawn_trigger_threshold: 3.87
+      dynamic_pose:
+        position:
+          x: 3.2
+          y: -3.35
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-008
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.102
+          y: -4.215
+        orientation:
+          yaw: -1.536403
+      goal_pose:
+        position:
+          x: -2.624
+          y: -2.292
+        orientation:
+          yaw: 3.120068
+      spawn_trigger_point:
+        x: 0.55
+        y: 0.15
+        z: 0.0
+      spawn_trigger_threshold: 3.18
+      dynamic_pose:
+        position:
+          x: 0.55
+          y: 0.15
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-009
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.557
+          y: -3.221
+        orientation:
+          yaw: -0.342996
+      goal_pose:
+        position:
+          x: 1.505
+          y: -1.605
+        orientation:
+          yaw: 1.437033
+      spawn_trigger_point:
+        x: -2.8
+        y: 3.1
+        z: 0.0
+      spawn_trigger_threshold: 0.36
+      dynamic_pose:
+        position:
+          x: -2.8
+          y: 3.1
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -4.95
+                  y: 3.6
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-010
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.935
+          y: 4.104
+        orientation:
+          yaw: 1.664763
+      goal_pose:
+        position:
+          x: -1.899
+          y: 6.284
+        orientation:
+          yaw: -0.482538
+      spawn_trigger_point:
+        x: -5.65
+        y: 3.0
+        z: 0.0
+      spawn_trigger_threshold: 3.44
+      dynamic_pose:
+        position:
+          x: -5.65
+          y: 3.0
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 4.65
+                  y: -2.7
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-011
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 4.95
+          y: 0.948
+        orientation:
+          yaw: -0.283526
+      goal_pose:
+        position:
+          x: 2.626
+          y: 4.056
+        orientation:
+          yaw: 0.224622
+      spawn_trigger_point:
+        x: 4.1
+        y: 5.5
+        z: 0.0
+      spawn_trigger_threshold: 0.16
+      dynamic_pose:
+        position:
+          x: 4.1
+          y: 5.5
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-012
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 3.725
+          y: 4.247
+        orientation:
+          yaw: -0.836294
+      goal_pose:
+        position:
+          x: 0.005
+          y: 6.058
+        orientation:
+          yaw: -2.02944
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -4.55
+                  y: 6.3
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-013
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.257
+          y: -3.991
+        orientation:
+          yaw: 0.195557
+      goal_pose:
+        position:
+          x: -1.288
+          y: 0.552
+        orientation:
+          yaw: -2.883353
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.9
+                  y: 3.0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-014
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 2.468
+          y: -4.706
+        orientation:
+          yaw: -0.91454
+      goal_pose:
+        position:
+          x: -2.071
+          y: -3.498
+        orientation:
+          yaw: -0.68073
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.95
+                  y: -2.85
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-015
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.292
+          y: -1.167
+        orientation:
+          yaw: -2.690435
+      goal_pose:
+        position:
+          x: 2.968
+          y: -3.15
+        orientation:
+          yaw: 0.516288
+      spawn_trigger_point:
+        x: 4.8
+        y: -4.6
+        z: 0.0
+      spawn_trigger_threshold: 2.55
+      dynamic_pose:
+        position:
+          x: 4.8
+          y: -4.6
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-016
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.206
+          y: -4.025
+        orientation:
+          yaw: 0.035006
+      goal_pose:
+        position:
+          x: -1.967
+          y: -1.751
+        orientation:
+          yaw: -0.472916
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.2
+                  y: 5.1
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-017
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.149
+          y: -4.298
+        orientation:
+          yaw: -0.413131
+      goal_pose:
+        position:
+          x: -3.304
+          y: -3.037
+        orientation:
+          yaw: 0.881079
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 2.05
+                  y: 0.35
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-018
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.087
+          y: -4.331
+        orientation:
+          yaw: 0.013104
+      goal_pose:
+        position:
+          x: 0.297
+          y: -2.459
+        orientation:
+          yaw: 2.131199
+      spawn_trigger_point:
+        x: -0.45
+        y: 4.1
+        z: 0.0
+      spawn_trigger_threshold: 0.57
+      dynamic_pose:
+        position:
+          x: -0.45
+          y: 4.1
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-019
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 4.631
+          y: -4.939
+        orientation:
+          yaw: 2.370814
+      goal_pose:
+        position:
+          x: -0.284
+          y: -4.925
+        orientation:
+          yaw: -3.119315
+      spawn_trigger_point:
+        x: -1.55
+        y: -2.3
+        z: 0.0
+      spawn_trigger_threshold: 2.17
+      dynamic_pose:
+        position:
+          x: -1.55
+          y: -2.3
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-020
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 5.483
+          y: 6.032
+        orientation:
+          yaw: 2.907744
+      goal_pose:
+        position:
+          x: 1.68
+          y: 2.838
+        orientation:
+          yaw: -0.608904
+      spawn_trigger_point:
+        x: 3.8
+        y: 0.8
+        z: 0.0
+      spawn_trigger_threshold: 3.81
+      dynamic_pose:
+        position:
+          x: 3.8
+          y: 0.8
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-021
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.615
+          y: 1.587
+        orientation:
+          yaw: -2.448971
+      goal_pose:
+        position:
+          x: -2.815
+          y: 3.151
+        orientation:
+          yaw: 0.619632
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-022
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.76
+          y: 1.04
+        orientation:
+          yaw: 0.600625
+      goal_pose:
+        position:
+          x: -5.049
+          y: 2.112
+        orientation:
+          yaw: -1.183432
+      spawn_trigger_point:
+        x: -5.5
+        y: 1.25
+        z: 0.0
+      spawn_trigger_threshold: 4.59
+      dynamic_pose:
+        position:
+          x: -5.5
+          y: 1.25
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.05
+                  y: 4.9
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-023
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.08
+          y: -5.074
+        orientation:
+          yaw: -1.235423
+      goal_pose:
+        position:
+          x: -0.887
+          y: -1.472
+        orientation:
+          yaw: 1.705953
+      spawn_trigger_point:
+        x: 1.65
+        y: 5.3
+        z: 0.0
+      spawn_trigger_threshold: 1.54
+      dynamic_pose:
+        position:
+          x: 1.65
+          y: 5.3
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.35
+                  y: 5.65
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-024
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.187
+          y: -0.499
+        orientation:
+          yaw: -2.59385
+      goal_pose:
+        position:
+          x: 1.55
+          y: -3.011
+        orientation:
+          yaw: -2.944641
+      spawn_trigger_point:
+        x: 2.55
+        y: 0.6
+        z: 0.0
+      spawn_trigger_threshold: 4.08
+      dynamic_pose:
+        position:
+          x: 2.55
+          y: 0.6
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-025
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -4.568
+          y: 3.534
+        orientation:
+          yaw: 1.465491
+      goal_pose:
+        position:
+          x: 0.153
+          y: 4.942
+        orientation:
+          yaw: -0.813399
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.3
+                  y: 1.5
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-026
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.152
+          y: -6.006
+        orientation:
+          yaw: 0.696031
+      goal_pose:
+        position:
+          x: -0.145
+          y: -1.683
+        orientation:
+          yaw: -2.54571
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-027
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.949
+          y: 4.791
+        orientation:
+          yaw: -0.940891
+      goal_pose:
+        position:
+          x: -2.016
+          y: 1.102
+        orientation:
+          yaw: -1.548246
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-028
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 2.634
+          y: 2.208
+        orientation:
+          yaw: 2.882126
+      goal_pose:
+        position:
+          x: 5.342
+          y: 5.213
+        orientation:
+          yaw: 1.332329
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -5.9
+                  y: 0.15
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-029
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.352
+          y: 1.97
+        orientation:
+          yaw: -2.667319
+      goal_pose:
+        position:
+          x: -3.007
+          y: 4.468
+        orientation:
+          yaw: -1.979734
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.45
+                  y: -3.3
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-030
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.477
+          y: -2.028
+        orientation:
+          yaw: -0.549058
+      goal_pose:
+        position:
+          x: -3.154
+          y: -4.264
+        orientation:
+          yaw: -2.052503
+      spawn_trigger_point:
+        x: 4.4
+        y: -5.6
+        z: 0.0
+      spawn_trigger_threshold: 4.53
+      dynamic_pose:
+        position:
+          x: 4.4
+          y: -5.6
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-031
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -4.426
+          y: -3.585
+        orientation:
+          yaw: 2.996283
+      goal_pose:
+        position:
+          x: -0.127
+          y: -5.067
+        orientation:
+          yaw: 0.975308
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -5.85
+                  y: -3.5
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-032
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.43
+          y: 3.851
+        orientation:
+          yaw: -2.186141
+      goal_pose:
+        position:
+          x: 3.674
+          y: 5.331
+        orientation:
+          yaw: 0.216403
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-033
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.482
+          y: 4.331
+        orientation:
+          yaw: -1.360336
+      goal_pose:
+        position:
+          x: 3.178
+          y: 2.901
+        orientation:
+          yaw: 0.906898
+      spawn_trigger_point:
+        x: 5.6
+        y: -0.4
+        z: 0.0
+      spawn_trigger_threshold: 1.77
+      dynamic_pose:
+        position:
+          x: 5.6
+          y: -0.4
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -2.45
+                  y: 3.25
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-034
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.74
+          y: 4.944
+        orientation:
+          yaw: -1.03828
+      goal_pose:
+        position:
+          x: 1.795
+          y: 3.85
+        orientation:
+          yaw: 2.21427
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.0
+                  y: 3.05
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-035
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.19
+          y: 0.404
+        orientation:
+          yaw: -1.400593
+      goal_pose:
+        position:
+          x: 2.937
+          y: -1.478
+        orientation:
+          yaw: 2.821241
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.35
+                  y: -3.05
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-036
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 4.261
+          y: 4.652
+        orientation:
+          yaw: 2.923549
+      goal_pose:
+        position:
+          x: -0.036
+          y: 6.229
+        orientation:
+          yaw: -1.592363
+      spawn_trigger_point:
+        x: 5.15
+        y: -3.05
+        z: 0.0
+      spawn_trigger_threshold: 4.37
+      dynamic_pose:
+        position:
+          x: 5.15
+          y: -3.05
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -4.35
+                  y: 0.3
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-037
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.015
+          y: -0.495
+        orientation:
+          yaw: 0.004917
+      goal_pose:
+        position:
+          x: 2.677
+          y: 3.171
+        orientation:
+          yaw: -1.122403
+      spawn_trigger_point:
+        x: -1.2
+        y: 3.15
+        z: 0.0
+      spawn_trigger_threshold: 5.0
+      dynamic_pose:
+        position:
+          x: -1.2
+          y: 3.15
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-038
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.289
+          y: 3.091
+        orientation:
+          yaw: -1.445956
+      goal_pose:
+        position:
+          x: -1.892
+          y: -1.156
+        orientation:
+          yaw: 1.163333
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-039
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -5.125
+          y: -0.792
+        orientation:
+          yaw: -0.217369
+      goal_pose:
+        position:
+          x: -0.903
+          y: -1.252
+        orientation:
+          yaw: 2.653182
+      spawn_trigger_point:
+        x: -2.1
+        y: -4.2
+        z: 0.0
+      spawn_trigger_threshold: 1.89
+      dynamic_pose:
+        position:
+          x: -2.1
+          y: -4.2
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.4
+                  y: -5.7
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-040
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.187
+          y: -4.335
+        orientation:
+          yaw: 1.799804
+      goal_pose:
+        position:
+          x: 0.478
+          y: -0.117
+        orientation:
+          yaw: -2.930698
+      spawn_trigger_point:
+        x: 2.45
+        y: -0.5
+        z: 0.0
+      spawn_trigger_threshold: 3.48
+      dynamic_pose:
+        position:
+          x: 2.45
+          y: -0.5
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-041
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.739
+          y: -4.54
+        orientation:
+          yaw: 2.327001
+      goal_pose:
+        position:
+          x: -0.567
+          y: -1.574
+        orientation:
+          yaw: -2.784137
+      spawn_trigger_point:
+        x: -2.3
+        y: -3.85
+        z: 0.0
+      spawn_trigger_threshold: 1.48
+      dynamic_pose:
+        position:
+          x: -2.3
+          y: -3.85
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-042
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.491
+          y: 0.6
+        orientation:
+          yaw: -0.388858
+      goal_pose:
+        position:
+          x: -0.552
+          y: 4.686
+        orientation:
+          yaw: -0.804088
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-043
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.322
+          y: 5.685
+        orientation:
+          yaw: -0.504965
+      goal_pose:
+        position:
+          x: -1.587
+          y: 2.175
+        orientation:
+          yaw: -1.182631
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-044
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.238
+          y: 1.216
+        orientation:
+          yaw: -2.128299
+      goal_pose:
+        position:
+          x: -0.052
+          y: -2.703
+        orientation:
+          yaw: -2.83012
+      spawn_trigger_point:
+        x: -5.65
+        y: -5.55
+        z: 0.0
+      spawn_trigger_threshold: 3.38
+      dynamic_pose:
+        position:
+          x: -5.65
+          y: -5.55
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -5.75
+                  y: 2.15
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-045
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.81
+          y: -3.478
+        orientation:
+          yaw: -2.331853
+      goal_pose:
+        position:
+          x: -2.946
+          y: -2.007
+        orientation:
+          yaw: -0.288178
+      spawn_trigger_point:
+        x: 4.45
+        y: 2.1
+        z: 0.0
+      spawn_trigger_threshold: 0.2
+      dynamic_pose:
+        position:
+          x: 4.45
+          y: 2.1
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-046
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.382
+          y: 6.142
+        orientation:
+          yaw: 1.256582
+      goal_pose:
+        position:
+          x: -0.568
+          y: 1.981
+        orientation:
+          yaw: -1.741577
+      spawn_trigger_point:
+        x: -5.85
+        y: -2.85
+        z: 0.0
+      spawn_trigger_threshold: 1.02
+      dynamic_pose:
+        position:
+          x: -5.85
+          y: -2.85
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-047
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.029
+          y: -3.783
+        orientation:
+          yaw: -1.519899
+      goal_pose:
+        position:
+          x: 3.098
+          y: -1.602
+        orientation:
+          yaw: -3.041124
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -3.55
+                  y: -2.2
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-048
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -5.004
+          y: -5.306
+        orientation:
+          yaw: 3.050431
+      goal_pose:
+        position:
+          x: -1.295
+          y: -4.079
+        orientation:
+          yaw: 2.942179
+      spawn_trigger_point:
+        x: 0.2
+        y: 2.6
+        z: 0.0
+      spawn_trigger_threshold: 4.99
+      dynamic_pose:
+        position:
+          x: 0.2
+          y: 2.6
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-049
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.842
+          y: 4.423
+        orientation:
+          yaw: -1.804603
+      goal_pose:
+        position:
+          x: -0.324
+          y: 3.513
+        orientation:
+          yaw: -0.896881
+      spawn_trigger_point:
+        x: -1.5
+        y: 6.35
+        z: 0.0
+      spawn_trigger_threshold: 0.34
+      dynamic_pose:
+        position:
+          x: -1.5
+          y: 6.35
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 5.35
+                  y: -1.55
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-050
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 3.099
+          y: 5.275
+        orientation:
+          yaw: -1.309929
+      goal_pose:
+        position:
+          x: 4.847
+          y: 2.329
+        orientation:
+          yaw: -1.323991
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 4.95
+                  y: -2.2
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-051
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.501
+          y: 2.441
+        orientation:
+          yaw: -1.21114
+      goal_pose:
+        position:
+          x: 5.119
+          y: 1.561
+        orientation:
+          yaw: 1.003014
+      spawn_trigger_point:
+        x: 0.3
+        y: 5.45
+        z: 0.0
+      spawn_trigger_threshold: 2.77
+      dynamic_pose:
+        position:
+          x: 0.3
+          y: 5.45
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-052
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 3.123
+          y: 1.662
+        orientation:
+          yaw: 1.192936
+      goal_pose:
+        position:
+          x: 0.076
+          y: 3.253
+        orientation:
+          yaw: -0.675619
+      spawn_trigger_point:
+        x: 3.95
+        y: 6.6
+        z: 0.0
+      spawn_trigger_threshold: 0.54
+      dynamic_pose:
+        position:
+          x: 3.95
+          y: 6.6
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-053
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.917
+          y: -4.794
+        orientation:
+          yaw: 2.427569
+      goal_pose:
+        position:
+          x: -0.329
+          y: -5.369
+        orientation:
+          yaw: 2.880786
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-054
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 4.527
+          y: 6.26
+        orientation:
+          yaw: 1.299861
+      goal_pose:
+        position:
+          x: 4.362
+          y: 1.684
+        orientation:
+          yaw: -3.104157
+      spawn_trigger_point:
+        x: -3.85
+        y: -5.8
+        z: 0.0
+      spawn_trigger_threshold: 0.46
+      dynamic_pose:
+        position:
+          x: -3.85
+          y: -5.8
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.85
+                  y: 5.85
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-055
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.783
+          y: -3.339
+        orientation:
+          yaw: 1.704104
+      goal_pose:
+        position:
+          x: -2.28
+          y: 1.372
+        orientation:
+          yaw: 2.696441
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -3.55
+                  y: 2.95
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-056
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.241
+          y: 3.055
+        orientation:
+          yaw: 2.889822
+      goal_pose:
+        position:
+          x: -5.118
+          y: 4.619
+        orientation:
+          yaw: -1.274532
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.6
+                  y: 1.65
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-057
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.293
+          y: -6.249
+        orientation:
+          yaw: -2.236745
+      goal_pose:
+        position:
+          x: -0.463
+          y: -2.821
+        orientation:
+          yaw: -2.653931
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-058
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.041
+          y: 1.532
+        orientation:
+          yaw: -0.912346
+      goal_pose:
+        position:
+          x: -3.274
+          y: 3.47
+        orientation:
+          yaw: -1.648116
+      spawn_trigger_point:
+        x: 3.95
+        y: -4.75
+        z: 0.0
+      spawn_trigger_threshold: 0.21
+      dynamic_pose:
+        position:
+          x: 3.95
+          y: -4.75
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-059
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.21
+          y: 1.095
+        orientation:
+          yaw: -2.962684
+      goal_pose:
+        position:
+          x: 2.187
+          y: 4.775
+        orientation:
+          yaw: 2.097936
+      spawn_trigger_point:
+        x: -1.2
+        y: -1.4
+        z: 0.0
+      spawn_trigger_threshold: 1.05
+      dynamic_pose:
+        position:
+          x: -1.2
+          y: -1.4
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-060
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.085
+          y: -3.757
+        orientation:
+          yaw: -1.232424
+      goal_pose:
+        position:
+          x: -2.195
+          y: -1.061
+        orientation:
+          yaw: 0.452097
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-061
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -4.747
+          y: 5.078
+        orientation:
+          yaw: 0.547713
+      goal_pose:
+        position:
+          x: -0.813
+          y: 3.742
+        orientation:
+          yaw: 0.684711
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.95
+                  y: 6.1
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-062
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -5.077
+          y: -4.211
+        orientation:
+          yaw: 1.932038
+      goal_pose:
+        position:
+          x: -1.52
+          y: -4.303
+        orientation:
+          yaw: 0.951401
+      spawn_trigger_point:
+        x: 5.15
+        y: 4.3
+        z: 0.0
+      spawn_trigger_threshold: 4.62
+      dynamic_pose:
+        position:
+          x: 5.15
+          y: 4.3
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.15
+                  y: -4.0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-063
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.527
+          y: 0.395
+        orientation:
+          yaw: 2.003058
+      goal_pose:
+        position:
+          x: -1.038
+          y: -3.306
+        orientation:
+          yaw: -0.814369
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-064
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.517
+          y: 4.956
+        orientation:
+          yaw: -1.804525
+      goal_pose:
+        position:
+          x: 0.279
+          y: 6.286
+        orientation:
+          yaw: -1.464144
+      spawn_trigger_point:
+        x: 3.2
+        y: -6.0
+        z: 0.0
+      spawn_trigger_threshold: 4.29
+      dynamic_pose:
+        position:
+          x: 3.2
+          y: -6.0
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-065
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.399
+          y: -3.751
+        orientation:
+          yaw: 3.115539
+      goal_pose:
+        position:
+          x: -2.917
+          y: -1.517
+        orientation:
+          yaw: 2.616866
+      spawn_trigger_point:
+        x: 2.6
+        y: 6.2
+        z: 0.0
+      spawn_trigger_threshold: 1.14
+      dynamic_pose:
+        position:
+          x: 2.6
+          y: 6.2
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.8
+                  y: 5.15
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-066
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 2.648
+          y: 2.847
+        orientation:
+          yaw: 2.344859
+      goal_pose:
+        position:
+          x: 5.366
+          y: 5.633
+        orientation:
+          yaw: -2.811397
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -2.9
+                  y: 4.85
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-067
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 5.747
+          y: 5.685
+        orientation:
+          yaw: 2.519237
+      goal_pose:
+        position:
+          x: 5.135
+          y: 2.041
+        orientation:
+          yaw: 1.66575
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.8
+                  y: 1.3
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-068
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.153
+          y: -3.881
+        orientation:
+          yaw: 1.641626
+      goal_pose:
+        position:
+          x: -3.253
+          y: -4.682
+        orientation:
+          yaw: 0.905244
+      spawn_trigger_point:
+        x: 5.4
+        y: 1.9
+        z: 0.0
+      spawn_trigger_threshold: 4.81
+      dynamic_pose:
+        position:
+          x: 5.4
+          y: 1.9
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-069
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.715
+          y: -3.499
+        orientation:
+          yaw: -0.212237
+      goal_pose:
+        position:
+          x: 5.351
+          y: -6.114
+        orientation:
+          yaw: 2.139862
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -5.3
+                  y: -2.0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-070
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.818
+          y: 2.175
+        orientation:
+          yaw: 2.827538
+      goal_pose:
+        position:
+          x: 2.123
+          y: 4.204
+        orientation:
+          yaw: 2.090703
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.7
+                  y: -3.85
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-071
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.233
+          y: -3.933
+        orientation:
+          yaw: 1.10795
+      goal_pose:
+        position:
+          x: 4.045
+          y: -3.392
+        orientation:
+          yaw: 1.140892
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -2.8
+                  y: 1.35
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-072
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.041
+          y: 4.943
+        orientation:
+          yaw: 0.024635
+      goal_pose:
+        position:
+          x: 3.284
+          y: 3.285
+        orientation:
+          yaw: 1.086862
+      spawn_trigger_point:
+        x: -5.5
+        y: -0.35
+        z: 0.0
+      spawn_trigger_threshold: 0.35
+      dynamic_pose:
+        position:
+          x: -5.5
+          y: -0.35
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-073
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.115
+          y: 6.228
+        orientation:
+          yaw: -3.139366
+      goal_pose:
+        position:
+          x: -0.319
+          y: 4.095
+        orientation:
+          yaw: -2.070945
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -3.8
+                  y: 4.1
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-074
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 4.216
+          y: -3.548
+        orientation:
+          yaw: -1.82287
+      goal_pose:
+        position:
+          x: 0.154
+          y: -1.729
+        orientation:
+          yaw: 0.267442
+      spawn_trigger_point:
+        x: 4.3
+        y: 3.75
+        z: 0.0
+      spawn_trigger_threshold: 1.48
+      dynamic_pose:
+        position:
+          x: 4.3
+          y: 3.75
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-075
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 4.092
+          y: 3.571
+        orientation:
+          yaw: 3.037244
+      goal_pose:
+        position:
+          x: -0.675
+          y: 3.303
+        orientation:
+          yaw: 0.618825
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-076
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -5.322
+          y: 1.115
+        orientation:
+          yaw: 2.436841
+      goal_pose:
+        position:
+          x: -1.658
+          y: 0.755
+        orientation:
+          yaw: 0.935725
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.2
+                  y: -6.55
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-077
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.47
+          y: -3.112
+        orientation:
+          yaw: 1.694686
+      goal_pose:
+        position:
+          x: 4.458
+          y: -5.21
+        orientation:
+          yaw: 1.375377
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-078
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.054
+          y: 0.549
+        orientation:
+          yaw: 0.197638
+      goal_pose:
+        position:
+          x: 0.477
+          y: 4.467
+        orientation:
+          yaw: 1.274802
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-079
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.776
+          y: 3.806
+        orientation:
+          yaw: -1.580223
+      goal_pose:
+        position:
+          x: 5.566
+          y: 2.85
+        orientation:
+          yaw: -0.063782
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-080
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.388
+          y: 5.073
+        orientation:
+          yaw: 2.102225
+      goal_pose:
+        position:
+          x: -0.005
+          y: 1.413
+        orientation:
+          yaw: -2.827135
+      spawn_trigger_point:
+        x: -5.4
+        y: 4.55
+        z: 0.0
+      spawn_trigger_threshold: 1.17
+      dynamic_pose:
+        position:
+          x: -5.4
+          y: 4.55
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-081
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 2.794
+          y: -3.315
+        orientation:
+          yaw: -1.716243
+      goal_pose:
+        position:
+          x: -1.259
+          y: -4.669
+        orientation:
+          yaw: -0.483136
+      spawn_trigger_point:
+        x: 1.1
+        y: 2.35
+        z: 0.0
+      spawn_trigger_threshold: 4.25
+      dynamic_pose:
+        position:
+          x: 1.1
+          y: 2.35
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.95
+                  y: 0.45
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-082
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.49
+          y: -5.577
+        orientation:
+          yaw: -2.877268
+      goal_pose:
+        position:
+          x: -2.225
+          y: -4.398
+        orientation:
+          yaw: 0.488495
+      spawn_trigger_point:
+        x: 1.5
+        y: 3.75
+        z: 0.0
+      spawn_trigger_threshold: 1.92
+      dynamic_pose:
+        position:
+          x: 1.5
+          y: 3.75
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-083
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.806
+          y: -5.695
+        orientation:
+          yaw: -2.31796
+      goal_pose:
+        position:
+          x: -1.487
+          y: -3.687
+        orientation:
+          yaw: -0.074302
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-084
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -5.691
+          y: -5.764
+        orientation:
+          yaw: -2.592403
+      goal_pose:
+        position:
+          x: -2.484
+          y: -4.722
+        orientation:
+          yaw: 0.012161
+      spawn_trigger_point:
+        x: 4.65
+        y: 5.25
+        z: 0.0
+      spawn_trigger_threshold: 4.79
+      dynamic_pose:
+        position:
+          x: 4.65
+          y: 5.25
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-085
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -4.531
+          y: 4.228
+        orientation:
+          yaw: 0.327661
+      goal_pose:
+        position:
+          x: -1.615
+          y: 5.985
+        orientation:
+          yaw: 1.354335
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.25
+                  y: 0.2
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-086
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.41
+          y: -3.798
+        orientation:
+          yaw: -1.781454
+      goal_pose:
+        position:
+          x: -0.173
+          y: 0.258
+        orientation:
+          yaw: 2.125995
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-087
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.139
+          y: 4.547
+        orientation:
+          yaw: -2.52148
+      goal_pose:
+        position:
+          x: -3.682
+          y: 2.115
+        orientation:
+          yaw: -1.807118
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 5.9
+                  y: 0.85
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-088
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.556
+          y: 1.324
+        orientation:
+          yaw: -0.439157
+      goal_pose:
+        position:
+          x: -1.479
+          y: -1.425
+        orientation:
+          yaw: -2.492844
+      spawn_trigger_point:
+        x: 0.35
+        y: 0.45
+        z: 0.0
+      spawn_trigger_threshold: 2.25
+      dynamic_pose:
+        position:
+          x: 0.35
+          y: 0.45
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 5.45
+                  y: 6.05
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-089
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.632
+          y: 2.19
+        orientation:
+          yaw: 1.197023
+      goal_pose:
+        position:
+          x: 0.186
+          y: 4.045
+        orientation:
+          yaw: -1.544677
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -2.25
+                  y: 0.6
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-090
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 2.035
+          y: -6.183
+        orientation:
+          yaw: -2.140964
+      goal_pose:
+        position:
+          x: 3.147
+          y: -2.996
+        orientation:
+          yaw: 2.049915
+      spawn_trigger_point:
+        x: -2.65
+        y: -1.7
+        z: 0.0
+      spawn_trigger_threshold: 1.6
+      dynamic_pose:
+        position:
+          x: -2.65
+          y: -1.7
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.85
+                  y: -2.65
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-091
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.914
+          y: 5.742
+        orientation:
+          yaw: -0.25402
+      goal_pose:
+        position:
+          x: -2.409
+          y: 4.042
+        orientation:
+          yaw: 2.042948
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.1
+                  y: 3.9
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-092
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.518
+          y: -2.381
+        orientation:
+          yaw: -2.346274
+      goal_pose:
+        position:
+          x: 3.807
+          y: -0.846
+        orientation:
+          yaw: -3.025764
+      spawn_trigger_point:
+        x: 5.6
+        y: -3.65
+        z: 0.0
+      spawn_trigger_threshold: 4.16
+      dynamic_pose:
+        position:
+          x: 5.6
+          y: -3.65
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.1
+                  y: -5.65
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-093
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.706
+          y: 3.186
+        orientation:
+          yaw: 0.782533
+      goal_pose:
+        position:
+          x: -0.055
+          y: 0.524
+        orientation:
+          yaw: 2.197405
+      spawn_trigger_point:
+        x: -2.2
+        y: 6.35
+        z: 0.0
+      spawn_trigger_threshold: 3.83
+      dynamic_pose:
+        position:
+          x: -2.2
+          y: 6.35
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-094
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.916
+          y: -0.315
+        orientation:
+          yaw: 1.479135
+      goal_pose:
+        position:
+          x: -0.644
+          y: 1.032
+        orientation:
+          yaw: -0.276928
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 2.5
+                  y: 5.95
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-095
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 2.779
+          y: 3.1
+        orientation:
+          yaw: -0.002511
+      goal_pose:
+        position:
+          x: -1.954
+          y: 3.019
+        orientation:
+          yaw: -2.58268
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-096
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 3.553
+          y: 3.181
+        orientation:
+          yaw: -1.105668
+      goal_pose:
+        position:
+          x: 0.408
+          y: 2.657
+        orientation:
+          yaw: -2.786343
+      spawn_trigger_point:
+        x: -5.6
+        y: -6.1
+        z: 0.0
+      spawn_trigger_threshold: 1.94
+      dynamic_pose:
+        position:
+          x: -5.6
+          y: -6.1
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.45
+                  y: 0.6
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-097
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.014
+          y: -3.871
+        orientation:
+          yaw: -1.84938
+      goal_pose:
+        position:
+          x: -1.981
+          y: -2.012
+        orientation:
+          yaw: 2.788801
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-098
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.737
+          y: 3.457
+        orientation:
+          yaw: -1.551056
+      goal_pose:
+        position:
+          x: 1.266
+          y: -1.123
+        orientation:
+          yaw: -0.187899
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-099
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.524
+          y: -0.307
+        orientation:
+          yaw: 1.328947
+      goal_pose:
+        position:
+          x: -4.928
+          y: -0.639
+        orientation:
+          yaw: -0.553415
+      spawn_trigger_point:
+        x: 4.5
+        y: 0.25
+        z: 0.0
+      spawn_trigger_threshold: 0.91
+      dynamic_pose:
+        position:
+          x: 4.5
+          y: 0.25
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.5
+                  y: 6.15
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-100
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.517
+          y: 6.038
+        orientation:
+          yaw: 0.45789
+      goal_pose:
+        position:
+          x: -4.141
+          y: 4.879
+        orientation:
+          yaw: -1.487463
+      spawn_trigger_point:
+        x: -1.85
+        y: -1.1
+        z: 0.0
+      spawn_trigger_threshold: 1.39
+      dynamic_pose:
+        position:
+          x: -1.85
+          y: -1.1
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -5.5
+                  y: 6.35
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-101
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -4.767
+          y: 1.855
+        orientation:
+          yaw: -0.640846
+      goal_pose:
+        position:
+          x: -0.157
+          y: 0.733
+        orientation:
+          yaw: -1.538872
+      spawn_trigger_point:
+        x: -0.5
+        y: 4.5
+        z: 0.0
+      spawn_trigger_threshold: 2.7
+      dynamic_pose:
+        position:
+          x: -0.5
+          y: 4.5
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-102
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.359
+          y: -5.06
+        orientation:
+          yaw: 1.326421
+      goal_pose:
+        position:
+          x: -3.821
+          y: -5.234
+        orientation:
+          yaw: 1.931301
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-103
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 2.16
+          y: 4.196
+        orientation:
+          yaw: 0.616629
+      goal_pose:
+        position:
+          x: -2.712
+          y: 4.339
+        orientation:
+          yaw: 0.456759
+      spawn_trigger_point:
+        x: 1.1
+        y: -6.25
+        z: 0.0
+      spawn_trigger_threshold: 3.11
+      dynamic_pose:
+        position:
+          x: 1.1
+          y: -6.25
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-104
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.453
+          y: -3.492
+        orientation:
+          yaw: 3.072
+      goal_pose:
+        position:
+          x: -2.42
+          y: -1.541
+        orientation:
+          yaw: -1.399532
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.8
+                  y: 0.3
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-105
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -1.938
+          y: 2.061
+        orientation:
+          yaw: -2.947877
+      goal_pose:
+        position:
+          x: 1.239
+          y: 3.662
+        orientation:
+          yaw: 0.439947
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -4.25
+                  y: 4.5
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-106
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 0.9
+          y: 3.78
+        orientation:
+          yaw: -0.347631
+      goal_pose:
+        position:
+          x: -3.409
+          y: 5.101
+        orientation:
+          yaw: 0.558343
+      spawn_trigger_point:
+        x: -5.0
+        y: -6.15
+        z: 0.0
+      spawn_trigger_threshold: 4.64
+      dynamic_pose:
+        position:
+          x: -5.0
+          y: -6.15
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.1
+                  y: 1.9
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-107
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.764
+          y: 2.017
+        orientation:
+          yaw: 0.013133
+      goal_pose:
+        position:
+          x: -0.126
+          y: 3.956
+        orientation:
+          yaw: -2.365388
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.5
+                  y: -3.75
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-108
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 5.394
+          y: 3.704
+        orientation:
+          yaw: 1.244551
+      goal_pose:
+        position:
+          x: 0.539
+          y: 3.177
+        orientation:
+          yaw: 2.599005
+      spawn_trigger_point:
+        x: -5.65
+        y: 4.85
+        z: 0.0
+      spawn_trigger_threshold: 1.51
+      dynamic_pose:
+        position:
+          x: -5.65
+          y: 4.85
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-109
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 3.847
+          y: -5.009
+        orientation:
+          yaw: -1.189342
+      goal_pose:
+        position:
+          x: -0.043
+          y: -5.662
+        orientation:
+          yaw: 0.483844
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-110
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.595
+          y: -1.464
+        orientation:
+          yaw: -2.685837
+      goal_pose:
+        position:
+          x: -1.43
+          y: 1.716
+        orientation:
+          yaw: 0.950294
+      spawn_trigger_point:
+        x: -4.4
+        y: 3.1
+        z: 0.0
+      spawn_trigger_threshold: 1.71
+      dynamic_pose:
+        position:
+          x: -4.4
+          y: 3.1
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-111
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -5.081
+          y: 0.452
+        orientation:
+          yaw: -0.039775
+      goal_pose:
+        position:
+          x: -1.703
+          y: 1.679
+        orientation:
+          yaw: 1.932229
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.3
+                  y: 2.9
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-112
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 2.674
+          y: 5.858
+        orientation:
+          yaw: 1.892061
+      goal_pose:
+        position:
+          x: 2.611
+          y: 1.559
+        orientation:
+          yaw: 1.917519
+      spawn_trigger_point:
+        x: 5.15
+        y: 3.1
+        z: 0.0
+      spawn_trigger_threshold: 1.35
+      dynamic_pose:
+        position:
+          x: 5.15
+          y: 3.1
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 2.0
+                  y: 1.1
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-113
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.885
+          y: -5.201
+        orientation:
+          yaw: -1.124913
+      goal_pose:
+        position:
+          x: 4.806
+          y: -3.164
+        orientation:
+          yaw: -2.480237
+      spawn_trigger_point:
+        x: -2.5
+        y: 2.1
+        z: 0.0
+      spawn_trigger_threshold: 1.34
+      dynamic_pose:
+        position:
+          x: -2.5
+          y: 2.1
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.65
+                  y: 4.25
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-114
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.7
+          y: 0.915
+        orientation:
+          yaw: -1.492663
+      goal_pose:
+        position:
+          x: -1.337
+          y: 4.202
+        orientation:
+          yaw: 1.999921
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -3.0
+                  y: -3.1
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-115
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 4.243
+          y: 1.321
+        orientation:
+          yaw: -1.507776
+      goal_pose:
+        position:
+          x: 4.003
+          y: 5.58
+        orientation:
+          yaw: 0.88253
+      spawn_trigger_point:
+        x: -5.4
+        y: 0.75
+        z: 0.0
+      spawn_trigger_threshold: 4.25
+      dynamic_pose:
+        position:
+          x: -5.4
+          y: 0.75
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-116
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -0.418
+          y: -3.964
+        orientation:
+          yaw: -1.817313
+      goal_pose:
+        position:
+          x: -3.032
+          y: -1.65
+        orientation:
+          yaw: 0.41159
+      spawn_trigger_point:
+        x: -3.3
+        y: 6.35
+        z: 0.0
+      spawn_trigger_threshold: 2.98
+      dynamic_pose:
+        position:
+          x: -3.3
+          y: 6.35
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-117
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: 1.389
+          y: -1.273
+        orientation:
+          yaw: -0.553319
+      goal_pose:
+        position:
+          x: -0.38
+          y: 2.731
+        orientation:
+          yaw: -1.776658
+      spawn_trigger_point:
+        x: 0.6
+        y: -3.15
+        z: 0.0
+      spawn_trigger_threshold: 3.6
+      dynamic_pose:
+        position:
+          x: 0.6
+          y: -3.15
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-118
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -2.855
+          y: 3.626
+        orientation:
+          yaw: 2.725835
+      goal_pose:
+        position:
+          x: -0.834
+          y: 1.058
+        orientation:
+          yaw: -2.794975
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-119
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      mesh_file: environments/secorolab/3d-mesh/secorolab.stl
+      start_pose:
+        position:
+          x: -3.942
+          y: 1.801
+        orientation:
+          yaw: 2.663176
+      goal_pose:
+        position:
+          x: 0.096
+          y: 0.434
+        orientation:
+          yaw: -1.823993
+      spawn_trigger_point:
+        x: -4.8
+        y: -3.1
+        z: 0.0
+      spawn_trigger_threshold: 1.53
+      dynamic_pose:
+        position:
+          x: -4.8
+          y: -3.1
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/secorolab/3d-mesh/secorolab.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.65
+                  y: 3.7
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+execution:
+  sizing: calibrated
+  containers:
+    simulation:
+      calibration:
+        size_on: 99
+      backend: roqsim
+      config: world/nav2.yaml
+    sut:
+      calibration:
+        size_on: 99
+      image: family:robovast-roqsim
+      config_files:
+        nav2: files/nav2_params.yaml
+    scenario:
+      calibration:
+        size_on: 99
+      image: family:robovast-roqsim
+  mode: ros2
+  runs: 1
+  runs_per_job: 1
+  timeout: 240
+  scenario_file: nav_to_pose.osc
+  run_files:
+  - files/*
+  - environments/*
+  - files/models/*.xacro
+  - environments/secorolab/maps/*
+  - environments/secorolab/3d-mesh/*
+  - environments/secorolab/json-ld/*
+  - environments/secorolab/mujoco/*
+  - world/*
+  env:
+  - PYTHONUNBUFFERED: '1'
+results_processing:
+  postprocessing:
+  - rosbags_tf_to_csv:
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - rosbags_action_to_csv:
+      action: navigate_to_pose
+  - rosbags_to_csv:
+      topics:
+      - /collision
+  - rosbags_nav2bt_to_csv
+  - nav2_bt_tree:
+      bt_xml: files/navigate_to_pose_w_replanning_and_recovery.xml
+  - search/bt_coverage.py:BtCoverage:
+      goal_x: 0.0
+      goal_y: 0.0
+      arrival_radius: 0.6
+  - rosbags_costmap_to_csv:
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+visualization:
+  config:
+    panels:
+    - parameters:
+        title: Scenario parameters
+        height: 30%
+    - world:
+        title: World configuration
+        height: 15%
+    - map2d:
+        title: Map
+        map:
+          param: map_file
+        markers:
+        - kind: pose
+          param: start_pose
+          label: start
+          color: '#60a5fa'
+        - kind: pose
+          param: goal_pose
+          label: goal
+          color: '#4ade80'
+  results:
+    run_view:
+      panels:
+      - nav2_behavior_tree:
+          title: Nav2 Behavior Tree
+          position:
+            anchor: top-left
+            width: 320
+            height: calc(50% - 44px)
+          minimizable: true
+      - costmap:
+          title: Nav2 Costmap
+          position:
+            anchor: top-right
+            width: 320
+            height: 550
+          minimizable: true
+          layers:
+            map:
+              topic: /map
+            global:
+              topic: /global_costmap/costmap
+            local:
+              topic: /local_costmap/costmap
+            poses:
+              table: poses
+      - log:
+          title: Run log
+          position:
+            anchor: bottom-center
+            width: calc(100% - 680px)
+            height: 380
+          minimizable: true
+          minimized: true

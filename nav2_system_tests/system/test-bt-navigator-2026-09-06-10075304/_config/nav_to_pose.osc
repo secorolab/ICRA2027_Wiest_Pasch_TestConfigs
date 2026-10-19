@@ -1,0 +1,104 @@
+import osc.helpers
+import osc.ros
+import osc.nav2
+import osc.os
+import osc.remote
+import osc.sim
+import osc.dataops
+
+scenario test_scenario:
+    timeout(1800s)
+
+    map_file: string
+    mesh_file: string
+
+    start_pose: pose_3d
+    goal_pose: pose_3d
+    params_file: string
+    spawn_height: length = 0.03m
+    
+    static_objects: list of spawn_entity
+    dynamic_objects: list of spawn_entity
+    spawn_trigger_point: position_3d = position_3d(x: 1000.0m, y: 1000.0m)
+    spawn_trigger_threshold: length = 1.5m
+    use_rviz: string = "False"
+    laserscan_gaussian_noise_std_deviation: string = '0.0'
+    laserscan_random_drop_percentage: string = '0.0'
+
+    robot: differential_drive_robot
+
+    do serial:
+        serial:
+            timeout(120s)
+            wait_for_topics(topics: ['/clock'])
+            check_data(topic_name: '/scan_sim',
+                       topic_type: 'sensor_msgs.msg.LaserScan',
+                       member_name: 'range_max',
+                       comparison_operator: comparison_operator!gt,
+                       expected_value: '0.0',
+                       qos_profile: qos_preset_profiles!sensor_data)
+
+        delete_entity(entity: 'dynamic_0')
+
+        set_entity_state(entity: 'robot',
+                         pose: pose_3d(
+                             position: position_3d(x: start_pose.position.x,
+                                                   y: start_pose.position.y,
+                                                   z: spawn_height),
+                             orientation: start_pose.orientation))
+
+        parallel:
+            # The sut channel stages any per-configuration parameter overrides at this path.
+            ros_launch('', '/config/files/nav2_stack.launch.py',
+                [key_value('map', os.abspath(common.get_scenario_file_directory() + "/" + map_file)),
+                 key_value('params_file', common.get_scenario_file_directory() + '/' + params_file),
+                 key_value('autostart', 'true'),
+                 key_value('use_rviz', use_rviz),
+                 key_value('laserscan_gaussian_noise_std_deviation', laserscan_gaussian_noise_std_deviation),
+                 key_value('laserscan_random_drop_percentage', laserscan_random_drop_percentage)],
+                wait_for_shutdown: false) with:
+                    remote('ipc:///ipc/sut')
+
+            parallel:
+                serial:
+                    robot.init_nav2(start_pose)
+                    bag_record([
+                            '/clock',
+                            '/tf',
+                            '/tf_static',
+                            '/map',
+                            '/global_costmap/costmap',
+                            '/local_costmap/costmap',
+                            '/amcl_pose',
+                            '/plan',
+                            '/scan',
+                            '/odom',
+                            '/collision',
+                            '/behavior_tree_log',
+                            '/navigate_to_pose/_action/feedback',
+                            '/navigate_to_pose/_action/status'
+                        ],
+                        hidden_topics: true,
+                        use_sim_time: true,
+                        timestamp_suffix: false)
+                    parallel:
+                        serial:
+                            robot.nav_to_pose(goal_pose)
+                            emit end
+                        serial:
+                            robot.tf_close_to(
+                                reference_point: spawn_trigger_point,
+                                threshold: spawn_trigger_threshold,
+                                robot_frame_id: 'nav2_turtlebot4_base_link_gt')
+                            spawn_entity(entity_name: 'dynamic_0', uri: '',
+                                         initial_pose: pose_3d())
+                serial:
+                    one_of:
+                        log_check(values: ["Control loop missed its desired rate"]) with:
+                            repeat(10)
+                        check_data(topic_name: '/collision',
+                                   topic_type: 'std_msgs.msg.Bool',
+                                   member_name: 'data',
+                                   comparison_operator: comparison_operator!eq,
+                                   expected_value: 'True')
+                    emit fail

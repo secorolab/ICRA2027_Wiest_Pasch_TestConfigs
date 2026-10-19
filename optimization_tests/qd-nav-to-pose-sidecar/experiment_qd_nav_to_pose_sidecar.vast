@@ -1,0 +1,4229 @@
+version: 4
+metadata:
+  name: qd-nav-to-pose-secorolab-sidecar
+  title: Manual rerun of the QD tiles -- nav-to-pose -- SecooraLab
+  description: |
+    One run of each of the 60 configurations shown in the comparison video (the two worst- and two
+    best-covering configs of each QD batch), replayed so every start/goal, obstacle, trigger and
+    parameter choice is reproduced exactly: scenario values come from each configuration's
+    scenario.config, obstacle placement from its sim.config, and the A* flag from its sut.config.
+    Nav2 runs MPPI or DWB per the config's params file (files/nav2_params_mppi.yaml or .._dwb.yaml,
+    possibly the ``_astar`` variant), with the same GridBased.use_astar the campaign baked into the
+    file the run loaded. Scenario, world and containers match the original campaign; what this run
+    adds is the costmap sidecar (rosbags_costmap_to_csv over the three nav2 costmap topics) and the
+    odom TF table (rosbags_tf_to_csv), which the costmap overlay in the video tooling reads.
+execution:
+  sizing: fixed
+  containers:
+    scenario:
+      image: family:robovast-roqsim
+      resources: {cpu: 2, memory: 1Gi}
+    sut:
+      image: family:robovast-roqsim
+      resources: {cpu: 3.25, memory: 2Gi}
+    simulation:
+      backend: roqsim
+      config: world/secorolab_nav2_standalone.yaml
+      resources: {cpu: 2, memory: 2Gi}
+  mode: ros2
+  runs: 1
+  runs_per_job: 1
+  timeout: 1800
+  scenario_file: nav_to_pose_qd.osc
+  run_files:
+  - 'files/*'
+  - 'files/models/*.xacro'
+  - 'environments/*'
+  - 'environments/secorolab/maps/*'
+  - 'environments/secorolab/json-ld/*'
+  - 'environments/secorolab/3d-mesh/*'
+  - 'environments/secorolab/mujoco/*'
+  - 'world/*'
+plugins:
+- rosbags==0.11.5
+configuration:
+- name: b01-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.11120999550298816
+          y: 2.7090965587059523
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.012691307429614551
+            y: -0.6541563933109898
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.012691307429614551
+        y: -0.6541563933109898
+        z: 0.0
+      spawn_trigger_threshold: 0.5578444800093415
+      static_obstacle_distance: 0.7061095191677333
+      dynamic_obstacle_lateral_distance: 0.4601676441228211
+      dynamic_obstacle_trigger_distance: 0.5578444800093415
+      controller_profile: files/nav2_params_mppi.yaml
+      use_astar: false
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.012691307429614551
+                  y: -0.6541563933109898
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b01-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.11748747210882637
+          y: 2.6968113201991626
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.016569384045022964
+            y: -0.9041563933109898
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.049197351104659975
+            y: -0.7541563933109904
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.049197351104659975
+        y: -0.7541563933109904
+        z: 0.0
+      spawn_trigger_threshold: 0.3814110342377892
+      static_obstacle_distance: 0.34068350849240936
+      dynamic_obstacle_lateral_distance: 0.609237705490976
+      dynamic_obstacle_trigger_distance: 0.3814110342377892
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.016569384045022964
+                  y: -0.9041563933109898
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.049197351104659975
+                  y: -0.7541563933109904
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b01-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: -0.449746727826855
+          y: 3.806908238591088
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.5962023650779072
+            y: -0.25415639331099044
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.5869797177691368
+            y: -0.10415639331099001
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.5869797177691368
+        y: -0.10415639331099001
+        z: 0.0
+      spawn_trigger_threshold: 0.4260886941780983
+      static_obstacle_distance: 0.597007874321676
+      dynamic_obstacle_lateral_distance: 0.5593477922669599
+      dynamic_obstacle_trigger_distance: 0.4260886941780983
+      controller_profile: files/nav2_params_mppi.yaml
+      use_astar: false
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.5962023650779072
+                  y: -0.25415639331099044
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.5869797177691368
+                  y: -0.10415639331099001
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b01-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -3.394346023767239
+          y: -3.9681605276242053
+        orientation:
+          yaw: 2.9720129677614313
+      goal_pose:
+        position:
+          x: -5.448523514380012
+          y: 0.6257483303999911
+        orientation:
+          yaw: 0.3568928577075572
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.1944837021000447
+            y: 0.8027964887220259
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.1944837021000447
+        y: 0.8027964887220259
+        z: 0.0
+      spawn_trigger_threshold: 0.5005877040405095
+      static_obstacle_distance: 0.5735955670177038
+      dynamic_obstacle_lateral_distance: 0.5853381789726193
+      dynamic_obstacle_trigger_distance: 0.5005877040405095
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.1944837021000447
+                  y: 0.8027964887220259
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b02-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.20543039337722702
+          y: 2.5247039862169993
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.07869570987827684
+            y: -0.85415639331099
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.07869570987827684
+        y: -0.85415639331099
+        z: 0.0
+      spawn_trigger_threshold: 0.327788110350486
+      static_obstacle_distance: 0.5703854104249398
+      dynamic_obstacle_lateral_distance: 0.4953382002615324
+      dynamic_obstacle_trigger_distance: 0.327788110350486
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.07869570987827684
+                  y: -0.85415639331099
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b02-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.12386014966559644
+          y: 2.684339770143686
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.014220549547914157
+            y: -0.9041563933109898
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.05268983261474133
+            y: -0.7041563933109897
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.05268983261474133
+        y: -0.7041563933109897
+        z: 0.0
+      spawn_trigger_threshold: 0.4911909282209856
+      static_obstacle_distance: 0.4664122051180055
+      dynamic_obstacle_lateral_distance: 0.6234990271962053
+      dynamic_obstacle_trigger_distance: 0.4911909282209856
+      controller_profile: files/nav2_params_dwb.yaml
+      use_astar: false
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.014220549547914157
+                  y: -0.9041563933109898
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.05268983261474133
+                  y: -0.7041563933109897
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b02-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: -0.2429739068999277
+          y: 3.4022466872526564
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.3505046768733981
+            y: -0.45415639331098967
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.3522570448581813
+            y: -0.3041563933109902
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.3522570448581813
+        y: -0.3041563933109902
+        z: 0.0
+      spawn_trigger_threshold: 0.4754719970491223
+      static_obstacle_distance: 0.41040432873709703
+      dynamic_obstacle_lateral_distance: 0.4175600097349204
+      dynamic_obstacle_trigger_distance: 0.4754719970491223
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.3505046768733981
+                  y: -0.45415639331098967
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.3522570448581813
+                  y: -0.3041563933109902
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b02-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: -0.3193761597210045
+          y: 3.551768534532835
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.47961475520513247
+            y: -0.15415639331098982
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.47961475520513247
+        y: -0.15415639331098982
+        z: 0.0
+      spawn_trigger_threshold: 0.6042357454248068
+      static_obstacle_distance: 0.37627870168408284
+      dynamic_obstacle_lateral_distance: 0.5292734453680461
+      dynamic_obstacle_trigger_distance: 0.6042357454248068
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.47961475520513247
+                  y: -0.15415639331098982
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b03-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.3451932550868837
+          y: 2.2511832392184594
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.18103852251111624
+            y: -1.10415639331099
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.11773107548599832
+            y: -1.05415639331099
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.11773107548599832
+        y: -1.05415639331099
+        z: 0.0
+      spawn_trigger_threshold: 0.22356821689379036
+      static_obstacle_distance: 0.48577147684279487
+      dynamic_obstacle_lateral_distance: 0.7442833303073926
+      dynamic_obstacle_trigger_distance: 0.22356821689379036
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.18103852251111624
+                  y: -1.10415639331099
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.11773107548599832
+                  y: -1.05415639331099
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b03-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 0.6452925085760643
+          y: -4.884755939354331
+        orientation:
+          yaw: 2.95048723364767
+      goal_pose:
+        position:
+          x: -0.48662694330052436
+          y: 3.502920148533269
+        orientation:
+          yaw: -0.9000453930211942
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.6485392497304552
+            y: 0.3458436066890092
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.6150030717375237
+            y: 0.5458436066890104
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.6150030717375237
+        y: 0.5458436066890104
+        z: 0.0
+      spawn_trigger_threshold: 0.5437110445255354
+      static_obstacle_distance: 0.6065503912174133
+      dynamic_obstacle_lateral_distance: 0.46960758372066375
+      dynamic_obstacle_trigger_distance: 0.5437110445255354
+      controller_profile: files/nav2_params_dwb.yaml
+      use_astar: false
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.6485392497304552
+                  y: 0.3458436066890092
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.6150030717375237
+                  y: 0.5458436066890104
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b03-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: -0.6029641496601812
+          y: 4.1067600243974045
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.7762318105261842
+            y: -0.05415639331099019
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.7976159560699427
+            y: 0.09584360668901017
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.7976159560699427
+        y: 0.09584360668901017
+        z: 0.0
+      spawn_trigger_threshold: 0.5097689658456919
+      static_obstacle_distance: 0.5154594102075999
+      dynamic_obstacle_lateral_distance: 0.6027801814445195
+      dynamic_obstacle_trigger_distance: 0.5097689658456919
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.7762318105261842
+                  y: -0.05415639331099019
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.7976159560699427
+                  y: 0.09584360668901017
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b03-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.05962312453285312
+          y: 2.8100538467184206
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.05516284133889768
+            y: -0.8041563933109902
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.048594986110722896
+            y: -0.60415639331099
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.048594986110722896
+        y: -0.60415639331099
+        z: 0.0
+      spawn_trigger_threshold: 0.5575839555667201
+      static_obstacle_distance: 0.42942564117829224
+      dynamic_obstacle_lateral_distance: 0.40260623038055526
+      dynamic_obstacle_trigger_distance: 0.5575839555667201
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.05516284133889768
+                  y: -0.8041563933109902
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.048594986110722896
+                  y: -0.60415639331099
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b04-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: -0.4222259536667252
+          y: 3.7530491331450744
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.5533401737829129
+            y: -0.10415639331099001
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.5533401737829129
+        y: -0.10415639331099001
+        z: 0.0
+      spawn_trigger_threshold: 0.5176215453568618
+      static_obstacle_distance: 0.47877171084177655
+      dynamic_obstacle_lateral_distance: 0.421982896441477
+      dynamic_obstacle_trigger_distance: 0.5176215453568618
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.5533401737829129
+                  y: -0.10415639331099001
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b04-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.12938217861498114
+          y: 2.67353296878954
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.018748103407869365
+            y: -0.9041563933109898
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.03121138589794209
+            y: -0.7041563933109897
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.03121138589794209
+        y: -0.7041563933109897
+        z: 0.0
+      spawn_trigger_threshold: 0.47283593462454904
+      static_obstacle_distance: 0.4849001776235693
+      dynamic_obstacle_lateral_distance: 0.5357931832360565
+      dynamic_obstacle_trigger_distance: 0.47283593462454904
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.018748103407869365
+                  y: -0.9041563933109898
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.03121138589794209
+                  y: -0.7041563933109897
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b04-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.5231775632719438
+          y: 1.902861801511146
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.37316832360580177
+            y: -1.30415639331099
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.3887736835202416
+            y: -1.10415639331099
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.3887736835202416
+        y: -1.10415639331099
+        z: 0.0
+      spawn_trigger_threshold: 0.5648300141494195
+      static_obstacle_distance: 0.5179089235690972
+      dynamic_obstacle_lateral_distance: 0.45418544860629584
+      dynamic_obstacle_trigger_distance: 0.5648300141494195
+      controller_profile: files/nav2_params_dwb.yaml
+      use_astar: false
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.37316832360580177
+                  y: -1.30415639331099
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.3887736835202416
+                  y: -1.10415639331099
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b04-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: -0.3820023166789319
+          y: 3.674330086459019
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.5156269952808297
+            y: -0.10415639331099001
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.5156269952808297
+        y: -0.10415639331099001
+        z: 0.0
+      spawn_trigger_threshold: 0.5638059221679171
+      static_obstacle_distance: 0.5066495530783159
+      dynamic_obstacle_lateral_distance: 0.47215533503871
+      dynamic_obstacle_trigger_distance: 0.5638059221679171
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.5156269952808297
+                  y: -0.10415639331099001
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b05-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.4441247689402559
+          y: 2.0575708500625707
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.30430211901091453
+            y: -1.0041563933109905
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.30430211901091453
+        y: -1.0041563933109905
+        z: 0.0
+      spawn_trigger_threshold: 0.5683443559473641
+      static_obstacle_distance: 0.6507826073303833
+      dynamic_obstacle_lateral_distance: 0.3907760895382151
+      dynamic_obstacle_trigger_distance: 0.5683443559473641
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.30430211901091453
+                  y: -1.0041563933109905
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b05-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -3.007724293519618
+          y: -2.0713914289477797
+        orientation:
+          yaw: -0.27602042971168705
+      goal_pose:
+        position:
+          x: -2.305448137522067
+          y: -5.196958346085809
+        orientation:
+          yaw: 0.0894376142963571
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.3578982687839039
+            y: -3.7844492417867786
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.4658081584648581
+            y: -3.8765393521058247
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.4658081584648581
+        y: -3.8765393521058247
+        z: 0.0
+      spawn_trigger_threshold: 0.6492111616167602
+      static_obstacle_distance: 0.590710832552444
+      dynamic_obstacle_lateral_distance: 0.2387495301678857
+      dynamic_obstacle_trigger_distance: 0.6492111616167602
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.3578982687839039
+                  y: -3.7844492417867786
+                orientation:
+                  yaw: -1.679741146681822
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.4658081584648581
+                  y: -3.8765393521058247
+                orientation:
+                  yaw: -1.679741146681822
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b05-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: -0.5494752707156296
+          y: 4.002080441094213
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.6998656032186268
+            y: -0.10415639331099001
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.6665800613269404
+            y: 0.09584360668901017
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.6665800613269404
+        y: 0.09584360668901017
+        z: 0.0
+      spawn_trigger_threshold: 0.670926060264735
+      static_obstacle_distance: 0.6119664696519215
+      dynamic_obstacle_lateral_distance: 0.47604711841699715
+      dynamic_obstacle_trigger_distance: 0.670926060264735
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.6998656032186268
+                  y: -0.10415639331099001
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.6665800613269404
+                  y: 0.09584360668901017
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b05-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.6709772553453988
+          y: -0.9624198176769547
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.7458436066890097
+            y: -1.0537164165741328
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.7458436066890097
+        y: -1.0537164165741328
+        z: 0.0
+      spawn_trigger_threshold: 0.48950009885695295
+      static_obstacle_distance: 0.767451308581777
+      dynamic_obstacle_lateral_distance: 0.42351925947428304
+      dynamic_obstacle_trigger_distance: 0.48950009885695295
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.7458436066890097
+                  y: -1.0537164165741328
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b06-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.3465746095861797
+          y: 2.248479880759027
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.19338755410240227
+            y: -0.9541563933109897
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.19338755410240227
+        y: -0.9541563933109897
+        z: 0.0
+      spawn_trigger_threshold: 0.5360510859662345
+      static_obstacle_distance: 0.6926711814232447
+      dynamic_obstacle_lateral_distance: 0.4353450073645736
+      dynamic_obstacle_trigger_distance: 0.5360510859662345
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.19338755410240227
+                  y: -0.9541563933109897
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b06-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 1.4260004185150486
+          y: 3.2251249558387043
+        orientation:
+          yaw: -3.012256461474685
+      goal_pose:
+        position:
+          x: 5.541591637806605
+          y: 2.4376177175860065
+        orientation:
+          yaw: -1.8074266732364683
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 4.145843606689013
+            y: 2.5297118375632683
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 4.145843606689013
+        y: 2.5297118375632683
+        z: 0.0
+      spawn_trigger_threshold: 0.7125977677952103
+      static_obstacle_distance: 0.6424114155808061
+      dynamic_obstacle_lateral_distance: 0.32549811814988516
+      dynamic_obstacle_trigger_distance: 0.7125977677952103
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 4.145843606689013
+                  y: 2.5297118375632683
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b06-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -3.007724293519618
+          y: -2.0713914289477797
+        orientation:
+          yaw: -0.27602042971168705
+      goal_pose:
+        position:
+          x: -2.313858094385048
+          y: -5.159528792596051
+        orientation:
+          yaw: 0.0894376142963571
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.5100721490610098
+            y: -3.932275361509673
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.5100721490610098
+        y: -3.932275361509673
+        z: 0.0
+      spawn_trigger_threshold: 0.7309367823890015
+      static_obstacle_distance: 0.44758958689479345
+      dynamic_obstacle_lateral_distance: 0.4939810721614079
+      dynamic_obstacle_trigger_distance: 0.7309367823890015
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.5100721490610098
+                  y: -3.932275361509673
+                orientation:
+                  yaw: -1.679741146681822
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b06-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.5238741561596281
+          y: 1.9014985451734994
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.42091219360147986
+            y: -1.10415639331099
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.42091219360147986
+        y: -1.10415639331099
+        z: 0.0
+      spawn_trigger_threshold: 0.5486617878024386
+      static_obstacle_distance: 0.44056965099329526
+      dynamic_obstacle_lateral_distance: 0.3229499273666668
+      dynamic_obstacle_trigger_distance: 0.5486617878024386
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.42091219360147986
+                  y: -1.10415639331099
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b07-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -3.007724293519618
+          y: -2.0713914289477797
+        orientation:
+          yaw: -0.27602042971168705
+      goal_pose:
+        position:
+          x: -2.3457745000748744
+          y: -5.017480880409174
+        orientation:
+          yaw: 0.0894376142963571
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.3572855118540743
+            y: -3.785061998716608
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.3572855118540743
+        y: -3.785061998716608
+        z: 0.0
+      spawn_trigger_threshold: 0.4414445835879208
+      static_obstacle_distance: 0.4398476981658073
+      dynamic_obstacle_lateral_distance: 0.6179762857720112
+      dynamic_obstacle_trigger_distance: 0.4414445835879208
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.3572855118540743
+                  y: -3.785061998716608
+                orientation:
+                  yaw: -1.679741146681822
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b07-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 0.6452925085760643
+          y: -4.884755939354331
+        orientation:
+          yaw: 2.95048723364767
+      goal_pose:
+        position:
+          x: -0.485186945185621
+          y: 3.4922495679235315
+        orientation:
+          yaw: -0.9000453930211942
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.5999986988526687
+            y: 0.5958436066890093
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.5999986988526687
+        y: 0.5958436066890093
+        z: 0.0
+      spawn_trigger_threshold: 0.7962376642864655
+      static_obstacle_distance: 0.6749199878547559
+      dynamic_obstacle_lateral_distance: 0.40833820030991175
+      dynamic_obstacle_trigger_distance: 0.7962376642864655
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.5999986988526687
+                  y: 0.5958436066890093
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b07-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.5741169275198077
+          y: 1.803171706515447
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.48565426955258817
+            y: -1.1541563933109897
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.48565426955258817
+        y: -1.1541563933109897
+        z: 0.0
+      spawn_trigger_threshold: 0.6271221054175331
+      static_obstacle_distance: 0.49281438167441793
+      dynamic_obstacle_lateral_distance: 0.26275161647087475
+      dynamic_obstacle_trigger_distance: 0.6271221054175331
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.48565426955258817
+                  y: -1.1541563933109897
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b07-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.6493274025782525
+          y: -0.9897046010572401
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.7458436066890097
+            y: -1.0171043679723846
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.7458436066890097
+        y: -1.0171043679723846
+        z: 0.0
+      spawn_trigger_threshold: 0.7073001270232463
+      static_obstacle_distance: 0.5404550633287708
+      dynamic_obstacle_lateral_distance: 0.2740163338639883
+      dynamic_obstacle_trigger_distance: 0.7073001270232463
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.7458436066890097
+                  y: -1.0171043679723846
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b08-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 1.8893439059245782
+          y: 5.757639147909624
+        orientation:
+          yaw: 1.9080279317732254
+      goal_pose:
+        position:
+          x: -5.0882234433047975
+          y: 3.996809990390533
+        orientation:
+          yaw: 2.488715035980955
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -2.0458436066890093
+            y: 3.8817706710614925
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -2.345843606689009
+            y: 3.944074884724545
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -2.345843606689009
+        y: 3.944074884724545
+        z: 0.0
+      spawn_trigger_threshold: 0.8110519680386471
+      static_obstacle_distance: 0.48278179572843155
+      dynamic_obstacle_lateral_distance: 0.2283665806227006
+      dynamic_obstacle_trigger_distance: 0.8110519680386471
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -2.0458436066890093
+                  y: 3.8817706710614925
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -2.345843606689009
+                  y: 3.944074884724545
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b08-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.40883501630376
+          y: -1.292791311839172
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.44584360668901
+            y: -1.4291898412414243
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.645843606689009
+            y: -1.3022681082083272
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.645843606689009
+        y: -1.3022681082083272
+        z: 0.0
+      spawn_trigger_threshold: 0.6690446346803195
+      static_obstacle_distance: 0.7317100934897651
+      dynamic_obstacle_lateral_distance: 0.21343342947728716
+      dynamic_obstacle_trigger_distance: 0.6690446346803195
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.44584360668901
+                  y: -1.4291898412414243
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.645843606689009
+                  y: -1.3022681082083272
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b08-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.2046220132053107
+          y: 2.5262860141303998
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.1150590708895451
+            y: -0.7041563933109897
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.1150590708895451
+        y: -0.7041563933109897
+        z: 0.0
+      spawn_trigger_threshold: 0.7588203967917254
+      static_obstacle_distance: 0.7693347832848504
+      dynamic_obstacle_lateral_distance: 0.3468507742957444
+      dynamic_obstacle_trigger_distance: 0.7588203967917254
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.1150590708895451
+                  y: -0.7041563933109897
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b08-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.5405876359711135
+          y: -1.1267466866829183
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.7458436066890097
+            y: -1.1737460442379553
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.7458436066890097
+        y: -1.1737460442379553
+        z: 0.0
+      spawn_trigger_threshold: 0.6945285102612953
+      static_obstacle_distance: 0.5999461453814575
+      dynamic_obstacle_lateral_distance: 0.30113718807949974
+      dynamic_obstacle_trigger_distance: 0.6945285102612953
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.7458436066890097
+                  y: -1.1737460442379553
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b09-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.40248106424333274
+          y: 2.1390690182966425
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.25029812187466804
+            y: -0.9541563933109897
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.25029812187466804
+        y: -0.9541563933109897
+        z: 0.0
+      spawn_trigger_threshold: 0.6867584280909738
+      static_obstacle_distance: 0.6289389956789768
+      dynamic_obstacle_lateral_distance: 0.6112979088535456
+      dynamic_obstacle_trigger_distance: 0.6867584280909738
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.25029812187466804
+                  y: -0.9541563933109897
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b09-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.5703635335254265
+          y: -1.0892208465092676
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.4958436066890097
+            y: -1.2371324929966199
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.7458436066890097
+            y: -1.0709848029513
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.7458436066890097
+        y: -1.0709848029513
+        z: 0.0
+      spawn_trigger_threshold: 0.731219201094151
+      static_obstacle_distance: 0.764143396728874
+      dynamic_obstacle_lateral_distance: 0.08569008166412673
+      dynamic_obstacle_trigger_distance: 0.731219201094151
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.4958436066890097
+                  y: -1.2371324929966199
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.7458436066890097
+                  y: -1.0709848029513
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b09-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -5.177737371612155
+          y: 4.684053201687614
+        orientation:
+          yaw: -2.6731771445802766
+      goal_pose:
+        position:
+          x: 1.1655227388873612
+          y: 4.160234702115546
+        orientation:
+          yaw: -1.8930252030681032
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.32882624471465743
+            y: 3.9569389608929915
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.32882624471465743
+        y: 3.9569389608929915
+        z: 0.0
+      spawn_trigger_threshold: 0.5794920479581305
+      static_obstacle_distance: 0.5241808168330044
+      dynamic_obstacle_lateral_distance: 0.21832523267801618
+      dynamic_obstacle_trigger_distance: 0.5794920479581305
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.32882624471465743
+                  y: 3.9569389608929915
+                orientation:
+                  yaw: -1.679741146681822
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b09-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.385253958439539
+          y: -1.322509946077628
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.395843606689009
+            y: -1.4286897320405336
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.645843606689009
+            y: -1.403884706041149
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.645843606689009
+        y: -1.403884706041149
+        z: 0.0
+      spawn_trigger_threshold: 0.6133883865982419
+      static_obstacle_distance: 0.5254961732773901
+      dynamic_obstacle_lateral_distance: 0.42420645859667927
+      dynamic_obstacle_trigger_distance: 0.6133883865982419
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.395843606689009
+                  y: -1.4286897320405336
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.645843606689009
+                  y: -1.403884706041149
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b10-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 1.4260004185150486
+          y: 3.2251249558387043
+        orientation:
+          yaw: -3.012256461474685
+      goal_pose:
+        position:
+          x: 5.039211082088492
+          y: 2.5337468768987548
+        orientation:
+          yaw: -1.8074266732364683
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 3.545843606689011
+            y: 2.707464661436666
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 3.6958436066890115
+            y: 2.570066490224752
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 3.6958436066890115
+        y: 2.570066490224752
+        z: 0.0
+      spawn_trigger_threshold: 0.3695928023326363
+      static_obstacle_distance: 0.6429967309693791
+      dynamic_obstacle_lateral_distance: 0.08194021121198858
+      dynamic_obstacle_trigger_distance: 0.3695928023326363
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.545843606689011
+                  y: 2.707464661436666
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.6958436066890115
+                  y: 2.570066490224752
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b10-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -3.007724293519618
+          y: -2.0713914289477797
+        orientation:
+          yaw: -0.27602042971168705
+      goal_pose:
+        position:
+          x: -2.332780409165884
+          y: -5.075312689614962
+        orientation:
+          yaw: 0.0894376142963571
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.598429821165628
+            y: -3.1103726556445115
+          orientation:
+            yaw: 1.94420889899199
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.4109746681219373
+            y: -3.8313728424487454
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.4109746681219373
+        y: -3.8313728424487454
+        z: 0.0
+      spawn_trigger_threshold: 0.6869855134200467
+      static_obstacle_distance: 0.5194635878111775
+      dynamic_obstacle_lateral_distance: 0.4538222587109738
+      dynamic_obstacle_trigger_distance: 0.6869855134200467
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.598429821165628
+                  y: -3.1103726556445115
+                orientation:
+                  yaw: 1.94420889899199
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.4109746681219373
+                  y: -3.8313728424487454
+                orientation:
+                  yaw: -1.679741146681822
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b10-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.1897015359602019
+          y: 2.5554859033694646
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects: []
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.06536068571861428
+            y: -0.7041563933109897
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.06536068571861428
+        y: -0.7041563933109897
+        z: 0.0
+      spawn_trigger_threshold: 0.618668060925247
+      static_obstacle_distance: 0.7608696525955182
+      dynamic_obstacle_lateral_distance: 0.34561914970560575
+      dynamic_obstacle_trigger_distance: 0.618668060925247
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances: []
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.06536068571861428
+                  y: -0.7041563933109897
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b10-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -5.177737371612155
+          y: 4.684053201687614
+        orientation:
+          yaw: -2.6731771445802766
+      goal_pose:
+        position:
+          x: 1.2251417916960952
+          y: 4.155311435176439
+        orientation:
+          yaw: -1.8930252030681032
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.0529932439895104
+            y: 4.155319542632466
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.32882624471465743
+            y: 3.960787833687214
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.32882624471465743
+        y: 3.960787833687214
+        z: 0.0
+      spawn_trigger_threshold: 0.6304176185768594
+      static_obstacle_distance: 0.5842019469443699
+      dynamic_obstacle_lateral_distance: 0.3394249277628436
+      dynamic_obstacle_trigger_distance: 0.6304176185768594
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.0529932439895104
+                  y: 4.155319542632466
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.32882624471465743
+                  y: 3.960787833687214
+                orientation:
+                  yaw: -1.679741146681822
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b11-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 1.4260004185150486
+          y: 3.2251249558387043
+        orientation:
+          yaw: -3.012256461474685
+      goal_pose:
+        position:
+          x: 5.617213189773001
+          y: 2.423147738336782
+        orientation:
+          yaw: -1.8074266732364683
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 3.9458436066890115
+            y: 2.6692494526547077
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 4.145843606689013
+            y: 2.47208239940572
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 4.145843606689013
+        y: 2.47208239940572
+        z: 0.0
+      spawn_trigger_threshold: 0.5571921787817239
+      static_obstacle_distance: 0.8952909182134481
+      dynamic_obstacle_lateral_distance: 0.09017204558972641
+      dynamic_obstacle_trigger_distance: 0.5571921787817239
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.9458436066890115
+                  y: 2.6692494526547077
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 4.145843606689013
+                  y: 2.47208239940572
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b11-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -5.177737371612155
+          y: 4.684053201687614
+        orientation:
+          yaw: -2.6731771445802766
+      goal_pose:
+        position:
+          x: 1.3147261522148783
+          y: 4.147913670542067
+        orientation:
+          yaw: -1.8930252030681032
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.1041563933109881
+            y: 4.114519388302921
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.2788262447146576
+            y: 3.9688670275081206
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.2788262447146576
+        y: 3.9688670275081206
+        z: 0.0
+      spawn_trigger_threshold: 0.5276207550884324
+      static_obstacle_distance: 0.46763249378978194
+      dynamic_obstacle_lateral_distance: 0.5936260823740209
+      dynamic_obstacle_trigger_distance: 0.5276207550884324
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.1041563933109881
+                  y: 4.114519388302921
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.2788262447146576
+                  y: 3.9688670275081206
+                orientation:
+                  yaw: -1.679741146681822
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b11-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 1.4260004185150486
+          y: 3.2251249558387043
+        orientation:
+          yaw: -3.012256461474685
+      goal_pose:
+        position:
+          x: 5.471608594303571
+          y: 2.451008783505104
+        orientation:
+          yaw: -1.8074266732364683
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 3.845843606689012
+            y: 2.6710351486050623
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 4.045843606689011
+            y: 2.558288839871602
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 4.045843606689011
+        y: 2.558288839871602
+        z: 0.0
+      spawn_trigger_threshold: 0.5113881108385645
+      static_obstacle_distance: 0.6984109350665348
+      dynamic_obstacle_lateral_distance: 0.23801869668714762
+      dynamic_obstacle_trigger_distance: 0.5113881108385645
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.845843606689012
+                  y: 2.6710351486050623
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 4.045843606689011
+                  y: 2.558288839871602
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b11-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 4.414332581116673
+          y: 4.806757617527301
+        orientation:
+          yaw: 2.3063833987748517
+      goal_pose:
+        position:
+          x: -1.9908163298225086
+          y: 4.745732889475922
+        orientation:
+          yaw: 0.9422511664697506
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.2541563933109904
+            y: 3.8043382150291483
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.0041563933109903676
+            y: 3.9309378474173813
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.0041563933109903676
+        y: 3.9309378474173813
+        z: 0.0
+      spawn_trigger_threshold: 0.6730445453962609
+      static_obstacle_distance: 0.594800450519454
+      dynamic_obstacle_lateral_distance: 0.07783906359709264
+      dynamic_obstacle_trigger_distance: 0.6730445453962609
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.2541563933109904
+                  y: 3.8043382150291483
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.0041563933109903676
+                  y: 3.9309378474173813
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b12-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 1.4260004185150486
+          y: 3.2251249558387043
+        orientation:
+          yaw: -3.012256461474685
+      goal_pose:
+        position:
+          x: 4.535855144789261
+          y: 2.6300626728365377
+        orientation:
+          yaw: -1.8074266732364683
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 3.245843606689012
+            y: 2.818223431676296
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 3.495843606689012
+            y: 2.726592380426779
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 3.495843606689012
+        y: 2.726592380426779
+        z: 0.0
+      spawn_trigger_threshold: 0.6339624081907751
+      static_obstacle_distance: 0.6869294713710423
+      dynamic_obstacle_lateral_distance: 0.3127600172778495
+      dynamic_obstacle_trigger_distance: 0.6339624081907751
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.245843606689012
+                  y: 2.818223431676296
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.495843606689012
+                  y: 2.726592380426779
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b12-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 4.414332581116673
+          y: 4.806757617527301
+        orientation:
+          yaw: 2.3063833987748517
+      goal_pose:
+        position:
+          x: -2.273714368545045
+          y: 4.743037592907589
+        orientation:
+          yaw: 0.9422511664697506
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.05415639331099019
+            y: 3.8217204687417965
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.14584360668900903
+            y: 3.797911106790144
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -0.14584360668900903
+        y: 3.797911106790144
+        z: 0.0
+      spawn_trigger_threshold: 0.6355754017935511
+      static_obstacle_distance: 0.5238211449905834
+      dynamic_obstacle_lateral_distance: 0.6210451301165223
+      dynamic_obstacle_trigger_distance: 0.6355754017935511
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.05415639331099019
+                  y: 3.8217204687417965
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.14584360668900903
+                  y: 3.797911106790144
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b12-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.40919309134438686
+          y: 2.1259333494637547
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.2485840287255766
+            y: -1.2041563933109896
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.28128170068539815
+            y: -1.05415639331099
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.28128170068539815
+        y: -1.05415639331099
+        z: 0.0
+      spawn_trigger_threshold: 0.3776597198384075
+      static_obstacle_distance: 0.6182972970425336
+      dynamic_obstacle_lateral_distance: 0.484778474541965
+      dynamic_obstacle_trigger_distance: 0.3776597198384075
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.2485840287255766
+                  y: -1.2041563933109896
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.28128170068539815
+                  y: -1.05415639331099
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b12-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.3084665356548397
+          y: -1.4192832691826367
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.395843606689009
+            y: -1.560902068108584
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.5958436066890094
+            y: -1.5098385264394902
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.5958436066890094
+        y: -1.5098385264394902
+        z: 0.0
+      spawn_trigger_threshold: 0.5801506867144269
+      static_obstacle_distance: 0.6570331581454162
+      dynamic_obstacle_lateral_distance: 0.4485184979964034
+      dynamic_obstacle_trigger_distance: 0.5801506867144269
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.395843606689009
+                  y: -1.560902068108584
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.5958436066890094
+                  y: -1.5098385264394902
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b13-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.5908859689751473
+          y: 1.770354113277822
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.3700945616696093
+            y: -1.4041563933109897
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.3929999804869553
+            y: -1.2041563933109896
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.3929999804869553
+        y: -1.2041563933109896
+        z: 0.0
+      spawn_trigger_threshold: 0.628343695660664
+      static_obstacle_distance: 0.7346321877850789
+      dynamic_obstacle_lateral_distance: 0.6410993958134543
+      dynamic_obstacle_trigger_distance: 0.628343695660664
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.3700945616696093
+                  y: -1.4041563933109897
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.3929999804869553
+                  y: -1.2041563933109896
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b13-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.5402483360121844
+          y: -1.127174298176627
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.4958436066890097
+            y: -1.2367483278413383
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.69584360668901
+            y: -1.2355100690182468
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.69584360668901
+        y: -1.2355100690182468
+        z: 0.0
+      spawn_trigger_threshold: 0.5634942673699839
+      static_obstacle_distance: 0.5584029265059879
+      dynamic_obstacle_lateral_distance: 0.55334657692204
+      dynamic_obstacle_trigger_distance: 0.5634942673699839
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.4958436066890097
+                  y: -1.2367483278413383
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.69584360668901
+                  y: -1.2355100690182468
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b13-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 3.8817124394070355
+          y: -4.669906936220329
+        orientation:
+          yaw: -3.1068961684142495
+      goal_pose:
+        position:
+          x: 0.5842317972410078
+          y: 1.783376557159655
+        orientation:
+          yaw: 0.8642990829118515
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.4096043394839535
+            y: -1.4041563933109897
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 0.4107612347041475
+            y: -1.2041563933109896
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 0.4107612347041475
+        y: -1.2041563933109896
+        z: 0.0
+      spawn_trigger_threshold: 0.6579987865685124
+      static_obstacle_distance: 0.5732965728974947
+      dynamic_obstacle_lateral_distance: 0.5685724663082963
+      dynamic_obstacle_trigger_distance: 0.6579987865685124
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.4096043394839535
+                  y: -1.4041563933109897
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.4107612347041475
+                  y: -1.2041563933109896
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b13-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.5329028490314585
+          y: -1.1364316369330334
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.4958436066890097
+            y: -1.2285286831476832
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.645843606689009
+            y: -1.257424134275352
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.645843606689009
+        y: -1.257424134275352
+        z: 0.0
+      spawn_trigger_threshold: 0.5422703807893923
+      static_obstacle_distance: 0.5248385405699358
+      dynamic_obstacle_lateral_distance: 0.6428312409349606
+      dynamic_obstacle_trigger_distance: 0.5422703807893923
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.4958436066890097
+                  y: -1.2285286831476832
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.645843606689009
+                  y: -1.257424134275352
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b14-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 1.4260004185150486
+          y: 3.2251249558387043
+        orientation:
+          yaw: -3.012256461474685
+      goal_pose:
+        position:
+          x: 5.739131830533492
+          y: 2.3998189364803757
+        orientation:
+          yaw: -1.8074266732364683
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 3.995843606689012
+            y: 2.533238507858899
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 4.145843606689013
+            y: 2.5582596561615896
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 4.145843606689013
+        y: 2.5582596561615896
+        z: 0.0
+      spawn_trigger_threshold: 0.4545751292865152
+      static_obstacle_distance: 0.5440708042735564
+      dynamic_obstacle_lateral_distance: 0.6462430403609599
+      dynamic_obstacle_trigger_distance: 0.4545751292865152
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.995843606689012
+                  y: 2.533238507858899
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 4.145843606689013
+                  y: 2.5582596561615896
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b14-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.5490136003323998
+          y: -1.1161276485379306
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.4958436066890097
+            y: -1.2619813748592363
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.645843606689009
+            y: -1.1995377247494277
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.645843606689009
+        y: -1.1995377247494277
+        z: 0.0
+      spawn_trigger_threshold: 0.5427943454681535
+      static_obstacle_distance: 0.6614404372520473
+      dynamic_obstacle_lateral_distance: 0.40645584246058797
+      dynamic_obstacle_trigger_distance: 0.5427943454681535
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.4958436066890097
+                  y: -1.2619813748592363
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.645843606689009
+                  y: -1.1995377247494277
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b14-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 1.4260004185150486
+          y: 3.2251249558387043
+        orientation:
+          yaw: -3.012256461474685
+      goal_pose:
+        position:
+          x: 4.475233438425979
+          y: 2.641662472236569
+        orientation:
+          yaw: -1.8074266732364683
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 3.245843606689012
+            y: 2.8039301279811264
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 3.4458436066890115
+            y: 2.7448117183351672
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 3.4458436066890115
+        y: 2.7448117183351672
+        z: 0.0
+      spawn_trigger_threshold: 0.5547549624614895
+      static_obstacle_distance: 0.6285636928725886
+      dynamic_obstacle_lateral_distance: 0.38715750182222664
+      dynamic_obstacle_trigger_distance: 0.5547549624614895
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.245843606689012
+                  y: 2.8039301279811264
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.4458436066890115
+                  y: 2.7448117183351672
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b14-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -3.007724293519618
+          y: -2.0713914289477797
+        orientation:
+          yaw: -0.27602042971168705
+      goal_pose:
+        position:
+          x: -2.3113681977498994
+          y: -5.170610385618184
+        orientation:
+          yaw: 0.0894376142963571
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.35855762160082
+            y: -3.7837898889698627
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.5082834216263237
+            y: -3.934064088944359
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.5082834216263237
+        y: -3.934064088944359
+        z: 0.0
+      spawn_trigger_threshold: 0.7735681702610693
+      static_obstacle_distance: 0.5613720319454677
+      dynamic_obstacle_lateral_distance: 0.5735729328467856
+      dynamic_obstacle_trigger_distance: 0.7735681702610693
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.35855762160082
+                  y: -3.7837898889698627
+                orientation:
+                  yaw: -1.679741146681822
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.5082834216263237
+                  y: -3.934064088944359
+                orientation:
+                  yaw: -1.679741146681822
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b15-worst-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 1.4260004185150486
+          y: 3.2251249558387043
+        orientation:
+          yaw: -3.012256461474685
+      goal_pose:
+        position:
+          x: 5.467858920852993
+          y: 2.451726273368911
+        orientation:
+          yaw: -1.8074266732364683
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 3.845843606689012
+            y: 2.6442431579828516
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: 4.045843606689011
+            y: 2.649946373675896
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: 4.045843606689011
+        y: 2.649946373675896
+        z: 0.0
+      spawn_trigger_threshold: 0.5719118259079629
+      static_obstacle_distance: 0.5890075792337556
+      dynamic_obstacle_lateral_distance: 0.6122962905749716
+      dynamic_obstacle_trigger_distance: 0.5719118259079629
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 3.845843606689012
+                  y: 2.6442431579828516
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 4.045843606689011
+                  y: 2.649946373675896
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b15-best-1
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -3.007724293519618
+          y: -2.0713914289477797
+        orientation:
+          yaw: -0.27602042971168705
+      goal_pose:
+        position:
+          x: -2.3506412889026125
+          y: -4.995820634617308
+        orientation:
+          yaw: 0.0894376142963571
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -0.6282600722497985
+            y: -3.0805424045603407
+          orientation:
+            yaw: 1.94420889899199
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.3588338280070027
+            y: -3.7835136825636795
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.3588338280070027
+        y: -3.7835136825636795
+        z: 0.0
+      spawn_trigger_threshold: 0.6442462720192546
+      static_obstacle_distance: 0.32809075796840603
+      dynamic_obstacle_lateral_distance: 0.54908185213662
+      dynamic_obstacle_trigger_distance: 0.6442462720192546
+      controller_profile: files/nav2_params_dwb_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.6282600722497985
+                  y: -3.0805424045603407
+                orientation:
+                  yaw: 1.94420889899199
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.3588338280070027
+                  y: -3.7835136825636795
+                orientation:
+                  yaw: -1.679741146681822
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b15-worst-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: 2.0582295423756065
+          y: -5.047320350422634
+        orientation:
+          yaw: 1.1996971906315181
+      goal_pose:
+        position:
+          x: -3.15780192235282
+          y: -0.548889217667722
+        orientation:
+          yaw: -2.2775230779022237
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.4347396179349619
+            y: -0.9423921073642807
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.5326839120764644
+            y: -0.8403364015057834
+          orientation:
+            yaw: -1.679741146681822
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.5326839120764644
+        y: -0.8403364015057834
+        z: 0.0
+      spawn_trigger_threshold: 0.6107868802017155
+      static_obstacle_distance: 0.6036315143089668
+      dynamic_obstacle_lateral_distance: 0.5121600854445949
+      dynamic_obstacle_trigger_distance: 0.6107868802017155
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.4347396179349619
+                  y: -0.9423921073642807
+                orientation:
+                  yaw: -1.679741146681822
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.5326839120764644
+                  y: -0.8403364015057834
+                orientation:
+                  yaw: -1.679741146681822
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: b15-best-2
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar.yaml
+      map_file: environments/secorolab/maps/secorolab.yaml
+      start_pose:
+        position:
+          x: -1.6224808929559318
+          y: -3.5440900075046144
+        orientation:
+          yaw: 2.065518687422217
+      goal_pose:
+        position:
+          x: -3.5042503648291796
+          y: -1.1725416665565414
+        orientation:
+          yaw: 0.2682674023740246
+      static_objects:
+      - entity_name: obstacle_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.4958436066890097
+            y: -1.250215229890513
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      dynamic_objects:
+      - entity_name: dynamic_0
+        model: file:///config/files/models/box.sdf.xacro
+        spawn_pose:
+          position:
+            x: -1.69584360668901
+            y: -1.2512679740695993
+          orientation:
+            yaw: -2.497596468612194
+        xacro_arguments: width:=0.5, length:=0.5, height:=1.0
+      spawn_trigger_point:
+        x: -1.69584360668901
+        y: -1.2512679740695993
+        z: 0.0
+      spawn_trigger_threshold: 0.6211158381804466
+      static_obstacle_distance: 0.40922239075757305
+      dynamic_obstacle_lateral_distance: 0.4135212033262065
+      dynamic_obstacle_trigger_distance: 0.6211158381804466
+      controller_profile: files/nav2_params_mppi_astar.yaml
+      use_astar: true
+    sim:
+      overrides:
+        components:
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.4958436066890097
+                  y: -1.250215229890513
+                orientation:
+                  yaw: -2.497596468612194
+              name: obstacle_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+              motion: static
+          dynamic_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.69584360668901
+                  y: -1.2512679740695993
+                orientation:
+                  yaw: -2.497596468612194
+              name: dynamic_0
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+results_processing:
+  postprocessing:
+  - rosbags_costmap_to_csv:
+      topics: [/map, /global_costmap/costmap, /local_costmap/costmap]
+  - rosbags_tf_to_csv:
+      frames: [odom]

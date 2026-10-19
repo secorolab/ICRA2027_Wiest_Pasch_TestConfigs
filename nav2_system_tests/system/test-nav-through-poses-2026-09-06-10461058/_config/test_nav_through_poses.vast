@@ -1,0 +1,202 @@
+version: 3
+metadata:
+  name: test_nav_through_poses
+  title: Static obstacle nav-through-poses, TurtleBot 4 + Nav2, in roqsim (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  - name: Ortega Sainz, Argentina
+    identifiers: 0000-0002-3873-4435
+  - name: Pasch, Frederik
+    identifiers: 0000-0002-2626-1538
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords: [robotics, navigation, ROS2, mujoco, roqsim, nav2, turtlebot4, nav-through-poses, obstacle]
+  description: |
+    Replication of nav2's test_nav_through_poses: a static cardboard box placed in the
+    direct path forces the planner to replan while navigating through multiple poses.
+    Uses DWB controller and Navfn planner with A* disabled, matching the upstream system
+    test configuration.
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+
+configuration:
+- name: mt-hexagon-nav-through-poses
+  parameters:
+  - params_file: files/nav2_params.yaml
+  - map_file: environments/hexagon/maps/hexagon.yaml
+  - mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+  - start_pose:
+      position: {x: -2.0, y: -0.5}
+  - goal_poses:
+    - position: {x: 0.0, y: 2.0}
+    - position: {x: 0.0, y: 2.0}
+  sim:
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+        static_obstacles:
+          instances:
+          - {pos: [-1.0, 0.75], size: [0.5, 0.4, 0.3]}
+execution:
+  containers:
+    simulation:
+      backend: roqsim
+      config: world/nav2.yaml
+      resources:
+        cpu: 1.0
+        memory: 6Gi
+    sut:
+      image: family:robovast
+      resources:
+        cpu: 4
+        memory: 6Gi
+      config_files:
+        nav2: files/nav2_params.yaml
+    scenario:
+      image: family:robovast
+      resources:
+        cpu: 1.75
+        memory: 4Gi
+  mode: ros2
+  runs: 5
+  timeout: 240
+  scenario_file: nav_through_poses.osc
+  run_files:
+  - "files/*.py"
+  - "files/*.yaml"
+  - "files/*.xacro"
+  - "files/*.xml"
+  - "files/nav2/*.py"
+  - "files/nav2/*.yaml"
+  - "files/models/*.xacro"
+  - "environments/hexagon/maps/*"
+  - "environments/hexagon/3d-mesh/*"
+  - "environments/hexagon/json-ld/*"
+  env:
+  - PYTHONUNBUFFERED: "1"
+  local:
+    gui:
+      parameter_overrides:
+      - use_rviz: "True"
+
+results_processing:
+  postprocessing:
+  - rosbags_tf_to_csv:
+      frames: all
+      require: [base_link, odom, nav2_turtlebot4_base_link_gt]
+  - rosbags_action_to_csv:
+      action: navigate_through_poses
+  - rosbags_action_to_csv:
+      action: navigate_to_pose
+  - rosbags_to_csv:
+      topics: [/collision]
+  - rosbags_nav2bt_to_csv
+  - nav2_bt_tree:
+      bt_xml: files/navigate_through_poses_w_replanning_and_recovery.xml
+  - search/bt_coverage.py:BtCoverage:
+      goal_x: 0.0
+      goal_y: 2.0
+      arrival_radius: 0.6
+  - rosbags_costmap_to_csv:
+      topics: [/map, /global_costmap/costmap, /local_costmap/costmap]
+
+visualization:
+  config:
+    panels:
+    - parameters: {title: Scenario parameters, height: "30%"}
+    - world: {title: World configuration, height: "15%"}
+    - map2d:
+        title: Map
+        map: {param: map_file}
+        markers:
+        - {kind: pose, param: start_pose, label: start, color: "#60a5fa"}
+        - {kind: pose, param: goal_poses, label: goal, color: "#4ade80"}
+  results:
+    run_view:
+      panels:
+      - nav2_behavior_tree:
+          title: Nav2 Behavior Tree
+          position: {anchor: top-left, width: 320, height: "calc(50% - 44px)"}
+          minimizable: true
+      - scenario_tree:
+          title: Scenario
+          position: {anchor: bottom-left, width: 320, height: "calc(50% - 44px)"}
+          minimizable: true
+          source: {table: behaviors}
+      - costmap:
+          title: Nav2 Costmap
+          position: {anchor: top-right, width: 320, height: 550}
+          minimizable: true
+          layers:
+            map: {topic: /map}
+            global: {topic: /global_costmap/costmap}
+            local: {topic: /local_costmap/costmap}
+            poses: {table: poses}
+      - log:
+          title: Run log
+          position: {anchor: bottom-center, width: "calc(100% - 680px)", height: 380}
+          minimizable: true
+          minimized: true
+      - vega:
+          title: Metrics
+          position: {anchor: bottom-right, width: 320, height: 380}
+          minimizable: true
+          source: {table: poses, filter: {frame: base_link}, decimate_hz: 2}
+          vega_lite:
+            resolve: {scale: {x: shared}}
+            spacing: 8
+            transform:
+            - {calculate: "datum['position.x']", as: px}
+            - {calculate: "datum['position.y']", as: py}
+            - {calculate: "datum['orientation.yaw']", as: yaw}
+            - window:
+              - {op: lag, field: px, as: px0}
+              - {op: lag, field: py, as: py0}
+              - {op: lag, field: timestamp, as: t0}
+              sort: [{field: timestamp}]
+            - filter: "isValid(datum.t0)"
+            - filter: "datum.timestamp - datum.t0 > 0"
+            - calculate: >
+                sqrt(pow(datum.px - datum.px0, 2) + pow(datum.py - datum.py0, 2))
+                / (datum.timestamp - datum.t0)
+              as: speed
+            - window: [{op: mean, field: speed, as: speed_avg}]
+              frame: [-9, 0]
+              sort: [{field: timestamp}]
+            vconcat:
+            - height: 150
+              encoding:
+                x: {field: timestamp, type: quantitative, axis: null}
+                y: {field: speed_avg, type: quantitative, title: "speed [m/s]"}
+              layer:
+              - mark: {type: line, opacity: 0.25, strokeWidth: 1}
+                encoding: {y: {field: speed, type: quantitative}}
+              - mark: {type: line, strokeWidth: 1.5}
+            - height: 120
+              transform: [{fold: [px, py, yaw], as: [series, value]}]
+              mark: {type: line, strokeWidth: 1.5}
+              encoding:
+                x: {field: timestamp, type: quantitative, title: "t [s]"}
+                y: {field: value, type: quantitative, title: pose}
+                color: {field: series, type: nominal, legend: {title: null, orient: top}}
+    explorer:
+      notebooks:
+      - Analysis:
+          run: analysis/analysis_run.ipynb
+          config: analysis/analysis_config.ipynb
+          campaign: analysis/analysis_campaign.ipynb
+      - Resource Usage:
+          run: analysis/resource_usage_run.ipynb
+          config: analysis/resource_usage_config.ipynb

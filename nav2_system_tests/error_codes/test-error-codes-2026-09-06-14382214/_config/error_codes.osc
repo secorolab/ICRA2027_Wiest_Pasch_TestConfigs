@@ -1,0 +1,128 @@
+import osc.helpers
+import osc.os
+import osc.ros
+import osc.nav2
+import osc.remote
+import osc.sim
+import osc.dataops
+
+# Nav2 ERROR CODES test, ported from nav2_system_tests/src/error_codes (jazzy).
+# One trial = one action call that triggers a stock-emitted error code.
+#
+# DEVIATION FROM UPSTREAM -- stock error codes, full nav2 stack. The upstream test
+# launches only controller_server, planner_server, and smoother_server with custom
+# C++ error-code plugins. This reinterpretation runs the full nav2 bringup and
+# triggers stock error codes by requesting non-existent plugin IDs or sending
+# invalid goals. See readme.md for the complete list of ported and not-ported
+# error codes.
+#
+# action_call returns SUCCESS only on STATUS_SUCCEEDED. For error-code cells the
+# server ABORTS with the error code in result.error_code, so action_call returns
+# FAILURE. expect_success=false in the config grades this as correct. The analysis
+# verifies the specific error_code from the recorded _action/status messages.
+#
+# CANCEL cases (ComputePathToPose cancel, ComputePathThroughPoses cancel) cannot
+# be expressed: action_call has no cancel entry point (see
+# scenario_nav2_behavior_test.osc for the same limitation on behavior tests).
+
+scenario test_scenario:
+    timeout(600s)
+
+    map_file: string
+    mesh_file: string
+    start_pose: pose_3d
+    params_file: string
+
+    # The trial. ec_goal_data is a JSON goal literal (same mechanism as the
+    # behavior campaign: scenario_nav2_behavior_test.osc). The ec_ prefix avoids
+    # a naming collision with action_call's __init__ arguments (action_name,
+    # action_type) that would cause recursive resolution (see the behavior test's
+    # header notes on the same issue with the behavior_ prefix).
+    ec_action_name: string
+    ec_action_type: string
+    ec_goal_data: string
+
+    # Carried for grading. expect_success is false for every error-code cell
+    # because the server aborts with the error code.
+    nav2_test_id: string = ''
+    expect_success: bool = true
+
+    robot: differential_drive_robot
+
+    do serial:
+        serial:
+            timeout(120s)
+            wait_for_topics(topics: ['/clock'])
+            check_data(topic_name: '/scan_sim',
+                       topic_type: 'sensor_msgs.msg.LaserScan',
+                       member_name: 'range_max',
+                       comparison_operator: comparison_operator!gt,
+                       expected_value: '0.0',
+                       qos_profile: qos_preset_profiles!sensor_data)
+
+        delete_entity(entity: 'dynamic_0')
+
+        set_entity_state(entity: 'robot',
+                         pose: pose_3d(
+                             position: position_3d(x: start_pose.position.x,
+                                                   y: start_pose.position.y,
+                                                   z: 0.03m),
+                             orientation: start_pose.orientation))
+
+        parallel:
+            # The sut channel stages the per-configuration parameter file at this path.
+            ros_launch('', '/config/files/nav2_stack.launch.py',
+                [key_value('map', os.abspath(common.get_scenario_file_directory() + "/" + map_file)),
+                 key_value('params_file', common.get_scenario_file_directory() + '/' + params_file),
+                 key_value('autostart', 'true'),
+                 key_value('use_rviz', 'False'),
+                 key_value('laserscan_gaussian_noise_std_deviation', '0.0'),
+                 key_value('laserscan_random_drop_percentage', '0.0')],
+                wait_for_shutdown: false) with:
+                    remote('ipc:///ipc/sut')
+
+            parallel:
+                serial:
+                    robot.init_nav2(start_pose)
+                    bag_record([
+                            '/clock',
+                            '/tf',
+                            '/tf_static',
+                            '/map',
+                            '/global_costmap/costmap',
+                            '/local_costmap/costmap',
+                            '/amcl_pose',
+                            '/plan',
+                            '/scan',
+                            '/odom',
+                            '/collision',
+                            '/behavior_tree_log',
+                            '/follow_path/_action/feedback',
+                            '/follow_path/_action/status',
+                            '/compute_path_to_pose/_action/feedback',
+                            '/compute_path_to_pose/_action/status',
+                            '/compute_path_through_poses/_action/feedback',
+                            '/compute_path_through_poses/_action/status',
+                            '/smooth_path/_action/feedback',
+                            '/smooth_path/_action/status'
+                        ],
+                        hidden_topics: true,
+                        use_sim_time: true,
+                        timestamp_suffix: false)
+                    # The trial: one action call that should trigger a stock error code.
+                    # The + '' is REQUIRED (see scenario_nav2_behavior_test.osc header
+                    # notes on action_call's execute-argument resolution).
+                    action_call(action_name: ec_action_name,
+                                action_type: ec_action_type,
+                                data: ec_goal_data + '')
+                    emit end
+                serial:
+                    one_of:
+                        log_check(values: ["Control loop missed its desired rate"]) with:
+                            repeat(10)
+                        check_data(topic_name: '/collision',
+                                   topic_type: 'std_msgs.msg.Bool',
+                                   member_name: 'data',
+                                   comparison_operator: comparison_operator!eq,
+                                   expected_value: 'True')
+                    emit fail

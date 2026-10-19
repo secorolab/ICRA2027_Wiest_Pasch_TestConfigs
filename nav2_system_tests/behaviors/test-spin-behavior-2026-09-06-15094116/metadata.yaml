@@ -1,0 +1,2888 @@
+run_files:
+- _config/files/gazebo_launch.py
+- _config/files/world.sdf.xacro
+- _config/files/monitor_cam_launch.py
+- _config/files/collision_monitor.py
+- _config/files/nav2_stack.launch.py
+- _config/files/navigate_to_pose_w_replanning_and_recovery.xml
+- _config/files/nav2_launch.py
+- _config/files/nav2_gazebo.launch.py
+- _config/files/nav2/spawn_tb4.launch.py
+- _config/files/nav2/tb4_simulation_launch.py
+- _config/files/nav2/tb4_bridge.yaml
+- _config/files/models/cylinder.sdf.xacro
+- _config/files/models/box.sdf.xacro
+- _config/environments/hexagon/3d-mesh/hexagon.stl.yaml
+- _config/environments/hexagon/3d-mesh/hexagon.stl
+- _config/environments/hexagon/json-ld/floorplan.fpm.json.yaml
+- _config/environments/hexagon/json-ld/floorplan.fpm.json
+- _config/environments/hexagon/maps/hexagon.pgm
+- _config/environments/hexagon/maps/hexagon.yaml
+- _config/world/nav2.yaml
+scenario_file: scenario.osc
+metadata:
+  name: test_spin_behavior
+  title: Nav2 spin-behavior server test, TurtleBot 4 + Nav2, in roqsim (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  - name: Ortega Sainz, Argentina
+    identifiers: 0000-0002-3873-4435
+  - name: Pasch, Frederik
+    identifiers: 0000-0002-2626-1538
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords:
+  - robotics
+  - navigation
+  - ROS2
+  - mujoco
+  - roqsim
+  - nav2
+  - turtlebot4
+  - behavior
+  - spin
+  description: 'Replication of nav2''s spin-behavior system test
+
+    (nav2_system_tests/src/behaviors/spin, main). Where upstream drives the /spin
+
+    action with a Python tester (spin_tester.py) against a tb3 Gazebo world, this
+
+    campaign runs the full nav2 stack (files/nav2_stack.launch.py, the same hexagon
+
+    world as the sibling behaviors_wait, error_codes and system_failure campaigns)
+
+    and drives /spin with the generic action_call primitive.
+
+
+    MEANING OF A CELL: one configuration is one upstream spin parameterization
+
+    (nav2_system_tests.csv lines 19-22, test case `test_spin_behavior`). The spin
+
+    behavior SUCCEEDS after reaching the target yaw for the valid-costmap case, and
+
+    ABORTS for the costmap-dependent and impossible-command cases. The valid-costmap
+
+    cell carries expect_success: true; the invalid-costmap, impossible-command and
+
+    lethal-costmap cells carry expect_success: false. The analysis additionally
+
+    verifies the upstream `error_code == 0` assertion on success and the specific
+
+    error_code on abort from the recorded /spin/_action timestamps (not expressible
+
+    in the scenario; see spin_behavior.osc header).
+
+
+    PORTED CASE -> GOAL:
+
+    - Invalid costmap  (CSV line 19) -> target_yaw 20 deg, time_allowance 5 s
+
+    - Valid costmap    (CSV line 20) -> target_yaw 20 deg, time_allowance 5 s
+
+    - Impossible command (CSV line 21) -> target_yaw 20 deg, time_allowance 0.1 s
+
+    - Lethal costmap   (CSV line 22) -> target_yaw 20 deg, time_allowance 5 s
+
+
+    NOT PORTED: the preempt-and-invert and cancel sub-cases inside the upstream
+
+    valid-costmap test, and the manual costmap publishing used to trigger
+
+    costmap-dependent failures. A mid-run preempt or cancel cannot be sequenced in
+
+    this scenario framework (action_call has no preempt or cancel entry point --
+
+    RosActionCall.shutdown() cancels only at scenario teardown), and the framework
+
+    has no mechanism to publish arbitrary costmaps to /local_costmap/costmap_raw
+
+    before sending the goal. Recorded, not faked, in readme.md.
+
+
+    UPSTREAM ODDITY worth recording: upstream CMakeLists.txt sets
+
+    BT_NAVIGATOR_XML=navigate_to_pose_w_replanning_and_behavior.xml, a file that exists
+
+    neither in the navigation2 source tree nor in the installed nav2_bt_navigator
+    share
+
+    directory (verified in the robovast image). It is immaterial here -- /spin is
+    a
+
+    behavior-server action, not a BT node -- but the CSV row''s BT column therefore
+    names
+
+    a file that cannot be loaded.
+
+    '
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+configurations:
+- name: spin-invalid-costmap
+  config:
+    params_file: spin-invalid-costmap/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: test_spin_behavior/InvalidCostmap
+    expect_success: false
+    spin_action_name: /spin
+    spin_action_type: nav2_msgs.action.Spin
+    spin_goal_data: '{"target_yaw": 0.349066, "time_allowance": {"sec": 5, "nanosec":
+      0}}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - spin-invalid-costmap/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T15:09:42.418289'
+  config_identifier: 4ded528546e6
+  sub_identifier:
+    block: fcc6a923c6f4
+    run_files: 57069c042471
+    scenario_file: 221d3f6b04bc
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: spin-invalid-costmap/0
+    success: 'true'
+    start_time: '2026-09-06T13:09:51.135714+00:00'
+    end_time: '2026-09-06T13:09:59.395727+00:00'
+    output_files:
+    - spin-invalid-costmap/0/.robovast_rosbags_process_cache
+    - spin-invalid-costmap/0/action_spin_feedback.csv
+    - spin-invalid-costmap/0/action_spin_status.csv
+    - spin-invalid-costmap/0/behaviors.jsonl
+    - spin-invalid-costmap/0/capture/capture.bin
+    - spin-invalid-costmap/0/capture/capture.json
+    - spin-invalid-costmap/0/costmaps.csv
+    - spin-invalid-costmap/0/entities.json
+    - spin-invalid-costmap/0/poses.csv
+    - spin-invalid-costmap/0/resource_usage.csv
+    - spin-invalid-costmap/0/rosbag2/metadata.yaml
+    - spin-invalid-costmap/0/rosbag2/rosbag2_0.mcap
+    - spin-invalid-costmap/0/rosbag2_collision.csv
+    - spin-invalid-costmap/0/run.clock_map.csv
+    - spin-invalid-costmap/0/run.npz
+    - spin-invalid-costmap/0/run_log.csv
+    - spin-invalid-costmap/0/sim_poses.csv
+    - spin-invalid-costmap/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-invalid-costmap/1
+    success: 'true'
+    start_time: '2026-09-06T13:09:51.135729+00:00'
+    end_time: '2026-09-06T13:09:59.119236+00:00'
+    output_files:
+    - spin-invalid-costmap/1/.robovast_rosbags_process_cache
+    - spin-invalid-costmap/1/action_spin_feedback.csv
+    - spin-invalid-costmap/1/action_spin_status.csv
+    - spin-invalid-costmap/1/behaviors.jsonl
+    - spin-invalid-costmap/1/capture/capture.bin
+    - spin-invalid-costmap/1/capture/capture.json
+    - spin-invalid-costmap/1/costmaps.csv
+    - spin-invalid-costmap/1/entities.json
+    - spin-invalid-costmap/1/poses.csv
+    - spin-invalid-costmap/1/resource_usage.csv
+    - spin-invalid-costmap/1/rosbag2/metadata.yaml
+    - spin-invalid-costmap/1/rosbag2/rosbag2_0.mcap
+    - spin-invalid-costmap/1/rosbag2_collision.csv
+    - spin-invalid-costmap/1/run.clock_map.csv
+    - spin-invalid-costmap/1/run.npz
+    - spin-invalid-costmap/1/run_log.csv
+    - spin-invalid-costmap/1/sim_poses.csv
+    - spin-invalid-costmap/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-invalid-costmap/2
+    success: 'true'
+    start_time: '2026-09-06T13:10:15.509553+00:00'
+    end_time: '2026-09-06T13:10:23.092857+00:00'
+    output_files:
+    - spin-invalid-costmap/2/.robovast_rosbags_process_cache
+    - spin-invalid-costmap/2/action_spin_feedback.csv
+    - spin-invalid-costmap/2/action_spin_status.csv
+    - spin-invalid-costmap/2/behaviors.jsonl
+    - spin-invalid-costmap/2/capture/capture.bin
+    - spin-invalid-costmap/2/capture/capture.json
+    - spin-invalid-costmap/2/costmaps.csv
+    - spin-invalid-costmap/2/entities.json
+    - spin-invalid-costmap/2/poses.csv
+    - spin-invalid-costmap/2/resource_usage.csv
+    - spin-invalid-costmap/2/rosbag2/metadata.yaml
+    - spin-invalid-costmap/2/rosbag2/rosbag2_0.mcap
+    - spin-invalid-costmap/2/rosbag2_collision.csv
+    - spin-invalid-costmap/2/run.clock_map.csv
+    - spin-invalid-costmap/2/run.npz
+    - spin-invalid-costmap/2/run_log.csv
+    - spin-invalid-costmap/2/sim_poses.csv
+    - spin-invalid-costmap/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-invalid-costmap/3
+    success: 'true'
+    start_time: '2026-09-06T13:10:15.281614+00:00'
+    end_time: '2026-09-06T13:10:22.850219+00:00'
+    output_files:
+    - spin-invalid-costmap/3/.robovast_rosbags_process_cache
+    - spin-invalid-costmap/3/action_spin_feedback.csv
+    - spin-invalid-costmap/3/action_spin_status.csv
+    - spin-invalid-costmap/3/behaviors.jsonl
+    - spin-invalid-costmap/3/capture/capture.bin
+    - spin-invalid-costmap/3/capture/capture.json
+    - spin-invalid-costmap/3/costmaps.csv
+    - spin-invalid-costmap/3/entities.json
+    - spin-invalid-costmap/3/poses.csv
+    - spin-invalid-costmap/3/resource_usage.csv
+    - spin-invalid-costmap/3/rosbag2/metadata.yaml
+    - spin-invalid-costmap/3/rosbag2/rosbag2_0.mcap
+    - spin-invalid-costmap/3/rosbag2_collision.csv
+    - spin-invalid-costmap/3/run.clock_map.csv
+    - spin-invalid-costmap/3/run.npz
+    - spin-invalid-costmap/3/run_log.csv
+    - spin-invalid-costmap/3/sim_poses.csv
+    - spin-invalid-costmap/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-invalid-costmap/4
+    success: 'true'
+    start_time: '2026-09-06T13:10:37.892845+00:00'
+    end_time: '2026-09-06T13:10:45.238083+00:00'
+    output_files:
+    - spin-invalid-costmap/4/.robovast_rosbags_process_cache
+    - spin-invalid-costmap/4/action_spin_feedback.csv
+    - spin-invalid-costmap/4/action_spin_status.csv
+    - spin-invalid-costmap/4/behaviors.jsonl
+    - spin-invalid-costmap/4/capture/capture.bin
+    - spin-invalid-costmap/4/capture/capture.json
+    - spin-invalid-costmap/4/costmaps.csv
+    - spin-invalid-costmap/4/entities.json
+    - spin-invalid-costmap/4/poses.csv
+    - spin-invalid-costmap/4/resource_usage.csv
+    - spin-invalid-costmap/4/rosbag2/metadata.yaml
+    - spin-invalid-costmap/4/rosbag2/rosbag2_0.mcap
+    - spin-invalid-costmap/4/rosbag2_collision.csv
+    - spin-invalid-costmap/4/run.clock_map.csv
+    - spin-invalid-costmap/4/run.npz
+    - spin-invalid-costmap/4/run_log.csv
+    - spin-invalid-costmap/4/sim_poses.csv
+    - spin-invalid-costmap/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+- name: spin-valid-costmap
+  config:
+    params_file: spin-valid-costmap/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: test_spin_behavior/ValidCostmap
+    expect_success: true
+    spin_action_name: /spin
+    spin_action_type: nav2_msgs.action.Spin
+    spin_goal_data: '{"target_yaw": 0.349066, "time_allowance": {"sec": 5, "nanosec":
+      0}}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - spin-valid-costmap/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T15:09:42.418289'
+  config_identifier: 72aaa036498e
+  sub_identifier:
+    block: e7da886d9d06
+    run_files: 57069c042471
+    scenario_file: 221d3f6b04bc
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: spin-valid-costmap/0
+    success: 'true'
+    start_time: '2026-09-06T13:10:39.382863+00:00'
+    end_time: '2026-09-06T13:10:47.938426+00:00'
+    output_files:
+    - spin-valid-costmap/0/.robovast_rosbags_process_cache
+    - spin-valid-costmap/0/action_spin_feedback.csv
+    - spin-valid-costmap/0/action_spin_status.csv
+    - spin-valid-costmap/0/behaviors.jsonl
+    - spin-valid-costmap/0/capture/capture.bin
+    - spin-valid-costmap/0/capture/capture.json
+    - spin-valid-costmap/0/costmaps.csv
+    - spin-valid-costmap/0/entities.json
+    - spin-valid-costmap/0/poses.csv
+    - spin-valid-costmap/0/resource_usage.csv
+    - spin-valid-costmap/0/rosbag2/metadata.yaml
+    - spin-valid-costmap/0/rosbag2/rosbag2_0.mcap
+    - spin-valid-costmap/0/rosbag2_collision.csv
+    - spin-valid-costmap/0/run.clock_map.csv
+    - spin-valid-costmap/0/run.npz
+    - spin-valid-costmap/0/run_log.csv
+    - spin-valid-costmap/0/sim_poses.csv
+    - spin-valid-costmap/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-valid-costmap/1
+    success: 'true'
+    start_time: '2026-09-06T13:11:01.453747+00:00'
+    end_time: '2026-09-06T13:11:08.701137+00:00'
+    output_files:
+    - spin-valid-costmap/1/.robovast_rosbags_process_cache
+    - spin-valid-costmap/1/action_spin_feedback.csv
+    - spin-valid-costmap/1/action_spin_status.csv
+    - spin-valid-costmap/1/behaviors.jsonl
+    - spin-valid-costmap/1/capture/capture.bin
+    - spin-valid-costmap/1/capture/capture.json
+    - spin-valid-costmap/1/costmaps.csv
+    - spin-valid-costmap/1/entities.json
+    - spin-valid-costmap/1/poses.csv
+    - spin-valid-costmap/1/resource_usage.csv
+    - spin-valid-costmap/1/rosbag2/metadata.yaml
+    - spin-valid-costmap/1/rosbag2/rosbag2_0.mcap
+    - spin-valid-costmap/1/rosbag2_collision.csv
+    - spin-valid-costmap/1/run.clock_map.csv
+    - spin-valid-costmap/1/run.npz
+    - spin-valid-costmap/1/run_log.csv
+    - spin-valid-costmap/1/sim_poses.csv
+    - spin-valid-costmap/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-valid-costmap/2
+    success: 'true'
+    start_time: '2026-09-06T13:11:04.440826+00:00'
+    end_time: '2026-09-06T13:11:12.187613+00:00'
+    output_files:
+    - spin-valid-costmap/2/.robovast_rosbags_process_cache
+    - spin-valid-costmap/2/action_spin_feedback.csv
+    - spin-valid-costmap/2/action_spin_status.csv
+    - spin-valid-costmap/2/behaviors.jsonl
+    - spin-valid-costmap/2/capture/capture.bin
+    - spin-valid-costmap/2/capture/capture.json
+    - spin-valid-costmap/2/costmaps.csv
+    - spin-valid-costmap/2/entities.json
+    - spin-valid-costmap/2/poses.csv
+    - spin-valid-costmap/2/resource_usage.csv
+    - spin-valid-costmap/2/rosbag2/metadata.yaml
+    - spin-valid-costmap/2/rosbag2/rosbag2_0.mcap
+    - spin-valid-costmap/2/rosbag2_collision.csv
+    - spin-valid-costmap/2/run.clock_map.csv
+    - spin-valid-costmap/2/run.npz
+    - spin-valid-costmap/2/run_log.csv
+    - spin-valid-costmap/2/sim_poses.csv
+    - spin-valid-costmap/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-valid-costmap/3
+    success: 'true'
+    start_time: '2026-09-06T13:11:24.496911+00:00'
+    end_time: '2026-09-06T13:11:33.042879+00:00'
+    output_files:
+    - spin-valid-costmap/3/.robovast_rosbags_process_cache
+    - spin-valid-costmap/3/action_spin_feedback.csv
+    - spin-valid-costmap/3/action_spin_status.csv
+    - spin-valid-costmap/3/behaviors.jsonl
+    - spin-valid-costmap/3/capture/capture.bin
+    - spin-valid-costmap/3/capture/capture.json
+    - spin-valid-costmap/3/costmaps.csv
+    - spin-valid-costmap/3/entities.json
+    - spin-valid-costmap/3/poses.csv
+    - spin-valid-costmap/3/resource_usage.csv
+    - spin-valid-costmap/3/rosbag2/metadata.yaml
+    - spin-valid-costmap/3/rosbag2/rosbag2_0.mcap
+    - spin-valid-costmap/3/rosbag2_collision.csv
+    - spin-valid-costmap/3/run.clock_map.csv
+    - spin-valid-costmap/3/run.npz
+    - spin-valid-costmap/3/run_log.csv
+    - spin-valid-costmap/3/sim_poses.csv
+    - spin-valid-costmap/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-valid-costmap/4
+    success: 'true'
+    start_time: '2026-09-06T13:11:26.530772+00:00'
+    end_time: '2026-09-06T13:11:34.274292+00:00'
+    output_files:
+    - spin-valid-costmap/4/.robovast_rosbags_process_cache
+    - spin-valid-costmap/4/action_spin_feedback.csv
+    - spin-valid-costmap/4/action_spin_status.csv
+    - spin-valid-costmap/4/behaviors.jsonl
+    - spin-valid-costmap/4/capture/capture.bin
+    - spin-valid-costmap/4/capture/capture.json
+    - spin-valid-costmap/4/costmaps.csv
+    - spin-valid-costmap/4/entities.json
+    - spin-valid-costmap/4/poses.csv
+    - spin-valid-costmap/4/resource_usage.csv
+    - spin-valid-costmap/4/rosbag2/metadata.yaml
+    - spin-valid-costmap/4/rosbag2/rosbag2_0.mcap
+    - spin-valid-costmap/4/rosbag2_collision.csv
+    - spin-valid-costmap/4/run.clock_map.csv
+    - spin-valid-costmap/4/run.npz
+    - spin-valid-costmap/4/run_log.csv
+    - spin-valid-costmap/4/sim_poses.csv
+    - spin-valid-costmap/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+- name: spin-impossible-command
+  config:
+    params_file: spin-impossible-command/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: test_spin_behavior/ImpossibleCommand
+    expect_success: false
+    spin_action_name: /spin
+    spin_action_type: nav2_msgs.action.Spin
+    spin_goal_data: '{"target_yaw": 0.349066, "time_allowance": {"sec": 0, "nanosec":
+      100000000}}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - spin-impossible-command/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T15:09:42.418289'
+  config_identifier: 2ed242cd4bed
+  sub_identifier:
+    block: ec604ac560dc
+    run_files: 57069c042471
+    scenario_file: 221d3f6b04bc
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: spin-impossible-command/0
+    success: 'false'
+    start_time: '2026-09-06T13:11:47.141972+00:00'
+    end_time: '2026-09-06T13:11:54.089076+00:00'
+    output_files:
+    - spin-impossible-command/0/.robovast_rosbags_process_cache
+    - spin-impossible-command/0/action_spin_feedback.csv
+    - spin-impossible-command/0/action_spin_status.csv
+    - spin-impossible-command/0/behaviors.jsonl
+    - spin-impossible-command/0/capture/capture.bin
+    - spin-impossible-command/0/capture/capture.json
+    - spin-impossible-command/0/costmaps.csv
+    - spin-impossible-command/0/entities.json
+    - spin-impossible-command/0/poses.csv
+    - spin-impossible-command/0/resource_usage.csv
+    - spin-impossible-command/0/rosbag2/metadata.yaml
+    - spin-impossible-command/0/rosbag2/rosbag2_0.mcap
+    - spin-impossible-command/0/rosbag2_collision.csv
+    - spin-impossible-command/0/run.clock_map.csv
+    - spin-impossible-command/0/run.npz
+    - spin-impossible-command/0/run_log.csv
+    - spin-impossible-command/0/sim_poses.csv
+    - spin-impossible-command/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-impossible-command/1
+    success: 'false'
+    start_time: '2026-09-06T13:11:49.628425+00:00'
+    end_time: '2026-09-06T13:11:56.079879+00:00'
+    output_files:
+    - spin-impossible-command/1/.robovast_rosbags_process_cache
+    - spin-impossible-command/1/action_spin_feedback.csv
+    - spin-impossible-command/1/action_spin_status.csv
+    - spin-impossible-command/1/behaviors.jsonl
+    - spin-impossible-command/1/capture/capture.bin
+    - spin-impossible-command/1/capture/capture.json
+    - spin-impossible-command/1/costmaps.csv
+    - spin-impossible-command/1/entities.json
+    - spin-impossible-command/1/poses.csv
+    - spin-impossible-command/1/resource_usage.csv
+    - spin-impossible-command/1/rosbag2/metadata.yaml
+    - spin-impossible-command/1/rosbag2/rosbag2_0.mcap
+    - spin-impossible-command/1/rosbag2_collision.csv
+    - spin-impossible-command/1/run.clock_map.csv
+    - spin-impossible-command/1/run.npz
+    - spin-impossible-command/1/run_log.csv
+    - spin-impossible-command/1/sim_poses.csv
+    - spin-impossible-command/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-impossible-command/2
+    success: 'false'
+    start_time: '2026-09-06T13:12:10.231800+00:00'
+    end_time: '2026-09-06T13:12:16.542269+00:00'
+    output_files:
+    - spin-impossible-command/2/.robovast_rosbags_process_cache
+    - spin-impossible-command/2/action_spin_feedback.csv
+    - spin-impossible-command/2/action_spin_status.csv
+    - spin-impossible-command/2/behaviors.jsonl
+    - spin-impossible-command/2/capture/capture.bin
+    - spin-impossible-command/2/capture/capture.json
+    - spin-impossible-command/2/costmaps.csv
+    - spin-impossible-command/2/entities.json
+    - spin-impossible-command/2/poses.csv
+    - spin-impossible-command/2/resource_usage.csv
+    - spin-impossible-command/2/rosbag2/metadata.yaml
+    - spin-impossible-command/2/rosbag2/rosbag2_0.mcap
+    - spin-impossible-command/2/rosbag2_collision.csv
+    - spin-impossible-command/2/run.clock_map.csv
+    - spin-impossible-command/2/run.npz
+    - spin-impossible-command/2/run_log.csv
+    - spin-impossible-command/2/sim_poses.csv
+    - spin-impossible-command/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-impossible-command/3
+    success: 'false'
+    start_time: '2026-09-06T13:12:11.732367+00:00'
+    end_time: '2026-09-06T13:12:18.203461+00:00'
+    output_files:
+    - spin-impossible-command/3/action_spin_feedback.csv
+    - spin-impossible-command/3/action_spin_status.csv
+    - spin-impossible-command/3/behaviors.jsonl
+    - spin-impossible-command/3/capture/capture.bin
+    - spin-impossible-command/3/capture/capture.json
+    - spin-impossible-command/3/costmaps.csv
+    - spin-impossible-command/3/entities.json
+    - spin-impossible-command/3/poses.csv
+    - spin-impossible-command/3/resource_usage.csv
+    - spin-impossible-command/3/rosbag2/metadata.yaml
+    - spin-impossible-command/3/rosbag2/rosbag2_0.mcap
+    - spin-impossible-command/3/rosbag2_collision.csv
+    - spin-impossible-command/3/run.clock_map.csv
+    - spin-impossible-command/3/run.npz
+    - spin-impossible-command/3/run_log.csv
+    - spin-impossible-command/3/sim_poses.csv
+    - spin-impossible-command/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-impossible-command/4
+    success: 'false'
+    start_time: '2026-09-06T13:12:31.774407+00:00'
+    end_time: '2026-09-06T13:12:38.662383+00:00'
+    output_files:
+    - spin-impossible-command/4/.robovast_rosbags_process_cache
+    - spin-impossible-command/4/action_spin_feedback.csv
+    - spin-impossible-command/4/action_spin_status.csv
+    - spin-impossible-command/4/behaviors.jsonl
+    - spin-impossible-command/4/capture/capture.bin
+    - spin-impossible-command/4/capture/capture.json
+    - spin-impossible-command/4/costmaps.csv
+    - spin-impossible-command/4/entities.json
+    - spin-impossible-command/4/poses.csv
+    - spin-impossible-command/4/resource_usage.csv
+    - spin-impossible-command/4/rosbag2/metadata.yaml
+    - spin-impossible-command/4/rosbag2/rosbag2_0.mcap
+    - spin-impossible-command/4/rosbag2_collision.csv
+    - spin-impossible-command/4/run.clock_map.csv
+    - spin-impossible-command/4/run.npz
+    - spin-impossible-command/4/run_log.csv
+    - spin-impossible-command/4/sim_poses.csv
+    - spin-impossible-command/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+- name: spin-lethal-costmap
+  config:
+    params_file: spin-lethal-costmap/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    nav2_test_id: test_spin_behavior/LethalCostmap
+    expect_success: false
+    spin_action_name: /spin
+    spin_action_type: nav2_msgs.action.Spin
+    spin_goal_data: '{"target_yaw": 0.349066, "time_allowance": {"sec": 5, "nanosec":
+      0}}'
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - spin-lethal-costmap/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T15:09:42.418289'
+  config_identifier: fa3e94889822
+  sub_identifier:
+    block: c358c0edfc60
+    run_files: 57069c042471
+    scenario_file: 221d3f6b04bc
+    config_referenced_files: 0073689a43e1
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: spin-lethal-costmap/0
+    success: 'true'
+    start_time: '2026-09-06T13:12:33.789555+00:00'
+    end_time: '2026-09-06T13:12:40.641662+00:00'
+    output_files:
+    - spin-lethal-costmap/0/.robovast_rosbags_process_cache
+    - spin-lethal-costmap/0/action_spin_feedback.csv
+    - spin-lethal-costmap/0/action_spin_status.csv
+    - spin-lethal-costmap/0/behaviors.jsonl
+    - spin-lethal-costmap/0/capture/capture.bin
+    - spin-lethal-costmap/0/capture/capture.json
+    - spin-lethal-costmap/0/costmaps.csv
+    - spin-lethal-costmap/0/entities.json
+    - spin-lethal-costmap/0/poses.csv
+    - spin-lethal-costmap/0/resource_usage.csv
+    - spin-lethal-costmap/0/rosbag2/metadata.yaml
+    - spin-lethal-costmap/0/rosbag2/rosbag2_0.mcap
+    - spin-lethal-costmap/0/rosbag2_collision.csv
+    - spin-lethal-costmap/0/run.clock_map.csv
+    - spin-lethal-costmap/0/run.npz
+    - spin-lethal-costmap/0/run_log.csv
+    - spin-lethal-costmap/0/sim_poses.csv
+    - spin-lethal-costmap/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-lethal-costmap/1
+    success: 'true'
+    start_time: '2026-09-06T13:12:54.883304+00:00'
+    end_time: '2026-09-06T13:13:03.231548+00:00'
+    output_files:
+    - spin-lethal-costmap/1/.robovast_rosbags_process_cache
+    - spin-lethal-costmap/1/action_spin_feedback.csv
+    - spin-lethal-costmap/1/action_spin_status.csv
+    - spin-lethal-costmap/1/behaviors.jsonl
+    - spin-lethal-costmap/1/capture/capture.bin
+    - spin-lethal-costmap/1/capture/capture.json
+    - spin-lethal-costmap/1/costmaps.csv
+    - spin-lethal-costmap/1/entities.json
+    - spin-lethal-costmap/1/poses.csv
+    - spin-lethal-costmap/1/resource_usage.csv
+    - spin-lethal-costmap/1/rosbag2/metadata.yaml
+    - spin-lethal-costmap/1/rosbag2/rosbag2_0.mcap
+    - spin-lethal-costmap/1/rosbag2_collision.csv
+    - spin-lethal-costmap/1/run.clock_map.csv
+    - spin-lethal-costmap/1/run.npz
+    - spin-lethal-costmap/1/run_log.csv
+    - spin-lethal-costmap/1/sim_poses.csv
+    - spin-lethal-costmap/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-lethal-costmap/2
+    success: 'true'
+    start_time: '2026-09-06T13:12:56.888649+00:00'
+    end_time: '2026-09-06T13:13:04.053087+00:00'
+    output_files:
+    - spin-lethal-costmap/2/.robovast_rosbags_process_cache
+    - spin-lethal-costmap/2/action_spin_feedback.csv
+    - spin-lethal-costmap/2/action_spin_status.csv
+    - spin-lethal-costmap/2/behaviors.jsonl
+    - spin-lethal-costmap/2/capture/capture.bin
+    - spin-lethal-costmap/2/capture/capture.json
+    - spin-lethal-costmap/2/costmaps.csv
+    - spin-lethal-costmap/2/entities.json
+    - spin-lethal-costmap/2/poses.csv
+    - spin-lethal-costmap/2/resource_usage.csv
+    - spin-lethal-costmap/2/rosbag2/metadata.yaml
+    - spin-lethal-costmap/2/rosbag2/rosbag2_0.mcap
+    - spin-lethal-costmap/2/rosbag2_collision.csv
+    - spin-lethal-costmap/2/run.clock_map.csv
+    - spin-lethal-costmap/2/run.npz
+    - spin-lethal-costmap/2/run_log.csv
+    - spin-lethal-costmap/2/sim_poses.csv
+    - spin-lethal-costmap/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-lethal-costmap/3
+    success: 'true'
+    start_time: '2026-09-06T13:13:19.034464+00:00'
+    end_time: '2026-09-06T13:13:26.983962+00:00'
+    output_files:
+    - spin-lethal-costmap/3/.robovast_rosbags_process_cache
+    - spin-lethal-costmap/3/action_spin_feedback.csv
+    - spin-lethal-costmap/3/action_spin_status.csv
+    - spin-lethal-costmap/3/behaviors.jsonl
+    - spin-lethal-costmap/3/capture/capture.bin
+    - spin-lethal-costmap/3/capture/capture.json
+    - spin-lethal-costmap/3/costmaps.csv
+    - spin-lethal-costmap/3/entities.json
+    - spin-lethal-costmap/3/poses.csv
+    - spin-lethal-costmap/3/resource_usage.csv
+    - spin-lethal-costmap/3/rosbag2/metadata.yaml
+    - spin-lethal-costmap/3/rosbag2/rosbag2_0.mcap
+    - spin-lethal-costmap/3/rosbag2_collision.csv
+    - spin-lethal-costmap/3/run.clock_map.csv
+    - spin-lethal-costmap/3/run.npz
+    - spin-lethal-costmap/3/run_log.csv
+    - spin-lethal-costmap/3/sim_poses.csv
+    - spin-lethal-costmap/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: spin-lethal-costmap/4
+    success: 'true'
+    start_time: '2026-09-06T13:13:19.035508+00:00'
+    end_time: '2026-09-06T13:13:25.886067+00:00'
+    output_files:
+    - spin-lethal-costmap/4/.robovast_rosbags_process_cache
+    - spin-lethal-costmap/4/action_spin_feedback.csv
+    - spin-lethal-costmap/4/action_spin_status.csv
+    - spin-lethal-costmap/4/behaviors.jsonl
+    - spin-lethal-costmap/4/capture/capture.bin
+    - spin-lethal-costmap/4/capture/capture.json
+    - spin-lethal-costmap/4/costmaps.csv
+    - spin-lethal-costmap/4/entities.json
+    - spin-lethal-costmap/4/poses.csv
+    - spin-lethal-costmap/4/resource_usage.csv
+    - spin-lethal-costmap/4/rosbag2/metadata.yaml
+    - spin-lethal-costmap/4/rosbag2/rosbag2_0.mcap
+    - spin-lethal-costmap/4/rosbag2_collision.csv
+    - spin-lethal-costmap/4/run.clock_map.csv
+    - spin-lethal-costmap/4/run.npz
+    - spin-lethal-costmap/4/run_log.csv
+    - spin-lethal-costmap/4/sim_poses.csv
+    - spin-lethal-costmap/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/Spin_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations: []
+  derived_from: []
+execution:
+  execution_time: '2026-09-06T13:13:43.006331+00:00'
+  robovast_version: 7e2a5ef
+  robovast_revision: 7e2a5ef
+  robovast_revision_source: baked
+  robovast_dirty: false
+  runs: 5
+  execution_type: cluster
+  image: ghcr.io/cps-test-lab/robovast:latest
+  images:
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim:latest
+    sut: ghcr.io/cps-test-lab/robovast:latest
+    scenario: ghcr.io/cps-test-lab/robovast:latest
+  image_revision: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+  image_revisions:
+    scenario: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:de660b6d52cdb60833d7ce31414ebb8fa0b7cc3b7751126d5c8962e14a3d3e62
+    sut: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+    robovast: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+    s3-init: ghcr.io/cps-test-lab/robovast-sidecar@sha256:f6567f4aa4be2af1c4f9a2a738f0c66415556373811351418c4719e476c43d68
+  image_build_refs:
+    scenario:
+      revision: 50bcb1e
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    simulation:
+      revision: 50bcb1e
+      source: https://github.com/cps-test-lab/robovast
+      roqsim_ref: d944d606d02d519ce90870078c5255c6aca6b107
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    sut:
+      revision: 50bcb1e
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+  env:
+    PYTHONUNBUFFERED: '1'
+  cluster_info:
+    cluster_config:
+      name: rke2
+      kwargs:
+        namespace: default
+    node_count: 1
+    node_labels:
+      node-7f7e372628b2:
+        beta.kubernetes.io/arch: amd64
+        beta.kubernetes.io/instance-type: rke2
+        beta.kubernetes.io/os: linux
+        kubernetes.io/arch: amd64
+        kubernetes.io/os: linux
+        node-role.kubernetes.io/control-plane: 'true'
+        node-role.kubernetes.io/etcd: 'true'
+        node.kubernetes.io/instance-type: rke2
+        robovast.io/build-node: 'true'
+        robovast.io/data-node: 'true'
+        robovast.io/node-id: node-7f7e372628b2
+  launch:
+    config_filter: ''
+    campaign_name: ''
+    runs: 5
+    postprocess: true
+    upload_to_share: false
+    show_gui: false
+    images:
+      scenario: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+      simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:de660b6d52cdb60833d7ce31414ebb8fa0b7cc3b7751126d5c8962e14a3d3e62
+      sut: ghcr.io/cps-test-lab/robovast@sha256:bb5422f0eea3b8e0b54bd091b583d3481273ab6872e7d904d373386339332cce
+postprocessing:
+  generated_by: robovast
+  entries:
+  - output: ../spin-impossible-command/0/poses.csv
+    sources:
+    - ../spin-impossible-command/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-impossible-command/0/action_spin_feedback.csv
+    sources:
+    - ../spin-impossible-command/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-impossible-command/0/action_spin_status.csv
+    sources:
+    - ../spin-impossible-command/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-impossible-command/0/rosbag2_collision.csv
+    sources:
+    - ../spin-impossible-command/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-impossible-command/0/costmaps.csv
+    sources:
+    - ../spin-impossible-command/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-impossible-command/3/action_spin_feedback.csv
+    sources:
+    - ../spin-impossible-command/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-impossible-command/3/action_spin_status.csv
+    sources:
+    - ../spin-impossible-command/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-impossible-command/3/rosbag2_collision.csv
+    sources:
+    - ../spin-impossible-command/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-impossible-command/3/costmaps.csv
+    sources:
+    - ../spin-impossible-command/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-impossible-command/1/poses.csv
+    sources:
+    - ../spin-impossible-command/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-impossible-command/1/action_spin_feedback.csv
+    sources:
+    - ../spin-impossible-command/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-impossible-command/1/action_spin_status.csv
+    sources:
+    - ../spin-impossible-command/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-impossible-command/1/rosbag2_collision.csv
+    sources:
+    - ../spin-impossible-command/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-impossible-command/1/costmaps.csv
+    sources:
+    - ../spin-impossible-command/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-impossible-command/2/poses.csv
+    sources:
+    - ../spin-impossible-command/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-impossible-command/2/action_spin_feedback.csv
+    sources:
+    - ../spin-impossible-command/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-impossible-command/2/action_spin_status.csv
+    sources:
+    - ../spin-impossible-command/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-impossible-command/2/rosbag2_collision.csv
+    sources:
+    - ../spin-impossible-command/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-impossible-command/2/costmaps.csv
+    sources:
+    - ../spin-impossible-command/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-impossible-command/4/poses.csv
+    sources:
+    - ../spin-impossible-command/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-impossible-command/4/action_spin_feedback.csv
+    sources:
+    - ../spin-impossible-command/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-impossible-command/4/action_spin_status.csv
+    sources:
+    - ../spin-impossible-command/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-impossible-command/4/rosbag2_collision.csv
+    sources:
+    - ../spin-impossible-command/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-impossible-command/4/costmaps.csv
+    sources:
+    - ../spin-impossible-command/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-invalid-costmap/2/poses.csv
+    sources:
+    - ../spin-invalid-costmap/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-invalid-costmap/2/action_spin_feedback.csv
+    sources:
+    - ../spin-invalid-costmap/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-invalid-costmap/2/action_spin_status.csv
+    sources:
+    - ../spin-invalid-costmap/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-invalid-costmap/2/rosbag2_collision.csv
+    sources:
+    - ../spin-invalid-costmap/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-invalid-costmap/2/costmaps.csv
+    sources:
+    - ../spin-invalid-costmap/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-invalid-costmap/1/poses.csv
+    sources:
+    - ../spin-invalid-costmap/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-invalid-costmap/1/action_spin_feedback.csv
+    sources:
+    - ../spin-invalid-costmap/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-invalid-costmap/1/action_spin_status.csv
+    sources:
+    - ../spin-invalid-costmap/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-invalid-costmap/1/rosbag2_collision.csv
+    sources:
+    - ../spin-invalid-costmap/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-invalid-costmap/1/costmaps.csv
+    sources:
+    - ../spin-invalid-costmap/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-invalid-costmap/0/poses.csv
+    sources:
+    - ../spin-invalid-costmap/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-invalid-costmap/0/action_spin_feedback.csv
+    sources:
+    - ../spin-invalid-costmap/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-invalid-costmap/0/action_spin_status.csv
+    sources:
+    - ../spin-invalid-costmap/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-invalid-costmap/0/rosbag2_collision.csv
+    sources:
+    - ../spin-invalid-costmap/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-invalid-costmap/0/costmaps.csv
+    sources:
+    - ../spin-invalid-costmap/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-invalid-costmap/3/poses.csv
+    sources:
+    - ../spin-invalid-costmap/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-invalid-costmap/3/action_spin_feedback.csv
+    sources:
+    - ../spin-invalid-costmap/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-invalid-costmap/3/action_spin_status.csv
+    sources:
+    - ../spin-invalid-costmap/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-invalid-costmap/3/rosbag2_collision.csv
+    sources:
+    - ../spin-invalid-costmap/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-invalid-costmap/3/costmaps.csv
+    sources:
+    - ../spin-invalid-costmap/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-invalid-costmap/4/poses.csv
+    sources:
+    - ../spin-invalid-costmap/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-invalid-costmap/4/action_spin_feedback.csv
+    sources:
+    - ../spin-invalid-costmap/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-invalid-costmap/4/action_spin_status.csv
+    sources:
+    - ../spin-invalid-costmap/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-invalid-costmap/4/rosbag2_collision.csv
+    sources:
+    - ../spin-invalid-costmap/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-invalid-costmap/4/costmaps.csv
+    sources:
+    - ../spin-invalid-costmap/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-lethal-costmap/0/poses.csv
+    sources:
+    - ../spin-lethal-costmap/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-lethal-costmap/0/action_spin_feedback.csv
+    sources:
+    - ../spin-lethal-costmap/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-lethal-costmap/0/action_spin_status.csv
+    sources:
+    - ../spin-lethal-costmap/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-lethal-costmap/0/rosbag2_collision.csv
+    sources:
+    - ../spin-lethal-costmap/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-lethal-costmap/0/costmaps.csv
+    sources:
+    - ../spin-lethal-costmap/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-lethal-costmap/1/poses.csv
+    sources:
+    - ../spin-lethal-costmap/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-lethal-costmap/1/action_spin_feedback.csv
+    sources:
+    - ../spin-lethal-costmap/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-lethal-costmap/1/action_spin_status.csv
+    sources:
+    - ../spin-lethal-costmap/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-lethal-costmap/1/rosbag2_collision.csv
+    sources:
+    - ../spin-lethal-costmap/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-lethal-costmap/1/costmaps.csv
+    sources:
+    - ../spin-lethal-costmap/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-lethal-costmap/2/poses.csv
+    sources:
+    - ../spin-lethal-costmap/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-lethal-costmap/2/action_spin_feedback.csv
+    sources:
+    - ../spin-lethal-costmap/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-lethal-costmap/2/action_spin_status.csv
+    sources:
+    - ../spin-lethal-costmap/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-lethal-costmap/2/rosbag2_collision.csv
+    sources:
+    - ../spin-lethal-costmap/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-lethal-costmap/2/costmaps.csv
+    sources:
+    - ../spin-lethal-costmap/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-lethal-costmap/3/poses.csv
+    sources:
+    - ../spin-lethal-costmap/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-lethal-costmap/3/action_spin_feedback.csv
+    sources:
+    - ../spin-lethal-costmap/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-lethal-costmap/3/action_spin_status.csv
+    sources:
+    - ../spin-lethal-costmap/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-lethal-costmap/3/rosbag2_collision.csv
+    sources:
+    - ../spin-lethal-costmap/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-lethal-costmap/3/costmaps.csv
+    sources:
+    - ../spin-lethal-costmap/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-lethal-costmap/4/poses.csv
+    sources:
+    - ../spin-lethal-costmap/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-lethal-costmap/4/action_spin_feedback.csv
+    sources:
+    - ../spin-lethal-costmap/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-lethal-costmap/4/action_spin_status.csv
+    sources:
+    - ../spin-lethal-costmap/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-lethal-costmap/4/rosbag2_collision.csv
+    sources:
+    - ../spin-lethal-costmap/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-lethal-costmap/4/costmaps.csv
+    sources:
+    - ../spin-lethal-costmap/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-valid-costmap/0/poses.csv
+    sources:
+    - ../spin-valid-costmap/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-valid-costmap/0/action_spin_feedback.csv
+    sources:
+    - ../spin-valid-costmap/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-valid-costmap/0/action_spin_status.csv
+    sources:
+    - ../spin-valid-costmap/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-valid-costmap/0/rosbag2_collision.csv
+    sources:
+    - ../spin-valid-costmap/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-valid-costmap/0/costmaps.csv
+    sources:
+    - ../spin-valid-costmap/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-valid-costmap/1/poses.csv
+    sources:
+    - ../spin-valid-costmap/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-valid-costmap/1/action_spin_feedback.csv
+    sources:
+    - ../spin-valid-costmap/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-valid-costmap/1/action_spin_status.csv
+    sources:
+    - ../spin-valid-costmap/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-valid-costmap/1/rosbag2_collision.csv
+    sources:
+    - ../spin-valid-costmap/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-valid-costmap/1/costmaps.csv
+    sources:
+    - ../spin-valid-costmap/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-valid-costmap/2/poses.csv
+    sources:
+    - ../spin-valid-costmap/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-valid-costmap/2/action_spin_feedback.csv
+    sources:
+    - ../spin-valid-costmap/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-valid-costmap/2/action_spin_status.csv
+    sources:
+    - ../spin-valid-costmap/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-valid-costmap/2/rosbag2_collision.csv
+    sources:
+    - ../spin-valid-costmap/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-valid-costmap/2/costmaps.csv
+    sources:
+    - ../spin-valid-costmap/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-valid-costmap/4/poses.csv
+    sources:
+    - ../spin-valid-costmap/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-valid-costmap/4/action_spin_feedback.csv
+    sources:
+    - ../spin-valid-costmap/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-valid-costmap/4/action_spin_status.csv
+    sources:
+    - ../spin-valid-costmap/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-valid-costmap/4/rosbag2_collision.csv
+    sources:
+    - ../spin-valid-costmap/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-valid-costmap/4/costmaps.csv
+    sources:
+    - ../spin-valid-costmap/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../spin-valid-costmap/3/poses.csv
+    sources:
+    - ../spin-valid-costmap/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../spin-valid-costmap/3/action_spin_feedback.csv
+    sources:
+    - ../spin-valid-costmap/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-valid-costmap/3/action_spin_status.csv
+    sources:
+    - ../spin-valid-costmap/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: spin
+  - output: ../spin-valid-costmap/3/rosbag2_collision.csv
+    sources:
+    - ../spin-valid-costmap/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../spin-valid-costmap/3/costmaps.csv
+    sources:
+    - ../spin-valid-costmap/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../_jobs/batch-0/job-11/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-11/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-11/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-11/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-10/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-10/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-10/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-10/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-13/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-13/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-13/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-13/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-12/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-12/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-12/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-12/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-14/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-14/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-14/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-14/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-15/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-15/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-15/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-15/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-17/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-17/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-17/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-17/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-16/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-16/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-16/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-16/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-19/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-19/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-19/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-19/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-18/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-18/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-18/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-18/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-3/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-3/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-5/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-5/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-5/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-5/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-6/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-6/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-6/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-6/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-7/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-7/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-7/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-7/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-9/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-9/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-9/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-9/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-8/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-8/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-8/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-8/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: spin-impossible-command/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-10/resource_usage_main.csv
+    - _jobs/batch-0/job-10/resource_usage_simulation.csv
+    - _jobs/batch-0/job-10/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-impossible-command/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-10/system_usage_main.csv
+    - _jobs/batch-0/job-10/system_usage_simulation.csv
+    - _jobs/batch-0/job-10/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-impossible-command/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-11/resource_usage_main.csv
+    - _jobs/batch-0/job-11/resource_usage_simulation.csv
+    - _jobs/batch-0/job-11/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-impossible-command/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-11/system_usage_main.csv
+    - _jobs/batch-0/job-11/system_usage_simulation.csv
+    - _jobs/batch-0/job-11/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-impossible-command/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-12/resource_usage_main.csv
+    - _jobs/batch-0/job-12/resource_usage_simulation.csv
+    - _jobs/batch-0/job-12/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-impossible-command/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-12/system_usage_main.csv
+    - _jobs/batch-0/job-12/system_usage_simulation.csv
+    - _jobs/batch-0/job-12/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-impossible-command/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-13/resource_usage_main.csv
+    - _jobs/batch-0/job-13/resource_usage_simulation.csv
+    - _jobs/batch-0/job-13/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-impossible-command/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-13/system_usage_main.csv
+    - _jobs/batch-0/job-13/system_usage_simulation.csv
+    - _jobs/batch-0/job-13/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-impossible-command/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-14/resource_usage_main.csv
+    - _jobs/batch-0/job-14/resource_usage_simulation.csv
+    - _jobs/batch-0/job-14/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-impossible-command/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-14/system_usage_main.csv
+    - _jobs/batch-0/job-14/system_usage_simulation.csv
+    - _jobs/batch-0/job-14/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-invalid-costmap/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/resource_usage_main.csv
+    - _jobs/batch-0/job-0/resource_usage_simulation.csv
+    - _jobs/batch-0/job-0/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-invalid-costmap/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/system_usage_main.csv
+    - _jobs/batch-0/job-0/system_usage_simulation.csv
+    - _jobs/batch-0/job-0/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-invalid-costmap/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/resource_usage_main.csv
+    - _jobs/batch-0/job-1/resource_usage_simulation.csv
+    - _jobs/batch-0/job-1/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-invalid-costmap/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/system_usage_main.csv
+    - _jobs/batch-0/job-1/system_usage_simulation.csv
+    - _jobs/batch-0/job-1/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-invalid-costmap/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/resource_usage_main.csv
+    - _jobs/batch-0/job-2/resource_usage_simulation.csv
+    - _jobs/batch-0/job-2/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-invalid-costmap/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/system_usage_main.csv
+    - _jobs/batch-0/job-2/system_usage_simulation.csv
+    - _jobs/batch-0/job-2/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-invalid-costmap/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/resource_usage_main.csv
+    - _jobs/batch-0/job-3/resource_usage_simulation.csv
+    - _jobs/batch-0/job-3/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-invalid-costmap/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/system_usage_main.csv
+    - _jobs/batch-0/job-3/system_usage_simulation.csv
+    - _jobs/batch-0/job-3/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-invalid-costmap/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/resource_usage_main.csv
+    - _jobs/batch-0/job-4/resource_usage_simulation.csv
+    - _jobs/batch-0/job-4/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-invalid-costmap/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/system_usage_main.csv
+    - _jobs/batch-0/job-4/system_usage_simulation.csv
+    - _jobs/batch-0/job-4/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-lethal-costmap/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-15/resource_usage_main.csv
+    - _jobs/batch-0/job-15/resource_usage_simulation.csv
+    - _jobs/batch-0/job-15/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-lethal-costmap/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-15/system_usage_main.csv
+    - _jobs/batch-0/job-15/system_usage_simulation.csv
+    - _jobs/batch-0/job-15/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-lethal-costmap/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-16/resource_usage_main.csv
+    - _jobs/batch-0/job-16/resource_usage_simulation.csv
+    - _jobs/batch-0/job-16/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-lethal-costmap/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-16/system_usage_main.csv
+    - _jobs/batch-0/job-16/system_usage_simulation.csv
+    - _jobs/batch-0/job-16/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-lethal-costmap/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-17/resource_usage_main.csv
+    - _jobs/batch-0/job-17/resource_usage_simulation.csv
+    - _jobs/batch-0/job-17/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-lethal-costmap/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-17/system_usage_main.csv
+    - _jobs/batch-0/job-17/system_usage_simulation.csv
+    - _jobs/batch-0/job-17/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-lethal-costmap/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-18/resource_usage_main.csv
+    - _jobs/batch-0/job-18/resource_usage_simulation.csv
+    - _jobs/batch-0/job-18/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-lethal-costmap/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-18/system_usage_main.csv
+    - _jobs/batch-0/job-18/system_usage_simulation.csv
+    - _jobs/batch-0/job-18/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-lethal-costmap/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-19/resource_usage_main.csv
+    - _jobs/batch-0/job-19/resource_usage_simulation.csv
+    - _jobs/batch-0/job-19/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-lethal-costmap/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-19/system_usage_main.csv
+    - _jobs/batch-0/job-19/system_usage_simulation.csv
+    - _jobs/batch-0/job-19/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-valid-costmap/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-5/resource_usage_main.csv
+    - _jobs/batch-0/job-5/resource_usage_simulation.csv
+    - _jobs/batch-0/job-5/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-valid-costmap/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-5/system_usage_main.csv
+    - _jobs/batch-0/job-5/system_usage_simulation.csv
+    - _jobs/batch-0/job-5/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-valid-costmap/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-6/resource_usage_main.csv
+    - _jobs/batch-0/job-6/resource_usage_simulation.csv
+    - _jobs/batch-0/job-6/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-valid-costmap/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-6/system_usage_main.csv
+    - _jobs/batch-0/job-6/system_usage_simulation.csv
+    - _jobs/batch-0/job-6/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-valid-costmap/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-7/resource_usage_main.csv
+    - _jobs/batch-0/job-7/resource_usage_simulation.csv
+    - _jobs/batch-0/job-7/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-valid-costmap/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-7/system_usage_main.csv
+    - _jobs/batch-0/job-7/system_usage_simulation.csv
+    - _jobs/batch-0/job-7/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-valid-costmap/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-8/resource_usage_main.csv
+    - _jobs/batch-0/job-8/resource_usage_simulation.csv
+    - _jobs/batch-0/job-8/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-valid-costmap/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-8/system_usage_main.csv
+    - _jobs/batch-0/job-8/system_usage_simulation.csv
+    - _jobs/batch-0/job-8/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: spin-valid-costmap/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-9/resource_usage_main.csv
+    - _jobs/batch-0/job-9/resource_usage_simulation.csv
+    - _jobs/batch-0/job-9/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: spin-valid-costmap/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-9/system_usage_main.csv
+    - _jobs/batch-0/job-9/system_usage_simulation.csv
+    - _jobs/batch-0/job-9/system_usage_sut.csv
+    plugin: system_usage
+    params: {}

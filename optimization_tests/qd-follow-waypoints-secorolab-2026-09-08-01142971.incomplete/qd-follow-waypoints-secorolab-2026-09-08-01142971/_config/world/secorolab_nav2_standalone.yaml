@@ -1,0 +1,173 @@
+# Secorolab wired for nav2 + AMCL, SELF-CONTAINED: the baked half of the roqsim metamorphic .vast
+# files, in the arrangement experiment_qd_bt_coverage.vast introduced. Campaigns name THIS world,
+# and the floorplan mesh is baked into a mujoco scene ahead of time — never passed on the `sim:`
+# channel — so no .vast ever names an STL.
+#
+# The room is `sim.world` -> environments/secorolab/mujoco/secorolab.xml: the environment's own
+# visual mesh and json-ld colliders, baked ahead of time instead of compiled per run. The xml IS
+# the room (walls, columns, the `floor` plane contact_monitor ignores, the ceiling light), so this
+# file declares no mesh and carries the nav2 + AMCL wiring itself, minus any floorplan plugin.
+#
+# Run it by hand (nothing to supply: the scene is already baked):
+#
+#   roqsim sim world/secorolab_nav2_standalone.yaml --no-communication
+#
+# `--no-communication` for the same reasons nav2.yaml declares its transport rather than letting
+# `roqsim sim --ros` append it: the appended bridge (publish_static_tf: true) conflicts with the
+# robot_state_publisher the nav2 launch runs, and declaring it suppresses the auto-appended
+# sim_interfaces, so that is declared here too — see the bridge note below.
+#
+sim:
+  world: ../environments/secorolab/mujoco/secorolab.xml
+  pacing: realtime
+  view:
+    lookat: [0.0, 0.0, 0.0]
+    distance: 12.0
+    azimuth: 90.0
+    elevation: -55.0
+
+components:
+  # Only the DEFAULT spawn: the scenario teleports the robot to this configuration's start_pose
+  # before nav2 launches (set_entity_state), because a simulator in its own container has no command
+  # line for a per-configuration world override.
+  #
+  # It still has to be FREE SPACE, or MuJoCo resolves a robot inside a wall before the teleport
+  # happens. (0, -2.0) measures 0.85 m on the distance transform of the committed occupancy grid --
+  # 4.9x the robot's 0.175 m radius -- and is chosen for being reliably clear rather than for being
+  # the roomiest point in the room.
+  #
+  # A configuration that needs a different pose says so with
+  # `sim: {overrides: {components: {robot: {pose: {position: {x: ..., y: ...}}}}}}`.
+  #
+  # `name:` is the RESERVED SIBLING of the plugin key, never a key inside its config: it labels the
+  # entry AND names the entity this spawn registers, which are one string now rather than two that
+  # could disagree. Everything under `components:` attaches to that entity by POSITION -- ownership
+  # is where an entry sits, so there is nothing left to spell wrong -- and each is addressed as
+  # `robot.<label>` (`--set components.robot.lidar.rays=720`), including the ones only the
+  # turtlebot4 manifest declares.
+  - spawn_robot: {model: turtlebot4, pose: {position: {x: 0.0, y: -2.0}, orientation: {yaw: 0.0}}}
+    name: robot
+    components:
+    # The scan nav2 consumes comes from this sensor directly: roqsim's lidar applies its own range
+    # noise and dropout, so nothing sits between it and the stack. Everything else about the lidar —
+    # site, frame_id: rplidar_link, 360 rays, 12 m — comes from the turtlebot4 manifest, which is
+    # merged underneath this entry per key, so it cannot drift from the model. That merge is by
+  # LABEL and only reaches a component of the same owner: declared at the top of the document
+  # this entry would attach to nothing and run ALONGSIDE the manifest's lidar rather than
+  # configuring it, which is the failure nesting exists to make impossible.
+    - lidar: {topics: {scan: /scan}}
+
+    # Ground truth for the trajectory analysis, NOT wired into localization: nav2 localizes with AMCL
+    # off the drifting wheel odometry, and this is the disconnected leaf an evaluator diffs against.
+    # `nav2_turtlebot4_base_link_gt` rather than the plugin's `<model>_base_link_gt` default because
+    # that is what the Gazebo half emits — gazebo_tf_publisher names the frame after the gz model, and
+    # files/nav2/tb4_simulation_launch.py spawns it as `nav2_turtlebot4`. One frame name on both
+    # simulators means the postprocessing and the analysis notebooks need no per-backend case.
+    #
+    # Registered BEFORE the bridge: the bridge binds ctx.interface once, in its own configure(), so
+    # a producer registered after it is never published (docs/architecture.rst, plugin-order rule).
+    # A nested component expands in place, immediately after the entry that owns it, so sitting
+    # under a spawn_robot that precedes ros2_bridge is what keeps that true.
+    # rate_hz 60 rather than the plugin's default 30, to match what the Gazebo half emits: its gt
+    # frame arrives at a measured 55.6 Hz median. It changes how often the truth is SAMPLED, not what
+    # the robot does, and it removes an asymmetry that biases the comparison: a derived quantity like
+    # speed is a finite difference, so the two halves were being differenced over windows of different
+    # length, and the denser side picks up more of every turn's arc.
+    #
+    # 60 is achievable rather than aspirational: the endpoint's rate is quantised to the physics step,
+    # so 60 Hz lands on a steady 0.018 s (9 steps of 0.002).
+    - ground_truth_pose: {child_frame: nav2_turtlebot4_base_link_gt, rate_hz: 60.0}
+
+    # The failure oracle. It publishes std_msgs/Bool on /collision — the same topic and type
+    # files/collision_monitor.py produces on the Gazebo half by aggregating gz contact sensors — so
+    # the scenario's check is identical on both.
+    #
+    # Defined by EXCLUSION: every contact of the robot's kinematic subtree (chassis and wheels) counts
+    # except geoms named here. `floor` is the baked room's ground plane (named `floor` in the
+    # mujoco xml), which a wheeled robot
+    # touches continuously by design; walls, columns and the obstacle population are not listed, so
+    # hitting any of them fails the trial. Gazebo's version can only see what carries a contact
+    # sensor, which is why its bridge has to enumerate ten obstacle slots by name.
+    #
+    # Latched (the default): a trial that hit something does not become clean again when it bounces off.
+    - contact_monitor: {ignore: [floor], min_force: 1.0}
+
+  # TWO obstacle populations, because they are settled at different times and must not share a
+  # name. Each is ONE list value, so "how many" is a campaign factor rather than a structural edit
+  # to this file: the obstacle variations write the whole list per configuration.
+  #
+  # The `name:` here is the RESERVED SIBLING of the plugin key, and it is the entry's whole
+  # identity: its label, the name of the entities it registers, and what an override addresses it
+  # by. Two `boxes` entries make the bare ref ambiguous, so naming them is required rather than
+  # stylistic. `roqsim scenes describe` prints every address that actually works.
+  #
+  # STATIC: empty by default, so a configuration placing none compiles a world with none.
+  - boxes:
+      instances: []
+    name: static_obstacles
+
+  # DYNAMIC: exactly one, and it is ALWAYS COMPILED -- including for configurations that place no
+  # dynamic obstacle at all. Nothing can create an entity at run time (SpawnEntity is presence over
+  # the compiled model), so a trial that reveals one mid-run needs it to exist from the start; and
+  # the scenario has no conditionals, so its `delete_entity('dynamic_0')` must resolve in EVERY
+  # configuration or the trial fails before it begins. That is exactly how the first pilot failed.
+  #
+  # Its default pose is 40 m outside the room and it is made ABSENT before the trial starts, so in
+  # a configuration that never triggers it is invisible to raycasts, rendering and contacts, and
+  # unlisted by GetEntities. `motion` is left at its `physics` default, which is what makes it
+  # TELEPORTABLE: the scenario parks it and later reveals it with set_entity_state, and welded
+  # scenery has no pose to write.
+  #
+  # `dynamic_0` and not `obstacle_0`: the static population's generated names start at
+  # `obstacle_0`, and two identically-named bodies in one compiled model is a MuJoCo
+  # duplicate-name failure. The trigger variation is given `entity_prefix: dynamic` so the name it
+  # generates is the one declared here.
+  - boxes:
+      instances:
+      - {name: dynamic_0, pose: {position: {x: 40.0, y: 40.0}}, size: [0.5, 0.5, 1.0]}
+    name: dynamic_obstacles
+
+  # ONE ROUND OBSTACLE, DECLARED OFF. mt-secorolab-rotate-goal-lab-curve puts a 3 m pillar in the
+  # lab so the route round it is a curve rather than a straight run; every other configuration
+  # turns it off with nothing to say.
+  #
+  # `enabled: false` is the mechanism, and it is why this needs no new plugin and no parked
+  # placeholder. The entry stays in the document -- addressable, in the record -- and the one
+  # configuration that wants the pillar turns it back on with
+  # `sim: {overrides: {components: {curve_obstacle: {enabled: true}}}}`. So the pillar is declared
+  # ONCE, at its real pose, instead of being hidden 40 m outside the room and dragged back in.
+  #
+  # It differs from `dynamic_obstacles` below for a reason worth keeping straight: that one is
+  # always compiled because `delete_entity('dynamic_0')` runs in EVERY configuration and OSC2 has
+  # no conditionals -- a runtime fact. Nothing addresses this pillar at runtime, so it can simply
+  # not exist where it is not wanted.
+  #
+  # ROUND rather than a box because clearance is what the configuration measures: two tangent
+  # circles leave a gap where two corner-adjacent squares do not. The Gazebo half spells the same
+  # thing as cylinder.sdf.xacro with `diameter:=3.0, height:=1.0`; radius 1.5 is that diameter.
+  #
+  # `curve_0` and not `obstacle_0`: the static box population's placements generate `obstacle_N`,
+  # and two identically-named bodies in one compiled model is a MuJoCo duplicate-name failure.
+  #
+  # NOT in the occupancy grid: the map is the environment's own `maps/*.yaml`, not something read
+  # off the compiled model, so nav2 must discover this from the lidar like any unmapped
+  # obstacle. That is the point of the configuration, not an oversight.
+  - cylinder: {pose: {position: {x: 6.5, y: 0.75}}, radius: 1.5, height: 1.0, motion: static}
+    name: curve_0
+    enabled: false
+
+  # publish_static_tf false: files/nav2_stack.launch.py runs a robot_state_publisher over the TB4
+  # URDF, which publishes base_link and every link below it (rplidar_link included) from the model.
+  # Two publishers for one static transform is a TF conflict, not redundancy. The bridge keeps what
+  # only the simulator knows: /clock, /odom and odom -> base_link.
+  #
+  # No clock_rate_hz: the bridge publishes /clock once per physics step by default, which is the
+  # finest grid available and therefore divides every gated publish period. Setting a rate here is
+  # what aliased the ground-truth frame onto a coarser grid, and the bridge warns at startup for any
+  # output whose period the grid does not divide.
+  - ros2_bridge: {publish_static_tf: false}
+
+  # The control plane the scenario's set_entity_state, spawn_entity and delete_entity are clients
+  # of. spawn/delete are PRESENCE over the compiled model, not creation — which is why the obstacle
+  # population above has to exist at compile time for a trial to reveal one mid-run.
+  - sim_interfaces: {}

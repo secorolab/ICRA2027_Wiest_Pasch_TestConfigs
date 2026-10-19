@@ -1,0 +1,5597 @@
+version: 4
+metadata:
+  name: random_hexagon_nav_through_poses
+  title: Truly random nav_to_pose configurations, TurtleBot 4 + Nav2, in roqsim (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords:
+  - robotics
+  - navigation
+  - ROS2
+  - mujoco
+  - roqsim
+  - nav2
+  - turtlebot4
+  - random
+  - nav_to_pose
+  description: "120 truly random nav_to_pose configurations for hexagon. Each randomly picks: a PathVariationRandom start/goal\
+    \ pose, controller (50/50 MPPI/DWB), planner (use_astar True/False), static obstacle (50 %, random pose, fixed 0.5\xD7\
+    0.5\xD71.0 m), dynamic obstacle (50 %, random pose, fixed 0.5\xD70.5\xD71.0 m, spawned when the robot is within a random\
+    \ 0\u20135 m trigger distance of its pose)."
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+configuration:
+- name: tr-000
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.929
+          y: 0.73
+        orientation:
+          yaw: -2.161299
+      goal_poses:
+      - position:
+          x: 1.664
+          y: -0.253
+        orientation:
+          yaw: 2.952531
+      - position:
+          x: 2.142
+          y: 0.794
+        orientation:
+          yaw: -1.229982
+      - position:
+          x: 0.829
+          y: 0.588
+        orientation:
+          yaw: -1.311746
+      spawn_trigger_point:
+        x: 2.017
+        y: -1.14
+        z: 0.0
+      spawn_trigger_threshold: 2.53
+      dynamic_pose:
+        position:
+          x: 2.017
+          y: -1.14
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.333
+                  y: -1.19
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-001
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.379
+          y: 0.296
+        orientation:
+          yaw: -2.959293
+      goal_poses:
+      - position:
+          x: 1.766
+          y: -0.845
+        orientation:
+          yaw: -2.784174
+      - position:
+          x: 0.532
+          y: 0.238
+        orientation:
+          yaw: -0.34081
+      - position:
+          x: 0.014
+          y: -0.7
+        orientation:
+          yaw: 2.495044
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-002
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 2.035
+          y: -1.068
+        orientation:
+          yaw: -0.883976
+      goal_poses:
+      - position:
+          x: 1.026
+          y: -1.895
+        orientation:
+          yaw: -0.571314
+      - position:
+          x: -0.475
+          y: -1.988
+        orientation:
+          yaw: 2.893572
+      - position:
+          x: 0.416
+          y: -1.218
+        orientation:
+          yaw: 2.874382
+      spawn_trigger_point:
+        x: -0.133
+        y: 1.46
+        z: 0.0
+      spawn_trigger_threshold: 0.8
+      dynamic_pose:
+        position:
+          x: -0.133
+          y: 1.46
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-003
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.472
+          y: -0.22
+        orientation:
+          yaw: -2.83672
+      goal_poses:
+      - position:
+          x: -1.578
+          y: -1.36
+        orientation:
+          yaw: 0.943121
+      - position:
+          x: -0.112
+          y: -1.583
+        orientation:
+          yaw: -0.373655
+      - position:
+          x: -0.453
+          y: -0.245
+        orientation:
+          yaw: -2.43498
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.633
+                  y: -1.79
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-004
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.623
+          y: 1.84
+        orientation:
+          yaw: 2.30644
+      goal_poses:
+      - position:
+          x: -0.203
+          y: 0.605
+        orientation:
+          yaw: 0.802791
+      - position:
+          x: -0.333
+          y: 2.261
+        orientation:
+          yaw: -0.658821
+      - position:
+          x: 1.076
+          y: 1.932
+        orientation:
+          yaw: 2.278182
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-005
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.902
+          y: -1.136
+        orientation:
+          yaw: 1.304422
+      goal_poses:
+      - position:
+          x: 0.611
+          y: -0.369
+        orientation:
+          yaw: -1.591849
+      - position:
+          x: 0.573
+          y: 0.652
+        orientation:
+          yaw: -2.521279
+      - position:
+          x: 0.117
+          y: 2.041
+        orientation:
+          yaw: -1.1171
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-006
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.395
+          y: -1.093
+        orientation:
+          yaw: -2.435915
+      goal_poses:
+      - position:
+          x: -0.661
+          y: -1.789
+        orientation:
+          yaw: -0.286338
+      - position:
+          x: -0.155
+          y: -0.576
+        orientation:
+          yaw: -2.311571
+      - position:
+          x: -0.959
+          y: -1.76
+        orientation:
+          yaw: 0.471136
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-007
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.522
+          y: 0.49
+        orientation:
+          yaw: 0.295095
+      goal_poses:
+      - position:
+          x: 0.186
+          y: 0.5
+        orientation:
+          yaw: 1.900227
+      - position:
+          x: 0.852
+          y: -0.482
+        orientation:
+          yaw: 2.903884
+      - position:
+          x: 1.999
+          y: -0.036
+        orientation:
+          yaw: -1.180208
+      spawn_trigger_point:
+        x: -0.633
+        y: -1.14
+        z: 0.0
+      spawn_trigger_threshold: 3.87
+      dynamic_pose:
+        position:
+          x: -0.633
+          y: -1.14
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-008
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.053
+          y: -2.068
+        orientation:
+          yaw: -1.536403
+      goal_poses:
+      - position:
+          x: -0.521
+          y: -0.886
+        orientation:
+          yaw: -0.931389
+      - position:
+          x: 0.488
+          y: 0.422
+        orientation:
+          yaw: 2.570944
+      - position:
+          x: -0.673
+          y: -0.037
+        orientation:
+          yaw: 2.439133
+      spawn_trigger_point:
+        x: 1.667
+        y: -0.19
+        z: 0.0
+      spawn_trigger_threshold: 3.18
+      dynamic_pose:
+        position:
+          x: 1.667
+          y: -0.19
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-009
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.481
+          y: -1.584
+        orientation:
+          yaw: -0.342996
+      goal_poses:
+      - position:
+          x: -1.994
+          y: -0.238
+        orientation:
+          yaw: -0.803317
+      - position:
+          x: -0.657
+          y: -0.077
+        orientation:
+          yaw: -2.079019
+      - position:
+          x: -0.727
+          y: -1.659
+        orientation:
+          yaw: -2.045897
+      spawn_trigger_point:
+        x: -0.133
+        y: 0.81
+        z: 0.0
+      spawn_trigger_threshold: 3.24
+      dynamic_pose:
+        position:
+          x: -0.133
+          y: 0.81
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.017
+                  y: 2.26
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-010
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.132
+          y: 1.984
+        orientation:
+          yaw: 1.664763
+      goal_poses:
+      - position:
+          x: 0.599
+          y: 0.813
+        orientation:
+          yaw: 2.255097
+      - position:
+          x: -0.192
+          y: 1.551
+        orientation:
+          yaw: -1.100244
+      - position:
+          x: -0.829
+          y: 0.575
+        orientation:
+          yaw: 1.938287
+      spawn_trigger_point:
+        x: 1.617
+        y: -0.49
+        z: 0.0
+      spawn_trigger_threshold: 1.35
+      dynamic_pose:
+        position:
+          x: 1.617
+          y: -0.49
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-011
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.385
+          y: -1.131
+        orientation:
+          yaw: 0.53942
+      goal_poses:
+      - position:
+          x: -0.509
+          y: 0.224
+        orientation:
+          yaw: -0.956395
+      - position:
+          x: 0.737
+          y: 0.608
+        orientation:
+          yaw: -0.806659
+      - position:
+          x: 1.389
+          y: 1.748
+        orientation:
+          yaw: 0.957264
+      spawn_trigger_point:
+        x: 0.017
+        y: 1.31
+        z: 0.0
+      spawn_trigger_threshold: 0.28
+      dynamic_pose:
+        position:
+          x: 0.017
+          y: 1.31
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.117
+                  y: 1.26
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-012
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.674
+          y: -1.048
+        orientation:
+          yaw: -1.979978
+      goal_poses:
+      - position:
+          x: -1.675
+          y: -1.163
+        orientation:
+          yaw: 2.946413
+      - position:
+          x: -2.223
+          y: -0.091
+        orientation:
+          yaw: 1.38367
+      - position:
+          x: -1.684
+          y: 0.92
+        orientation:
+          yaw: -2.11224
+      spawn_trigger_point:
+        x: -1.133
+        y: 2.36
+        z: 0.0
+      spawn_trigger_threshold: 2.84
+      dynamic_pose:
+        position:
+          x: -1.133
+          y: 2.36
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.133
+                  y: 2.11
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-013
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.143
+          y: -1.959
+        orientation:
+          yaw: 0.195557
+      goal_poses:
+      - position:
+          x: -0.495
+          y: -0.407
+        orientation:
+          yaw: -2.883353
+      - position:
+          x: 0.7
+          y: 0.561
+        orientation:
+          yaw: -2.818457
+      - position:
+          x: 0.862
+          y: -0.434
+        orientation:
+          yaw: 0.743377
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -2.133
+                  y: 0.66
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-014
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -2.113
+          y: -0.327
+        orientation:
+          yaw: 2.370655
+      goal_poses:
+      - position:
+          x: -0.783
+          y: 0.518
+        orientation:
+          yaw: -2.537077
+      - position:
+          x: -1.627
+          y: -0.607
+        orientation:
+          yaw: 2.197485
+      - position:
+          x: -1.756
+          y: 0.722
+        orientation:
+          yaw: 2.393173
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.083
+                  y: -0.94
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-015
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.751
+          y: -1.444
+        orientation:
+          yaw: 0.414413
+      goal_poses:
+      - position:
+          x: 0.458
+          y: -2.127
+        orientation:
+          yaw: -0.473204
+      - position:
+          x: -0.794
+          y: -1.443
+        orientation:
+          yaw: -1.796026
+      - position:
+          x: -2.074
+          y: -1.005
+        orientation:
+          yaw: -2.509271
+      spawn_trigger_point:
+        x: 1.567
+        y: -1.64
+        z: 0.0
+      spawn_trigger_threshold: 2.55
+      dynamic_pose:
+        position:
+          x: 1.567
+          y: -1.64
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-016
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.591
+          y: -1.603
+        orientation:
+          yaw: -1.201317
+      goal_poses:
+      - position:
+          x: -0.515
+          y: -0.496
+        orientation:
+          yaw: 2.945775
+      - position:
+          x: -0.202
+          y: -1.752
+        orientation:
+          yaw: -2.119217
+      - position:
+          x: -0.656
+          y: -0.354
+        orientation:
+          yaw: -1.278634
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.683
+                  y: 1.41
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-017
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.606
+          y: -1.661
+        orientation:
+          yaw: -1.531334
+      goal_poses:
+      - position:
+          x: -0.479
+          y: -2.123
+        orientation:
+          yaw: 0.933812
+      - position:
+          x: -1.577
+          y: -1.352
+        orientation:
+          yaw: -1.671815
+      - position:
+          x: -0.853
+          y: -0.538
+        orientation:
+          yaw: -0.169707
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.733
+                  y: -0.09
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-018
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.484
+          y: 1.236
+        orientation:
+          yaw: 0.42079
+      goal_poses:
+      - position:
+          x: -0.345
+          y: 1.312
+        orientation:
+          yaw: -2.366289
+      - position:
+          x: -1.805
+          y: 1.293
+        orientation:
+          yaw: 0.852483
+      - position:
+          x: -0.557
+          y: 1.984
+        orientation:
+          yaw: 2.131199
+      spawn_trigger_point:
+        x: -1.533
+        y: 1.01
+        z: 0.0
+      spawn_trigger_threshold: 0.57
+      dynamic_pose:
+        position:
+          x: -1.533
+          y: 1.01
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-019
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.642
+          y: -1.216
+        orientation:
+          yaw: -2.257327
+      goal_poses:
+      - position:
+          x: -0.549
+          y: -2.212
+        orientation:
+          yaw: -2.627447
+      - position:
+          x: 0.938
+          y: -1.95
+        orientation:
+          yaw: 1.330917
+      - position:
+          x: -0.275
+          y: -2.167
+        orientation:
+          yaw: -2.265144
+      spawn_trigger_point:
+        x: 1.917
+        y: -0.84
+        z: 0.0
+      spawn_trigger_threshold: 2.17
+      dynamic_pose:
+        position:
+          x: 1.917
+          y: -0.84
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-020
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.089
+          y: -1.593
+        orientation:
+          yaw: 0.268922
+      goal_poses:
+      - position:
+          x: 1.253
+          y: -0.41
+        orientation:
+          yaw: 2.849158
+      - position:
+          x: 0.634
+          y: -1.216
+        orientation:
+          yaw: 3.11725
+      - position:
+          x: -0.353
+          y: -0.593
+        orientation:
+          yaw: 2.903476
+      spawn_trigger_point:
+        x: -0.533
+        y: 0.06
+        z: 0.0
+      spawn_trigger_threshold: 3.81
+      dynamic_pose:
+        position:
+          x: -0.533
+          y: 0.06
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-021
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.442
+          y: -0.798
+        orientation:
+          yaw: -2.839203
+      goal_poses:
+      - position:
+          x: -0.671
+          y: -0.979
+        orientation:
+          yaw: 6.4e-05
+      - position:
+          x: -0.724
+          y: 0.421
+        orientation:
+          yaw: 0.303265
+      - position:
+          x: -0.561
+          y: 1.485
+        orientation:
+          yaw: -0.302412
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-022
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.017
+          y: 0.492
+        orientation:
+          yaw: 0.600625
+      goal_poses:
+      - position:
+          x: -1.489
+          y: 1.647
+        orientation:
+          yaw: -1.288936
+      - position:
+          x: -1.763
+          y: 0.269
+        orientation:
+          yaw: 0.515693
+      - position:
+          x: -1.502
+          y: 1.255
+        orientation:
+          yaw: 0.846184
+      spawn_trigger_point:
+        x: 1.117
+        y: 1.31
+        z: 0.0
+      spawn_trigger_threshold: 4.61
+      dynamic_pose:
+        position:
+          x: 1.117
+          y: 1.31
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.967
+                  y: 2.41
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-023
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.114
+          y: -2.01
+        orientation:
+          yaw: -1.696211
+      goal_poses:
+      - position:
+          x: -0.999
+          y: -2.05
+        orientation:
+          yaw: 0.386179
+      - position:
+          x: -0.29
+          y: -0.55
+        orientation:
+          yaw: 1.025582
+      - position:
+          x: -1.252
+          y: -1.576
+        orientation:
+          yaw: -2.953491
+      spawn_trigger_point:
+        x: -0.633
+        y: 1.86
+        z: 0.0
+      spawn_trigger_threshold: 4.93
+      dynamic_pose:
+        position:
+          x: -0.633
+          y: 1.86
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.067
+                  y: -0.54
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-024
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 2.15
+          y: 0.42
+        orientation:
+          yaw: 0.093009
+      goal_poses:
+      - position:
+          x: 1.097
+          y: 0.636
+        orientation:
+          yaw: 2.067768
+      - position:
+          x: 0.788
+          y: 1.616
+        orientation:
+          yaw: 1.118443
+      - position:
+          x: 1.925
+          y: 0.827
+        orientation:
+          yaw: 0.245707
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.133
+                  y: -1.94
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-025
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.544
+          y: -1.286
+        orientation:
+          yaw: -2.764615
+      goal_poses:
+      - position:
+          x: 0.657
+          y: -0.517
+        orientation:
+          yaw: 2.717519
+      - position:
+          x: 0.48
+          y: -1.543
+        orientation:
+          yaw: 2.018856
+      - position:
+          x: -0.528
+          y: -2.199
+        orientation:
+          yaw: -1.161907
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.067
+                  y: 1.26
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-026
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.917
+          y: -1.552
+        orientation:
+          yaw: 1.930522
+      goal_poses:
+      - position:
+          x: 2.157
+          y: -0.711
+        orientation:
+          yaw: 2.719966
+      - position:
+          x: 0.516
+          y: -0.786
+        orientation:
+          yaw: 1.732254
+      - position:
+          x: -0.444
+          y: -1.4
+        orientation:
+          yaw: -1.989317
+      spawn_trigger_point:
+        x: 1.967
+        y: 0.16
+        z: 0.0
+      spawn_trigger_threshold: 4.36
+      dynamic_pose:
+        position:
+          x: 1.967
+          y: 0.16
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-027
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.504
+          y: -1.875
+        orientation:
+          yaw: -2.482002
+      goal_poses:
+      - position:
+          x: 1.888
+          y: -1.343
+        orientation:
+          yaw: 1.243
+      - position:
+          x: 0.676
+          y: -1.571
+        orientation:
+          yaw: -1.401306
+      - position:
+          x: -0.286
+          y: -0.752
+        orientation:
+          yaw: 0.083077
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-028
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.151
+          y: -1.81
+        orientation:
+          yaw: 0.573833
+      goal_poses:
+      - position:
+          x: -1.533
+          y: -0.845
+        orientation:
+          yaw: 1.307721
+      - position:
+          x: -2.105
+          y: 0.683
+        orientation:
+          yaw: 3.051898
+      - position:
+          x: -1.005
+          y: 0.53
+        orientation:
+          yaw: -3.110846
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-029
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.491
+          y: 1.621
+        orientation:
+          yaw: -2.495478
+      goal_poses:
+      - position:
+          x: -0.524
+          y: 0.912
+        orientation:
+          yaw: 2.850032
+      - position:
+          x: -0.207
+          y: -0.381
+        orientation:
+          yaw: -1.541733
+      - position:
+          x: -1.189
+          y: 0.643
+        orientation:
+          yaw: -1.334792
+      spawn_trigger_point:
+        x: 0.767
+        y: -2.39
+        z: 0.0
+      spawn_trigger_threshold: 2.94
+      dynamic_pose:
+        position:
+          x: 0.767
+          y: -2.39
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.217
+                  y: -0.64
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-030
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.738
+          y: 0.648
+        orientation:
+          yaw: 1.357632
+      goal_poses:
+      - position:
+          x: -0.248
+          y: 1.586
+        orientation:
+          yaw: 0.004265
+      - position:
+          x: -1.584
+          y: 0.809
+        orientation:
+          yaw: 0.734317
+      - position:
+          x: -2.479
+          y: -0.117
+        orientation:
+          yaw: -2.083651
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.167
+                  y: -1.14
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-031
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.066
+          y: -2.171
+        orientation:
+          yaw: -1.608621
+      goal_poses:
+      - position:
+          x: -0.554
+          y: -0.954
+        orientation:
+          yaw: 0.608213
+      - position:
+          x: -0.467
+          y: 0.659
+        orientation:
+          yaw: -2.141235
+      - position:
+          x: -1.495
+          y: 0.019
+        orientation:
+          yaw: 2.364612
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.617
+                  y: -0.89
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-032
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.332
+          y: -0.772
+        orientation:
+          yaw: 2.276597
+      goal_poses:
+      - position:
+          x: -0.192
+          y: -0.757
+        orientation:
+          yaw: -0.731183
+      - position:
+          x: 1.272
+          y: -0.433
+        orientation:
+          yaw: 0.199109
+      - position:
+          x: 1.261
+          y: -1.56
+        orientation:
+          yaw: -2.713441
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.933
+                  y: 0.36
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-033
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.492
+          y: 0.319
+        orientation:
+          yaw: -1.9613
+      goal_poses:
+      - position:
+          x: 0.542
+          y: -0.554
+        orientation:
+          yaw: 2.724277
+      - position:
+          x: -0.342
+          y: -1.742
+        orientation:
+          yaw: 2.711657
+      - position:
+          x: -0.386
+          y: -0.559
+        orientation:
+          yaw: -2.634535
+      spawn_trigger_point:
+        x: -0.033
+        y: -1.84
+        z: 0.0
+      spawn_trigger_threshold: 3.29
+      dynamic_pose:
+        position:
+          x: -0.033
+          y: -1.84
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.133
+                  y: -1.84
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-034
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.99
+          y: 0.457
+        orientation:
+          yaw: 1.758051
+      goal_poses:
+      - position:
+          x: 0.377
+          y: 0.516
+        orientation:
+          yaw: 1.08478
+      - position:
+          x: 1.436
+          y: -0.636
+        orientation:
+          yaw: 2.577189
+      - position:
+          x: 0.437
+          y: -0.898
+        orientation:
+          yaw: 1.149384
+      spawn_trigger_point:
+        x: 2.217
+        y: 0.66
+        z: 0.0
+      spawn_trigger_threshold: 4.92
+      dynamic_pose:
+        position:
+          x: 2.217
+          y: 0.66
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-035
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.46
+          y: 0.295
+        orientation:
+          yaw: -1.632151
+      goal_poses:
+      - position:
+          x: -1.802
+          y: -1.245
+        orientation:
+          yaw: 0.555943
+      - position:
+          x: -2.152
+          y: -0.071
+        orientation:
+          yaw: 1.291806
+      - position:
+          x: -1.683
+          y: 0.861
+        orientation:
+          yaw: -1.303916
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.467
+                  y: -1.04
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-036
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.496
+          y: -1.264
+        orientation:
+          yaw: 2.505439
+      goal_poses:
+      - position:
+          x: -0.552
+          y: -0.706
+        orientation:
+          yaw: 2.795843
+      - position:
+          x: -0.969
+          y: -1.692
+        orientation:
+          yaw: -3.115187
+      - position:
+          x: -1.339
+          y: -0.46
+        orientation:
+          yaw: -0.918455
+      spawn_trigger_point:
+        x: 1.967
+        y: -1.04
+        z: 0.0
+      spawn_trigger_threshold: 4.37
+      dynamic_pose:
+        position:
+          x: 1.967
+          y: -1.04
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.867
+                  y: -0.14
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-037
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.498
+          y: 0.098
+        orientation:
+          yaw: -1.338235
+      goal_poses:
+      - position:
+          x: 0.379
+          y: 1.258
+        orientation:
+          yaw: -0.580142
+      - position:
+          x: -0.62
+          y: 1.124
+        orientation:
+          yaw: 2.910022
+      - position:
+          x: 0.372
+          y: -0.068
+        orientation:
+          yaw: 1.584266
+      spawn_trigger_point:
+        x: 1.667
+        y: 0.66
+        z: 0.0
+      spawn_trigger_threshold: 5.0
+      dynamic_pose:
+        position:
+          x: 1.667
+          y: 0.66
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-038
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.175
+          y: 1.491
+        orientation:
+          yaw: -1.445956
+      goal_poses:
+      - position:
+          x: -0.564
+          y: 0.052
+        orientation:
+          yaw: 1.163333
+      - position:
+          x: -0.683
+          y: 1.148
+        orientation:
+          yaw: 3.121844
+      - position:
+          x: 0.391
+          y: 1.742
+        orientation:
+          yaw: 0.221484
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-039
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -2.11
+          y: 0.054
+        orientation:
+          yaw: -2.57897
+      goal_poses:
+      - position:
+          x: -1.824
+          y: -1.222
+        orientation:
+          yaw: -0.360056
+      - position:
+          x: -1.783
+          y: 0.181
+        orientation:
+          yaw: -2.233235
+      - position:
+          x: -0.795
+          y: -0.596
+        orientation:
+          yaw: 3.032894
+      spawn_trigger_point:
+        x: 0.217
+        y: -1.49
+        z: 0.0
+      spawn_trigger_threshold: 1.89
+      dynamic_pose:
+        position:
+          x: 0.217
+          y: -1.49
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.017
+                  y: -2.09
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-040
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.885
+          y: 1.036
+        orientation:
+          yaw: 0.778482
+      goal_poses:
+      - position:
+          x: -1.646
+          y: -0.303
+        orientation:
+          yaw: 2.884823
+      - position:
+          x: -0.671
+          y: 0.153
+        orientation:
+          yaw: 2.33604
+      - position:
+          x: -1.578
+          y: -0.407
+        orientation:
+          yaw: -0.979499
+      spawn_trigger_point:
+        x: -1.383
+        y: -0.29
+        z: 0.0
+      spawn_trigger_threshold: 3.48
+      dynamic_pose:
+        position:
+          x: -1.383
+          y: -0.29
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-041
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.954
+          y: 1.823
+        orientation:
+          yaw: -1.366338
+      goal_poses:
+      - position:
+          x: 0.289
+          y: 2.202
+        orientation:
+          yaw: 2.10221
+      - position:
+          x: -0.809
+          y: 2.056
+        orientation:
+          yaw: -0.534549
+      - position:
+          x: 0.188
+          y: 1.473
+        orientation:
+          yaw: -2.96983
+      spawn_trigger_point:
+        x: -2.083
+        y: -1.34
+        z: 0.0
+      spawn_trigger_threshold: 1.48
+      dynamic_pose:
+        position:
+          x: -2.083
+          y: -1.34
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-042
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.758
+          y: -0.05
+        orientation:
+          yaw: 2.934275
+      goal_poses:
+      - position:
+          x: -0.68
+          y: -1.279
+        orientation:
+          yaw: -2.476623
+      - position:
+          x: 0.807
+          y: -0.531
+        orientation:
+          yaw: -0.903057
+      - position:
+          x: 1.586
+          y: -1.767
+        orientation:
+          yaw: -1.824487
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-043
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.693
+          y: 1.146
+        orientation:
+          yaw: -1.4231
+      goal_poses:
+      - position:
+          x: -0.821
+          y: 0.364
+        orientation:
+          yaw: -1.798328
+      - position:
+          x: -1.101
+          y: 1.679
+        orientation:
+          yaw: -1.020569
+      - position:
+          x: 0.202
+          y: 1.775
+        orientation:
+          yaw: 1.188416
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-044
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.737
+          y: -0.607
+        orientation:
+          yaw: 2.236964
+      goal_poses:
+      - position:
+          x: -0.461
+          y: -0.507
+        orientation:
+          yaw: 2.151481
+      - position:
+          x: 0.014
+          y: -1.972
+        orientation:
+          yaw: 2.00856
+      - position:
+          x: 1.177
+          y: -1.535
+        orientation:
+          yaw: -2.019986
+      spawn_trigger_point:
+        x: -1.033
+        y: -1.99
+        z: 0.0
+      spawn_trigger_threshold: 3.38
+      dynamic_pose:
+        position:
+          x: -1.033
+          y: -1.99
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.383
+                  y: 0.46
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-045
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.388
+          y: 1.64
+        orientation:
+          yaw: 2.674649
+      goal_poses:
+      - position:
+          x: -0.708
+          y: 0.648
+        orientation:
+          yaw: -1.043626
+      - position:
+          x: -0.183
+          y: 1.818
+        orientation:
+          yaw: -0.616656
+      - position:
+          x: -0.093
+          y: 0.607
+        orientation:
+          yaw: -1.463382
+      spawn_trigger_point:
+        x: -1.583
+        y: 0.46
+        z: 0.0
+      spawn_trigger_threshold: 0.2
+      dynamic_pose:
+        position:
+          x: -1.583
+          y: 0.46
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-046
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.662
+          y: 1.603
+        orientation:
+          yaw: 1.365577
+      goal_poses:
+      - position:
+          x: 0.093
+          y: 2.039
+        orientation:
+          yaw: -3.079478
+      - position:
+          x: -0.863
+          y: 1.502
+        orientation:
+          yaw: 1.683141
+      - position:
+          x: 0.252
+          y: 1.734
+        orientation:
+          yaw: -0.437919
+      spawn_trigger_point:
+        x: -1.883
+        y: -0.94
+        z: 0.0
+      spawn_trigger_threshold: 1.02
+      dynamic_pose:
+        position:
+          x: -1.883
+          y: -0.94
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-047
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.01
+          y: -1.858
+        orientation:
+          yaw: -1.519899
+      goal_poses:
+      - position:
+          x: 1.111
+          y: -1.745
+        orientation:
+          yaw: -0.124107
+      - position:
+          x: 2.243
+          y: -0.752
+        orientation:
+          yaw: -2.501423
+      - position:
+          x: 0.627
+          y: -1.11
+        orientation:
+          yaw: 0.019129
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.333
+                  y: -0.79
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-048
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.658
+          y: 0.882
+        orientation:
+          yaw: -0.830812
+      goal_poses:
+      - position:
+          x: 0.599
+          y: 2.04
+        orientation:
+          yaw: 0.329995
+      - position:
+          x: 0.013
+          y: 0.624
+        orientation:
+          yaw: 0.894122
+      - position:
+          x: 0.565
+          y: -0.838
+        orientation:
+          yaw: -2.822224
+      spawn_trigger_point:
+        x: -0.983
+        y: 0.56
+        z: 0.0
+      spawn_trigger_threshold: 4.99
+      dynamic_pose:
+        position:
+          x: -0.983
+          y: 0.56
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-049
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.402
+          y: 1.685
+        orientation:
+          yaw: 0.957323
+      goal_poses:
+      - position:
+          x: -0.276
+          y: 2.269
+        orientation:
+          yaw: -1.21306
+      - position:
+          x: -0.677
+          y: 0.698
+        orientation:
+          yaw: -2.633241
+      - position:
+          x: 0.64
+          y: 1.246
+        orientation:
+          yaw: 1.063104
+      spawn_trigger_point:
+        x: -0.433
+        y: -0.59
+        z: 0.0
+      spawn_trigger_threshold: 4.4
+      dynamic_pose:
+        position:
+          x: -0.433
+          y: -0.59
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.383
+                  y: 2.26
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-050
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.636
+          y: -0.175
+        orientation:
+          yaw: -3.139368
+      goal_poses:
+      - position:
+          x: -1.968
+          y: -0.063
+        orientation:
+          yaw: 2.755683
+      - position:
+          x: -1.635
+          y: -1.624
+        orientation:
+          yaw: -2.067409
+      - position:
+          x: -0.517
+          y: -2.238
+        orientation:
+          yaw: -2.393577
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.433
+                  y: 0.91
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-051
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.314
+          y: 1.839
+        orientation:
+          yaw: -1.661286
+      goal_poses:
+      - position:
+          x: 0.654
+          y: 0.332
+        orientation:
+          yaw: -2.560176
+      - position:
+          x: 0.469
+          y: 1.68
+        orientation:
+          yaw: -0.141061
+      - position:
+          x: -0.186
+          y: 0.716
+        orientation:
+          yaw: -0.784249
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-052
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.824
+          y: 0.795
+        orientation:
+          yaw: 1.192936
+      goal_poses:
+      - position:
+          x: 0.634
+          y: 1.416
+        orientation:
+          yaw: -0.675619
+      - position:
+          x: -0.458
+          y: 1.334
+        orientation:
+          yaw: 2.980096
+      - position:
+          x: 0.554
+          y: 1.173
+        orientation:
+          yaw: 0.155414
+      spawn_trigger_point:
+        x: -0.883
+        y: 1.86
+        z: 0.0
+      spawn_trigger_threshold: 0.67
+      dynamic_pose:
+        position:
+          x: -0.883
+          y: 1.86
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-053
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.864
+          y: -0.15
+        orientation:
+          yaw: 1.60898
+      goal_poses:
+      - position:
+          x: 0.602
+          y: -0.287
+        orientation:
+          yaw: 2.951528
+      - position:
+          x: 0.552
+          y: 1.022
+        orientation:
+          yaw: 2.070251
+      - position:
+          x: -0.342
+          y: 1.806
+        orientation:
+          yaw: 0.200884
+      spawn_trigger_point:
+        x: -2.583
+        y: 0.51
+        z: 0.0
+      spawn_trigger_threshold: 1.05
+      dynamic_pose:
+        position:
+          x: -2.583
+          y: 0.51
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-054
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.456
+          y: -1.594
+        orientation:
+          yaw: 0.06637
+      goal_poses:
+      - position:
+          x: -1.868
+          y: -0.424
+        orientation:
+          yaw: -2.242015
+      - position:
+          x: -0.595
+          y: -0.128
+        orientation:
+          yaw: 1.550954
+      - position:
+          x: 0.837
+          y: -0.436
+        orientation:
+          yaw: 1.534776
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-055
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.449
+          y: -1.641
+        orientation:
+          yaw: 1.704104
+      goal_poses:
+      - position:
+          x: 0.605
+          y: -2.144
+        orientation:
+          yaw: -0.972992
+      - position:
+          x: -0.293
+          y: -0.798
+        orientation:
+          yaw: -2.28933
+      - position:
+          x: 0.711
+          y: 0.056
+        orientation:
+          yaw: -1.247889
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.617
+                  y: 1.56
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-056
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.931
+          y: 0.492
+        orientation:
+          yaw: -1.248947
+      goal_poses:
+      - position:
+          x: 2.194
+          y: -0.855
+        orientation:
+          yaw: -2.394458
+      - position:
+          x: 1.634
+          y: 0.058
+        orientation:
+          yaw: -0.846987
+      - position:
+          x: 1.222
+          y: 1.581
+        orientation:
+          yaw: 3.073847
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-057
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -2.415
+          y: 0.395
+        orientation:
+          yaw: -1.305212
+      goal_poses:
+      - position:
+          x: -1.781
+          y: -1.043
+        orientation:
+          yaw: -1.749381
+      - position:
+          x: -1.686
+          y: -0.042
+        orientation:
+          yaw: 2.504755
+      - position:
+          x: -0.422
+          y: -0.647
+        orientation:
+          yaw: -2.879216
+      spawn_trigger_point:
+        x: 0.667
+        y: -2.49
+        z: 0.0
+      spawn_trigger_threshold: 0.56
+      dynamic_pose:
+        position:
+          x: 0.667
+          y: -2.49
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-058
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.354
+          y: -1.688
+        orientation:
+          yaw: -0.47427
+      goal_poses:
+      - position:
+          x: 1.424
+          y: -0.664
+        orientation:
+          yaw: 2.047393
+      - position:
+          x: 2.353
+          y: 0.413
+        orientation:
+          yaw: 2.458748
+      - position:
+          x: 1.763
+          y: 1.394
+        orientation:
+          yaw: -0.79902
+      spawn_trigger_point:
+        x: -1.383
+        y: 0.41
+        z: 0.0
+      spawn_trigger_threshold: 2.76
+      dynamic_pose:
+        position:
+          x: -1.383
+          y: 0.41
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -2.583
+                  y: -0.49
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-059
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.129
+          y: 0.519
+        orientation:
+          yaw: -2.962684
+      goal_poses:
+      - position:
+          x: 0.834
+          y: 1.83
+        orientation:
+          yaw: 2.097936
+      - position:
+          x: 0.628
+          y: 0.692
+        orientation:
+          yaw: 0.340722
+      - position:
+          x: -0.06
+          y: 1.614
+        orientation:
+          yaw: 1.794489
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.783
+                  y: 1.76
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-060
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.15
+          y: -1.815
+        orientation:
+          yaw: -2.318947
+      goal_poses:
+      - position:
+          x: 1.565
+          y: -1.551
+        orientation:
+          yaw: 1.57634
+      - position:
+          x: 1.572
+          y: -0.388
+        orientation:
+          yaw: 0.46468
+      - position:
+          x: 0.445
+          y: 0.418
+        orientation:
+          yaw: 2.748209
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-061
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.72
+          y: -0.322
+        orientation:
+          yaw: 2.027488
+      goal_poses:
+      - position:
+          x: 2.126
+          y: -0.799
+        orientation:
+          yaw: 0.684711
+      - position:
+          x: 1.654
+          y: -1.689
+        orientation:
+          yaw: -1.026924
+      - position:
+          x: 0.802
+          y: -0.622
+        orientation:
+          yaw: 2.376819
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-062
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.498
+          y: -2.003
+        orientation:
+          yaw: -0.51488
+      goal_poses:
+      - position:
+          x: -0.61
+          y: -0.834
+        orientation:
+          yaw: -1.796253
+      - position:
+          x: -1.687
+          y: -0.991
+        orientation:
+          yaw: -2.994185
+      - position:
+          x: -0.324
+          y: -0.462
+        orientation:
+          yaw: 0.673978
+      spawn_trigger_point:
+        x: 1.867
+        y: 1.46
+        z: 0.0
+      spawn_trigger_threshold: 0.89
+      dynamic_pose:
+        position:
+          x: 1.867
+          y: 1.46
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.517
+                  y: 1.41
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-063
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.635
+          y: -1.911
+        orientation:
+          yaw: -0.995552
+      goal_poses:
+      - position:
+          x: 1.901
+          y: -1.314
+        orientation:
+          yaw: 0.160119
+      - position:
+          x: 0.786
+          y: -1.571
+        orientation:
+          yaw: -2.098976
+      - position:
+          x: 1.752
+          y: -0.767
+        orientation:
+          yaw: 2.497026
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-064
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.429
+          y: 0.817
+        orientation:
+          yaw: 2.212057
+      goal_poses:
+      - position:
+          x: -0.545
+          y: -0.832
+        orientation:
+          yaw: 2.245999
+      - position:
+          x: 0.433
+          y: -2.086
+        orientation:
+          yaw: -0.928159
+      - position:
+          x: 0.798
+          y: -0.584
+        orientation:
+          yaw: 2.509575
+      spawn_trigger_point:
+        x: -1.983
+        y: -1.49
+        z: 0.0
+      spawn_trigger_threshold: 3.94
+      dynamic_pose:
+        position:
+          x: -1.983
+          y: -1.49
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-065
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.521
+          y: -2.089
+        orientation:
+          yaw: -0.997382
+      goal_poses:
+      - position:
+          x: 0.913
+          y: -0.589
+        orientation:
+          yaw: 2.000495
+      - position:
+          x: 2.008
+          y: 0.614
+        orientation:
+          yaw: -2.579424
+      - position:
+          x: 0.654
+          y: 0.711
+        orientation:
+          yaw: -1.520708
+      spawn_trigger_point:
+        x: 0.267
+        y: 1.51
+        z: 0.0
+      spawn_trigger_threshold: 4.59
+      dynamic_pose:
+        position:
+          x: 0.267
+          y: 1.51
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-066
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.547
+          y: 1.372
+        orientation:
+          yaw: 2.344859
+      goal_poses:
+      - position:
+          x: -0.006
+          y: 1.815
+        orientation:
+          yaw: 0.259702
+      - position:
+          x: 1.157
+          y: 1.771
+        orientation:
+          yaw: 0.889481
+      - position:
+          x: 1.09
+          y: 0.543
+        orientation:
+          yaw: -2.533196
+      spawn_trigger_point:
+        x: -0.083
+        y: 0.71
+        z: 0.0
+      spawn_trigger_threshold: 0.97
+      dynamic_pose:
+        position:
+          x: -0.083
+          y: 0.71
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-067
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.75
+          y: 0.441
+        orientation:
+          yaw: -0.256557
+      goal_poses:
+      - position:
+          x: -0.121
+          y: 0.628
+        orientation:
+          yaw: -1.188794
+      - position:
+          x: 0.434
+          y: -0.227
+        orientation:
+          yaw: 0.50905
+      - position:
+          x: 0.342
+          y: -1.838
+        orientation:
+          yaw: 2.304404
+      spawn_trigger_point:
+        x: 2.317
+        y: 0.61
+        z: 0.0
+      spawn_trigger_threshold: 2.55
+      dynamic_pose:
+        position:
+          x: 2.317
+          y: 0.61
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-068
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.491
+          y: 1.363
+        orientation:
+          yaw: 2.858912
+      goal_poses:
+      - position:
+          x: 0.591
+          y: 0.313
+        orientation:
+          yaw: -2.600131
+      - position:
+          x: -0.578
+          y: 1.026
+        orientation:
+          yaw: -3.007148
+      - position:
+          x: -1.571
+          y: 0.636
+        orientation:
+          yaw: -0.580149
+      spawn_trigger_point:
+        x: -1.733
+        y: -0.94
+        z: 0.0
+      spawn_trigger_threshold: 0.89
+      dynamic_pose:
+        position:
+          x: -1.733
+          y: -0.94
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.333
+                  y: 1.86
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-069
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.542
+          y: 2.018
+        orientation:
+          yaw: -1.286009
+      goal_poses:
+      - position:
+          x: 0.301
+          y: 0.7
+        orientation:
+          yaw: 3.08476
+      - position:
+          x: -0.6
+          y: 1.185
+        orientation:
+          yaw: -0.288168
+      - position:
+          x: 0.636
+          y: 2.148
+        orientation:
+          yaw: 1.24236
+      spawn_trigger_point:
+        x: 0.117
+        y: 1.36
+        z: 0.0
+      spawn_trigger_threshold: 1.57
+      dynamic_pose:
+        position:
+          x: 0.117
+          y: 1.36
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.783
+                  y: 1.06
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-070
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.022
+          y: 2.135
+        orientation:
+          yaw: -2.599784
+      goal_poses:
+      - position:
+          x: -0.896
+          y: 0.652
+        orientation:
+          yaw: 1.394599
+      - position:
+          x: -0.553
+          y: 2.148
+        orientation:
+          yaw: -2.668996
+      - position:
+          x: -1.569
+          y: 1.298
+        orientation:
+          yaw: -1.669121
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.333
+                  y: -0.99
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-071
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.628
+          y: 1.379
+        orientation:
+          yaw: 1.260711
+      goal_poses:
+      - position:
+          x: 1.899
+          y: -0.059
+        orientation:
+          yaw: 2.896713
+      - position:
+          x: 0.594
+          y: 0.208
+        orientation:
+          yaw: 2.446386
+      - position:
+          x: 0.839
+          y: 1.617
+        orientation:
+          yaw: -1.399884
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-072
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.56
+          y: -2.241
+        orientation:
+          yaw: 2.575805
+      goal_poses:
+      - position:
+          x: -0.49
+          y: -1.226
+        orientation:
+          yaw: 0.84482
+      - position:
+          x: 1.0
+          y: -1.572
+        orientation:
+          yaw: 2.104884
+      - position:
+          x: 0.371
+          y: -0.379
+        orientation:
+          yaw: 1.345717
+      spawn_trigger_point:
+        x: 2.017
+        y: -0.29
+        z: 0.0
+      spawn_trigger_threshold: 0.35
+      dynamic_pose:
+        position:
+          x: 2.017
+          y: -0.29
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-073
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.729
+          y: 0.565
+        orientation:
+          yaw: 1.43176
+      goal_poses:
+      - position:
+          x: -0.21
+          y: 1.888
+        orientation:
+          yaw: 0.717493
+      - position:
+          x: -1.703
+          y: 1.464
+        orientation:
+          yaw: 0.273744
+      - position:
+          x: -2.059
+          y: -0.162
+        orientation:
+          yaw: -2.246064
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.933
+                  y: 1.01
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-074
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.367
+          y: 2.068
+        orientation:
+          yaw: -2.99085
+      goal_poses:
+      - position:
+          x: -0.316
+          y: 0.499
+        orientation:
+          yaw: 0.65126
+      - position:
+          x: 0.015
+          y: -0.604
+        orientation:
+          yaw: -1.662722
+      - position:
+          x: 0.188
+          y: 0.566
+        orientation:
+          yaw: -1.927226
+      spawn_trigger_point:
+        x: 0.667
+        y: 0.86
+        z: 0.0
+      spawn_trigger_threshold: 1.48
+      dynamic_pose:
+        position:
+          x: 0.667
+          y: 0.86
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-075
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.382
+          y: 1.893
+        orientation:
+          yaw: -2.502476
+      goal_poses:
+      - position:
+          x: 1.012
+          y: 0.439
+        orientation:
+          yaw: -2.021722
+      - position:
+          x: 0.559
+          y: -0.859
+        orientation:
+          yaw: 1.436721
+      - position:
+          x: 0.316
+          y: -1.988
+        orientation:
+          yaw: 0.696576
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-076
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.528
+          y: -1.29
+        orientation:
+          yaw: -0.57128
+      goal_poses:
+      - position:
+          x: 0.495
+          y: 0.003
+        orientation:
+          yaw: 3.083049
+      - position:
+          x: 0.407
+          y: 1.066
+        orientation:
+          yaw: -1.377716
+      - position:
+          x: 0.752
+          y: 2.248
+        orientation:
+          yaw: 2.681542
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.933
+                  y: -2.54
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-077
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.356
+          y: 0.311
+        orientation:
+          yaw: 0.331977
+      goal_poses:
+      - position:
+          x: -1.647
+          y: -1.074
+        orientation:
+          yaw: 0.621857
+      - position:
+          x: -0.162
+          y: -1.589
+        orientation:
+          yaw: -2.876136
+      - position:
+          x: -1.481
+          y: -1.587
+        orientation:
+          yaw: 1.360779
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-078
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.478
+          y: 0.083
+        orientation:
+          yaw: 0.777266
+      goal_poses:
+      - position:
+          x: 1.829
+          y: 1.242
+        orientation:
+          yaw: -2.724293
+      - position:
+          x: 0.456
+          y: 0.303
+        orientation:
+          yaw: 0.274409
+      - position:
+          x: 1.462
+          y: 0.789
+        orientation:
+          yaw: -1.839225
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-079
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.458
+          y: 1.839
+        orientation:
+          yaw: -1.580223
+      goal_poses:
+      - position:
+          x: -0.556
+          y: 1.903
+        orientation:
+          yaw: 2.246905
+      - position:
+          x: 0.829
+          y: 2.243
+        orientation:
+          yaw: 2.06876
+      - position:
+          x: 1.067
+          y: 0.622
+        orientation:
+          yaw: 1.484864
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-080
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -2.0
+          y: -0.38
+        orientation:
+          yaw: -0.577643
+      goal_poses:
+      - position:
+          x: -1.744
+          y: 0.747
+        orientation:
+          yaw: 1.269819
+      - position:
+          x: -0.713
+          y: 1.508
+        orientation:
+          yaw: -2.966348
+      - position:
+          x: 0.348
+          y: 0.829
+        orientation:
+          yaw: -1.975631
+      spawn_trigger_point:
+        x: 0.317
+        y: 2.41
+        z: 0.0
+      spawn_trigger_threshold: 3.76
+      dynamic_pose:
+        position:
+          x: 0.317
+          y: 2.41
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-081
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.633
+          y: -1.63
+        orientation:
+          yaw: -1.716243
+      goal_poses:
+      - position:
+          x: 0.201
+          y: -2.108
+        orientation:
+          yaw: -0.483136
+      - position:
+          x: -1.093
+          y: -1.952
+        orientation:
+          yaw: -0.985342
+      - position:
+          x: -0.463
+          y: -0.708
+        orientation:
+          yaw: 0.199979
+      spawn_trigger_point:
+        x: 2.217
+        y: -0.09
+        z: 0.0
+      spawn_trigger_threshold: 3.06
+      dynamic_pose:
+        position:
+          x: 2.217
+          y: -0.09
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.783
+                  y: -1.04
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-082
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.596
+          y: -0.33
+        orientation:
+          yaw: -0.724414
+      goal_poses:
+      - position:
+          x: 0.374
+          y: 1.132
+        orientation:
+          yaw: -0.65675
+      - position:
+          x: -0.523
+          y: 0.488
+        orientation:
+          yaw: -0.693827
+      - position:
+          x: 0.814
+          y: 0.276
+        orientation:
+          yaw: -2.26087
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-083
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.048
+          y: -0.673
+        orientation:
+          yaw: 0.490143
+      goal_poses:
+      - position:
+          x: -1.212
+          y: -0.579
+        orientation:
+          yaw: -2.256818
+      - position:
+          x: -0.411
+          y: -1.719
+        orientation:
+          yaw: 0.315798
+      - position:
+          x: -0.916
+          y: -0.454
+        orientation:
+          yaw: -0.736488
+      spawn_trigger_point:
+        x: -1.033
+        y: -2.49
+        z: 0.0
+      spawn_trigger_threshold: 4.46
+      dynamic_pose:
+        position:
+          x: -1.033
+          y: -2.49
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.567
+                  y: 0.81
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-084
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 2.061
+          y: -0.898
+        orientation:
+          yaw: 0.502939
+      goal_poses:
+      - position:
+          x: 0.501
+          y: -0.917
+        orientation:
+          yaw: 1.973124
+      - position:
+          x: -0.306
+          y: 0.52
+        orientation:
+          yaw: -2.790789
+      - position:
+          x: 0.671
+          y: 1.399
+        orientation:
+          yaw: 0.423385
+      spawn_trigger_point:
+        x: -0.833
+        y: 1.46
+        z: 0.0
+      spawn_trigger_threshold: 4.79
+      dynamic_pose:
+        position:
+          x: -0.833
+          y: 1.46
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-085
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.497
+          y: 1.612
+        orientation:
+          yaw: 1.071617
+      goal_poses:
+      - position:
+          x: 0.718
+          y: 2.197
+        orientation:
+          yaw: 2.55531
+      - position:
+          x: 1.575
+          y: 1.407
+        orientation:
+          yaw: 0.61373
+      - position:
+          x: 0.538
+          y: 1.938
+        orientation:
+          yaw: -2.122861
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -2.333
+                  y: -0.14
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-086
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.845
+          y: -1.893
+        orientation:
+          yaw: -1.25864
+      goal_poses:
+      - position:
+          x: -0.654
+          y: -2.055
+        orientation:
+          yaw: 2.710877
+      - position:
+          x: 0.55
+          y: -1.156
+        orientation:
+          yaw: 3.052638
+      - position:
+          x: -0.785
+          y: -1.676
+        orientation:
+          yaw: 1.520095
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-087
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.581
+          y: -1.765
+        orientation:
+          yaw: 0.661589
+      goal_poses:
+      - position:
+          x: 2.004
+          y: -0.925
+        orientation:
+          yaw: 0.102663
+      - position:
+          x: 2.159
+          y: 0.212
+        orientation:
+          yaw: 2.31605
+      - position:
+          x: 1.373
+          y: 1.558
+        orientation:
+          yaw: -0.235885
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.317
+                  y: 1.91
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-088
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.587
+          y: -1.227
+        orientation:
+          yaw: -1.772949
+      goal_poses:
+      - position:
+          x: -0.761
+          y: -0.682
+        orientation:
+          yaw: 1.051129
+      - position:
+          x: -2.357
+          y: -0.515
+        orientation:
+          yaw: 1.892322
+      - position:
+          x: -1.287
+          y: 0.374
+        orientation:
+          yaw: -2.225881
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-089
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 2.038
+          y: -0.916
+        orientation:
+          yaw: -1.497328
+      goal_poses:
+      - position:
+          x: 0.619
+          y: -1.747
+        orientation:
+          yaw: -1.822854
+      - position:
+          x: -0.526
+          y: -2.064
+        orientation:
+          yaw: 0.650388
+      - position:
+          x: 0.187
+          y: -0.626
+        orientation:
+          yaw: 0.559344
+      spawn_trigger_point:
+        x: 0.117
+        y: -0.89
+        z: 0.0
+      spawn_trigger_threshold: 3.83
+      dynamic_pose:
+        position:
+          x: 0.117
+          y: -0.89
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 0.717
+                  y: 0.61
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-090
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.465
+          y: -0.284
+        orientation:
+          yaw: 2.33422
+      goal_poses:
+      - position:
+          x: -2.174
+          y: 0.655
+        orientation:
+          yaw: -1.874417
+      - position:
+          x: -0.725
+          y: 1.05
+        orientation:
+          yaw: 2.856606
+      - position:
+          x: -1.852
+          y: 0.076
+        orientation:
+          yaw: -1.770712
+      spawn_trigger_point:
+        x: -1.783
+        y: -1.09
+        z: 0.0
+      spawn_trigger_threshold: 1.36
+      dynamic_pose:
+        position:
+          x: -1.783
+          y: -1.09
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.283
+                  y: -0.84
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-091
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.515
+          y: 1.781
+        orientation:
+          yaw: -1.868846
+      goal_poses:
+      - position:
+          x: 0.509
+          y: 0.998
+        orientation:
+          yaw: 2.761696
+      - position:
+          x: -0.022
+          y: -0.542
+        orientation:
+          yaw: -2.373194
+      - position:
+          x: 0.662
+          y: 0.537
+        orientation:
+          yaw: 2.989393
+      spawn_trigger_point:
+        x: -0.533
+        y: -1.54
+        z: 0.0
+      spawn_trigger_threshold: 3.53
+      dynamic_pose:
+        position:
+          x: -0.533
+          y: -1.54
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.683
+                  y: 0.86
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-092
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.76
+          y: 1.233
+        orientation:
+          yaw: -2.360435
+      goal_poses:
+      - position:
+          x: 0.757
+          y: 1.712
+        orientation:
+          yaw: 2.454586
+      - position:
+          x: 1.482
+          y: 0.31
+        orientation:
+          yaw: 1.354316
+      - position:
+          x: 0.377
+          y: 1.431
+        orientation:
+          yaw: 0.046855
+      spawn_trigger_point:
+        x: 1.567
+        y: -1.29
+        z: 0.0
+      spawn_trigger_threshold: 4.16
+      dynamic_pose:
+        position:
+          x: 1.567
+          y: -1.29
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-093
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.679
+          y: 0.687
+        orientation:
+          yaw: -2.867118
+      goal_poses:
+      - position:
+          x: 1.427
+          y: -0.569
+        orientation:
+          yaw: 3.037184
+      - position:
+          x: 0.625
+          y: 0.473
+        orientation:
+          yaw: 0.530106
+      - position:
+          x: 1.64
+          y: 0.798
+        orientation:
+          yaw: 1.487315
+      spawn_trigger_point:
+        x: 0.167
+        y: 1.86
+        z: 0.0
+      spawn_trigger_threshold: 3.83
+      dynamic_pose:
+        position:
+          x: 0.167
+          y: 1.86
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-094
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.12
+          y: -2.031
+        orientation:
+          yaw: -3.09762
+      goal_poses:
+      - position:
+          x: 1.26
+          y: -1.863
+        orientation:
+          yaw: 2.418803
+      - position:
+          x: 2.201
+          y: -0.527
+        orientation:
+          yaw: -0.880418
+      - position:
+          x: 0.958
+          y: -1.505
+        orientation:
+          yaw: -0.255338
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.033
+                  y: 1.71
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-095
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.623
+          y: 1.495
+        orientation:
+          yaw: -0.002511
+      goal_poses:
+      - position:
+          x: 0.016
+          y: 1.468
+        orientation:
+          yaw: -2.58268
+      - position:
+          x: 0.751
+          y: 0.422
+        orientation:
+          yaw: 3.127856
+      - position:
+          x: 2.341
+          y: 0.477
+        orientation:
+          yaw: 0.065955
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-096
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.244
+          y: -0.684
+        orientation:
+          yaw: 0.435264
+      goal_poses:
+      - position:
+          x: -0.676
+          y: -1.788
+        orientation:
+          yaw: -0.639589
+      - position:
+          x: 0.303
+          y: -0.583
+        orientation:
+          yaw: -0.366281
+      - position:
+          x: -0.237
+          y: 0.575
+        orientation:
+          yaw: 1.226061
+      spawn_trigger_point:
+        x: -0.833
+        y: -2.29
+        z: 0.0
+      spawn_trigger_threshold: 1.94
+      dynamic_pose:
+        position:
+          x: -0.833
+          y: -2.29
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -2.833
+                  y: 0.01
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-097
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.083
+          y: 1.897
+        orientation:
+          yaw: 2.728306
+      goal_poses:
+      - position:
+          x: 1.011
+          y: 1.608
+        orientation:
+          yaw: -2.098697
+      - position:
+          x: -0.319
+          y: 1.524
+        orientation:
+          yaw: 0.13648
+      - position:
+          x: 0.343
+          y: 0.38
+        orientation:
+          yaw: -2.580401
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-098
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.054
+          y: 1.774
+        orientation:
+          yaw: 2.112101
+      goal_poses:
+      - position:
+          x: 1.369
+          y: 1.7
+        orientation:
+          yaw: -1.183691
+      - position:
+          x: 1.305
+          y: 0.581
+        orientation:
+          yaw: 0.239463
+      - position:
+          x: 0.285
+          y: -0.389
+        orientation:
+          yaw: -0.02488
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-099
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.423
+          y: -1.682
+        orientation:
+          yaw: -2.853866
+      goal_poses:
+      - position:
+          x: 0.36
+          y: -2.13
+        orientation:
+          yaw: -2.782043
+      - position:
+          x: -0.867
+          y: -2.191
+        orientation:
+          yaw: 0.162789
+      - position:
+          x: -1.929
+          y: -0.923
+        orientation:
+          yaw: 2.832911
+      spawn_trigger_point:
+        x: 0.517
+        y: -0.14
+        z: 0.0
+      spawn_trigger_threshold: 0.91
+      dynamic_pose:
+        position:
+          x: 0.517
+          y: -0.14
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.767
+                  y: 1.76
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-100
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 2.259
+          y: -0.526
+        orientation:
+          yaw: -0.720793
+      goal_poses:
+      - position:
+          x: 1.546
+          y: 0.723
+        orientation:
+          yaw: 2.373802
+      - position:
+          x: 0.552
+          y: -0.152
+        orientation:
+          yaw: 2.876733
+      - position:
+          x: 1.489
+          y: -1.375
+        orientation:
+          yaw: 2.360143
+      spawn_trigger_point:
+        x: 1.467
+        y: -0.49
+        z: 0.0
+      spawn_trigger_threshold: 1.39
+      dynamic_pose:
+        position:
+          x: 1.467
+          y: -0.49
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.233
+                  y: 1.86
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-101
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.274
+          y: -0.589
+        orientation:
+          yaw: 0.429265
+      goal_poses:
+      - position:
+          x: 0.481
+          y: -1.288
+        orientation:
+          yaw: -3.086401
+      - position:
+          x: 1.511
+          y: -1.491
+        orientation:
+          yaw: -2.578882
+      - position:
+          x: 0.911
+          y: -0.439
+        orientation:
+          yaw: -2.559813
+      spawn_trigger_point:
+        x: 0.517
+        y: 1.16
+        z: 0.0
+      spawn_trigger_threshold: 2.7
+      dynamic_pose:
+        position:
+          x: 0.517
+          y: 1.16
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-102
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.755
+          y: 0.045
+        orientation:
+          yaw: -0.257335
+      goal_poses:
+      - position:
+          x: 1.354
+          y: 1.42
+        orientation:
+          yaw: -2.552637
+      - position:
+          x: 1.719
+          y: 0.262
+        orientation:
+          yaw: 0.738351
+      - position:
+          x: 1.238
+          y: 1.852
+        orientation:
+          yaw: -0.68198
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-103
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.642
+          y: -0.05
+        orientation:
+          yaw: 2.816271
+      goal_poses:
+      - position:
+          x: 0.615
+          y: -0.555
+        orientation:
+          yaw: -2.562322
+      - position:
+          x: 2.09
+          y: 0.121
+        orientation:
+          yaw: 0.987647
+      - position:
+          x: 1.132
+          y: -0.723
+        orientation:
+          yaw: -2.557062
+      spawn_trigger_point:
+        x: 0.467
+        y: -2.39
+        z: 0.0
+      spawn_trigger_threshold: 3.11
+      dynamic_pose:
+        position:
+          x: 0.467
+          y: -2.39
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-104
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.852
+          y: -1.716
+        orientation:
+          yaw: 3.072
+      goal_poses:
+      - position:
+          x: -0.508
+          y: -1.031
+        orientation:
+          yaw: -1.399532
+      - position:
+          x: -1.121
+          y: -1.965
+        orientation:
+          yaw: 1.261979
+      - position:
+          x: -2.032
+          y: -0.763
+        orientation:
+          yaw: 0.997063
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 2.217
+                  y: -0.14
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-105
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.128
+          y: 0.514
+        orientation:
+          yaw: 0.690155
+      goal_poses:
+      - position:
+          x: -0.477
+          y: -0.445
+        orientation:
+          yaw: 2.990145
+      - position:
+          x: 0.892
+          y: -0.382
+        orientation:
+          yaw: -2.142239
+      - position:
+          x: 0.992
+          y: -1.605
+        orientation:
+          yaw: -2.00921
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.283
+                  y: 1.16
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-106
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.625
+          y: 0.788
+        orientation:
+          yaw: -1.717042
+      goal_poses:
+      - position:
+          x: 2.019
+          y: -0.038
+        orientation:
+          yaw: 2.451943
+      - position:
+          x: 1.692
+          y: -1.417
+        orientation:
+          yaw: 1.716307
+      - position:
+          x: 1.604
+          y: -0.208
+        orientation:
+          yaw: -0.711248
+      spawn_trigger_point:
+        x: 0.267
+        y: -2.34
+        z: 0.0
+      spawn_trigger_threshold: 4.64
+      dynamic_pose:
+        position:
+          x: 0.267
+          y: -2.34
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 2.217
+                  y: 0.36
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-107
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.252
+          y: -0.459
+        orientation:
+          yaw: 0.629297
+      goal_poses:
+      - position:
+          x: 0.641
+          y: -1.09
+        orientation:
+          yaw: 2.584942
+      - position:
+          x: -0.76
+          y: -1.841
+        orientation:
+          yaw: -2.364007
+      - position:
+          x: -1.235
+          y: -0.403
+        orientation:
+          yaw: -0.25741
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: 1.367
+                  y: -1.34
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-108
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.646
+          y: 0.115
+        orientation:
+          yaw: 2.840689
+      goal_poses:
+      - position:
+          x: 1.867
+          y: -0.959
+        orientation:
+          yaw: 0.884986
+      - position:
+          x: 0.479
+          y: -0.756
+        orientation:
+          yaw: -0.422262
+      - position:
+          x: -0.442
+          y: -1.338
+        orientation:
+          yaw: 2.268869
+      spawn_trigger_point:
+        x: -1.383
+        y: 1.31
+        z: 0.0
+      spawn_trigger_threshold: 1.51
+      dynamic_pose:
+        position:
+          x: -1.383
+          y: 1.31
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-109
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.614
+          y: 2.023
+        orientation:
+          yaw: 2.832216
+      goal_poses:
+      - position:
+          x: 0.638
+          y: 0.684
+        orientation:
+          yaw: 0.166229
+      - position:
+          x: -0.48
+          y: -0.198
+        orientation:
+          yaw: 2.85143
+      - position:
+          x: -1.525
+          y: 0.366
+        orientation:
+          yaw: 2.853426
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-110
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.503
+          y: -0.728
+        orientation:
+          yaw: -2.685837
+      goal_poses:
+      - position:
+          x: -2.244
+          y: 0.625
+        orientation:
+          yaw: -2.055656
+      - position:
+          x: -1.614
+          y: -0.479
+        orientation:
+          yaw: 0.214989
+      - position:
+          x: -2.278
+          y: 0.356
+        orientation:
+          yaw: -2.373828
+      spawn_trigger_point:
+        x: -0.233
+        y: 0.66
+        z: 0.0
+      spawn_trigger_threshold: 1.71
+      dynamic_pose:
+        position:
+          x: -0.233
+          y: 0.66
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-111
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -0.039
+          y: 2.307
+        orientation:
+          yaw: -1.755077
+      goal_poses:
+      - position:
+          x: -1.128
+          y: 1.918
+        orientation:
+          yaw: -2.118435
+      - position:
+          x: -1.804
+          y: 1.025
+        orientation:
+          yaw: -2.567377
+      - position:
+          x: -1.609
+          y: -0.559
+        orientation:
+          yaw: -2.585829
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.133
+                  y: 0.61
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-112
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.801
+          y: 0.721
+        orientation:
+          yaw: 2.208143
+      goal_poses:
+      - position:
+          x: 0.342
+          y: 0.417
+        orientation:
+          yaw: 2.374549
+      - position:
+          x: 0.724
+          y: -0.731
+        orientation:
+          yaw: -2.26565
+      - position:
+          x: 0.06
+          y: -2.067
+        orientation:
+          yaw: -2.277819
+      spawn_trigger_point:
+        x: 0.967
+        y: 0.66
+        z: 0.0
+      spawn_trigger_threshold: 1.35
+      dynamic_pose:
+        position:
+          x: 0.967
+          y: 0.66
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.433
+                  y: 0.16
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-113
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -2.178
+          y: -0.162
+        orientation:
+          yaw: -2.24683
+      goal_poses:
+      - position:
+          x: -1.629
+          y: -1.412
+        orientation:
+          yaw: 1.843289
+      - position:
+          x: -0.551
+          y: -1.27
+        orientation:
+          yaw: -3.096634
+      - position:
+          x: -1.551
+          y: -0.21
+        orientation:
+          yaw: -2.108192
+      spawn_trigger_point:
+        x: -2.433
+        y: 0.46
+        z: 0.0
+      spawn_trigger_threshold: 1.34
+      dynamic_pose:
+        position:
+          x: -2.433
+          y: 0.46
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -0.433
+                  y: 1.06
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-114
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.564
+          y: 0.43
+        orientation:
+          yaw: -1.492663
+      goal_poses:
+      - position:
+          x: -1.042
+          y: 1.692
+        orientation:
+          yaw: 1.999921
+      - position:
+          x: -0.36
+          y: 0.302
+        orientation:
+          yaw: -1.405878
+      - position:
+          x: -1.045
+          y: 1.495
+        orientation:
+          yaw: -0.620958
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.533
+                  y: -1.04
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+- name: tr-115
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 1.8
+          y: 1.045
+        orientation:
+          yaw: -1.577243
+      goal_poses:
+      - position:
+          x: 0.519
+          y: 1.429
+        orientation:
+          yaw: -2.077228
+      - position:
+          x: 0.657
+          y: 0.141
+        orientation:
+          yaw: 2.774156
+      - position:
+          x: 1.675
+          y: -0.092
+        orientation:
+          yaw: -1.408884
+      spawn_trigger_point:
+        x: 1.767
+        y: 0.01
+        z: 0.0
+      spawn_trigger_threshold: 4.25
+      dynamic_pose:
+        position:
+          x: 1.767
+          y: 0.01
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-116
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar1.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.657
+          y: 0.372
+        orientation:
+          yaw: 1.534336
+      goal_poses:
+      - position:
+          x: 0.441
+          y: -0.624
+        orientation:
+          yaw: -0.903492
+      - position:
+          x: 1.47
+          y: 0.657
+        orientation:
+          yaw: 2.046085
+      - position:
+          x: 2.149
+          y: -0.784
+        orientation:
+          yaw: -1.641414
+      spawn_trigger_point:
+        x: 0.017
+        y: 1.86
+        z: 0.0
+      spawn_trigger_threshold: 2.98
+      dynamic_pose:
+        position:
+          x: 0.017
+          y: 1.86
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-117
+  parameters:
+    scenario:
+      params_file: files/nav2_params_dwb_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: -1.825
+          y: 1.224
+        orientation:
+          yaw: -2.114864
+      goal_poses:
+      - position:
+          x: -0.453
+          y: 0.52
+        orientation:
+          yaw: 2.280806
+      - position:
+          x: -0.664
+          y: 1.711
+        orientation:
+          yaw: -1.048428
+      - position:
+          x: 0.52
+          y: 1.722
+        orientation:
+          yaw: -1.579759
+      spawn_trigger_point:
+        x: 2.117
+        y: -1.09
+        z: 0.0
+      spawn_trigger_threshold: 3.6
+      dynamic_pose:
+        position:
+          x: 2.117
+          y: -1.09
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-118
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.548
+          y: 1.485
+        orientation:
+          yaw: -2.026681
+      goal_poses:
+      - position:
+          x: -0.417
+          y: 2.264
+        orientation:
+          yaw: 1.469789
+      - position:
+          x: 1.036
+          y: 1.622
+        orientation:
+          yaw: -0.60815
+      - position:
+          x: -0.137
+          y: 1.87
+        orientation:
+          yaw: -0.163939
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+- name: tr-119
+  parameters:
+    scenario:
+      params_file: files/nav2_params_mppi_astar0.yaml
+      map_file: environments/hexagon/maps/hexagon.yaml
+      mesh_file: environments/hexagon/3d-mesh/hexagon.stl
+      start_pose:
+        position:
+          x: 0.289
+          y: -2.226
+        orientation:
+          yaw: 1.430098
+      goal_poses:
+      - position:
+          x: 0.742
+          y: -0.881
+        orientation:
+          yaw: -2.165969
+      - position:
+          x: -0.412
+          y: 0.059
+        orientation:
+          yaw: 2.555975
+      - position:
+          x: -0.551
+          y: 1.384
+        orientation:
+          yaw: 1.529495
+      spawn_trigger_point:
+        x: -1.733
+        y: -1.04
+        z: 0.0
+      spawn_trigger_threshold: 1.53
+      dynamic_pose:
+        position:
+          x: -1.733
+          y: -1.04
+    sim:
+      overrides:
+        components:
+          floorplan:
+            mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+          robot:
+            diff_drive:
+              max_linear_vel: 0.5
+          static_obstacles:
+            instances:
+            - pose:
+                position:
+                  x: -1.533
+                  y: 0.86
+              size:
+              - 0.5
+              - 0.5
+              - 1.0
+execution:
+  sizing: calibrated
+  containers:
+    simulation:
+      calibration:
+        size_on: 99
+      backend: roqsim
+      config: world/nav2.yaml
+      resources:
+        cpu: 2
+        memory: 2Gi
+    sut:
+      calibration:
+        size_on: 99
+      image: family:robovast-roqsim
+      resources:
+        cpu: 3.25
+        memory: 2Gi
+      config_files:
+        nav2: files/nav2_params.yaml
+    scenario:
+      calibration:
+        size_on: 99
+      image: family:robovast-roqsim
+      resources:
+        cpu: 2
+        memory: 1Gi
+  mode: ros2
+  runs: 1
+  runs_per_job: 1
+  timeout: 240
+  scenario_file: nav_through_poses.osc
+  run_files:
+  - files/*
+  - environments/*
+  - files/nav2/*.py
+  - files/nav2/*.yaml
+  - files/models/*.xacro
+  - environments/hexagon/maps/*
+  - environments/hexagon/3d-mesh/*
+  - environments/hexagon/json-ld/*
+  - world/*
+  env:
+  - PYTHONUNBUFFERED: '1'
+results_processing:
+  postprocessing:
+  - rosbags_tf_to_csv:
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - rosbags_action_to_csv:
+      action: navigate_through_poses
+  - rosbags_to_csv:
+      topics:
+      - /collision
+  - rosbags_nav2bt_to_csv
+  - nav2_bt_tree:
+      bt_xml: files/navigate_through_poses_w_replanning_and_recovery.xml
+  - search/bt_coverage.py:BtCoverage:
+      goal_x: 0.0
+      goal_y: 0.0
+      arrival_radius: 0.6
+  - rosbags_costmap_to_csv:
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+visualization:
+  config:
+    panels:
+    - parameters:
+        title: Scenario parameters
+        height: 30%
+    - world:
+        title: World configuration
+        height: 15%
+    - map2d:
+        title: Map
+        map:
+          param: map_file
+        markers:
+        - kind: pose
+          param: start_pose
+          label: start
+          color: '#60a5fa'
+        - kind: pose
+          param: goal_poses
+          label: goal
+          color: '#4ade80'
+  results:
+    run_view:
+      panels:
+      - nav2_behavior_tree:
+          title: Nav2 Behavior Tree
+          position:
+            anchor: top-left
+            width: 320
+            height: calc(50% - 44px)
+          minimizable: true
+      - costmap:
+          title: Nav2 Costmap
+          position:
+            anchor: top-right
+            width: 320
+            height: 550
+          minimizable: true
+          layers:
+            map:
+              topic: /map
+            global:
+              topic: /global_costmap/costmap
+            local:
+              topic: /local_costmap/costmap
+            poses:
+              table: poses
+      - log:
+          title: Run log
+          position:
+            anchor: bottom-center
+            width: calc(100% - 680px)
+            height: 380
+          minimizable: true
+          minimized: true

@@ -1,0 +1,4772 @@
+run_files:
+- _config/files/gazebo_launch.py
+- _config/files/world.sdf.xacro
+- _config/files/planner_test_costmaps.json
+- _config/files/monitor_cam_launch.py
+- _config/files/collision_monitor.py
+- _config/files/planner_path_valid_helper.py
+- _config/files/nav2_stack.launch.py
+- _config/files/navigate_to_pose_w_replanning_and_recovery.xml
+- _config/files/nav2_launch.py
+- _config/files/nav2_gazebo.launch.py
+- _config/files/nav2/spawn_tb4.launch.py
+- _config/files/nav2/tb4_simulation_launch.py
+- _config/files/nav2/tb4_bridge.yaml
+- _config/files/models/cylinder.sdf.xacro
+- _config/files/models/box.sdf.xacro
+- _config/environments/hexagon/3d-mesh/hexagon.stl.yaml
+- _config/environments/hexagon/3d-mesh/hexagon.stl
+- _config/environments/hexagon/json-ld/floorplan.fpm.json.yaml
+- _config/environments/hexagon/json-ld/floorplan.fpm.json
+- _config/environments/hexagon/maps/hexagon.pgm
+- _config/environments/hexagon/maps/hexagon.yaml
+- _config/world/nav2.yaml
+scenario_file: scenario.osc
+metadata:
+  name: planning
+  title: Nav2 planner runtime analog, TurtleBot 4 + Nav2, in roqsim (MuJoCo)
+  creators:
+  - name: Wiest, Samuel
+    identifiers: 0009-0002-9215-1238
+  - name: Ortega Sainz, Argentina
+    identifiers: 0000-0002-3873-4435
+  - name: Pasch, Frederik
+    identifiers: 0000-0002-2626-1538
+  version: 1.0.0
+  license: CC-BY-4.0
+  keywords:
+  - robotics
+  - planning
+  - navigation
+  - ROS2
+  - mujoco
+  - roqsim
+  - nav2
+  - turtlebot4
+  - behavior-tree
+  description: 'Runtime blackbox analog of nav2_system_tests/src/planning (main; CSV
+    row 46). The
+
+    upstream suite directly exercises PlannerTester with synthetic costmaps, randomized
+
+    endpoints, planner plugins and is_path_valid. This campaign runs the real planner
+
+    through bt_navigator for 300 deterministic PathVariationRandom start/goal pairs,
+
+    records the generated /plan, and includes /behavior_tree_log plus BT coverage.
+
+    Direct synthetic-costmap and plugin assertions are documented as not portable
+    in
+
+    readme.md. The success rate is intentionally not an optimization objective; the
+
+    purpose of this campaign is behavior-tree tracking across varied paths.
+
+    '
+  agents:
+  - id: turtlebot4
+    configuration_files:
+    - files/nav2_stack.launch.py
+    - files/nav2_params.yaml
+    derived_from: https://github.com/turtlebot/turtlebot4/tree/jazzy
+    ros_distro: jazzy
+  - id: simulation
+    configuration_files:
+    - world/nav2.yaml
+    derived_from: https://github.com/cps-test-lab/roqsim
+    ros_distro: jazzy
+configurations:
+- name: planner-runtime-nav-to-pose-1
+  config:
+    params_file: planner-runtime-nav-to-pose-1/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -1.5801505146534187
+        y: 0.13651355989247183
+      orientation:
+        yaw: 0.29348934086394873
+    goal_pose:
+      position:
+        x: 0.3184367038770646
+        y: -1.339483189467554
+      orientation:
+        yaw: 2.6507139949748755
+    nav2_test_id: test_planner_costmaps/runtime-navigation
+    expect_success: true
+    planner_case: none
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-runtime-nav-to-pose-1/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 3359db6fc68b
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: c24b02c3d71f
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-runtime-nav-to-pose-1/0
+    success: 'true'
+    start_time: '2026-09-06T16:17:10.922815+00:00'
+    end_time: '2026-09-06T16:17:42.217215+00:00'
+    output_files:
+    - planner-runtime-nav-to-pose-1/0/.robovast_rosbags_process_cache
+    - planner-runtime-nav-to-pose-1/0/action_navigate_to_pose_feedback.csv
+    - planner-runtime-nav-to-pose-1/0/action_navigate_to_pose_status.csv
+    - planner-runtime-nav-to-pose-1/0/behaviors.jsonl
+    - planner-runtime-nav-to-pose-1/0/capture/capture.bin
+    - planner-runtime-nav-to-pose-1/0/capture/capture.json
+    - planner-runtime-nav-to-pose-1/0/costmaps.csv
+    - planner-runtime-nav-to-pose-1/0/entities.json
+    - planner-runtime-nav-to-pose-1/0/nav2_behavior_tree.csv
+    - planner-runtime-nav-to-pose-1/0/nav2_behaviors.csv
+    - planner-runtime-nav-to-pose-1/0/poses.csv
+    - planner-runtime-nav-to-pose-1/0/resource_usage.csv
+    - planner-runtime-nav-to-pose-1/0/rosbag2/metadata.yaml
+    - planner-runtime-nav-to-pose-1/0/rosbag2/rosbag2_0.mcap
+    - planner-runtime-nav-to-pose-1/0/rosbag2_collision.csv
+    - planner-runtime-nav-to-pose-1/0/run.clock_map.csv
+    - planner-runtime-nav-to-pose-1/0/run.npz
+    - planner-runtime-nav-to-pose-1/0/run_log.csv
+    - planner-runtime-nav-to-pose-1/0/sim_poses.csv
+    - planner-runtime-nav-to-pose-1/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: planner-runtime-nav-to-pose-1/1
+    success: 'true'
+    start_time: '2026-09-06T16:17:10.921410+00:00'
+    end_time: '2026-09-06T16:17:38.617137+00:00'
+    output_files:
+    - planner-runtime-nav-to-pose-1/1/.robovast_rosbags_process_cache
+    - planner-runtime-nav-to-pose-1/1/action_navigate_to_pose_feedback.csv
+    - planner-runtime-nav-to-pose-1/1/action_navigate_to_pose_status.csv
+    - planner-runtime-nav-to-pose-1/1/behaviors.jsonl
+    - planner-runtime-nav-to-pose-1/1/capture/capture.bin
+    - planner-runtime-nav-to-pose-1/1/capture/capture.json
+    - planner-runtime-nav-to-pose-1/1/costmaps.csv
+    - planner-runtime-nav-to-pose-1/1/entities.json
+    - planner-runtime-nav-to-pose-1/1/nav2_behavior_tree.csv
+    - planner-runtime-nav-to-pose-1/1/nav2_behaviors.csv
+    - planner-runtime-nav-to-pose-1/1/poses.csv
+    - planner-runtime-nav-to-pose-1/1/resource_usage.csv
+    - planner-runtime-nav-to-pose-1/1/rosbag2/metadata.yaml
+    - planner-runtime-nav-to-pose-1/1/rosbag2/rosbag2_0.mcap
+    - planner-runtime-nav-to-pose-1/1/rosbag2_collision.csv
+    - planner-runtime-nav-to-pose-1/1/run.clock_map.csv
+    - planner-runtime-nav-to-pose-1/1/run.npz
+    - planner-runtime-nav-to-pose-1/1/run_log.csv
+    - planner-runtime-nav-to-pose-1/1/sim_poses.csv
+    - planner-runtime-nav-to-pose-1/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: planner-runtime-nav-to-pose-1/2
+    success: 'true'
+    start_time: '2026-09-06T16:17:56.276958+00:00'
+    end_time: '2026-09-06T16:18:24.629033+00:00'
+    output_files:
+    - planner-runtime-nav-to-pose-1/2/.robovast_rosbags_process_cache
+    - planner-runtime-nav-to-pose-1/2/action_navigate_to_pose_feedback.csv
+    - planner-runtime-nav-to-pose-1/2/action_navigate_to_pose_status.csv
+    - planner-runtime-nav-to-pose-1/2/behaviors.jsonl
+    - planner-runtime-nav-to-pose-1/2/capture/capture.bin
+    - planner-runtime-nav-to-pose-1/2/capture/capture.json
+    - planner-runtime-nav-to-pose-1/2/costmaps.csv
+    - planner-runtime-nav-to-pose-1/2/entities.json
+    - planner-runtime-nav-to-pose-1/2/nav2_behavior_tree.csv
+    - planner-runtime-nav-to-pose-1/2/nav2_behaviors.csv
+    - planner-runtime-nav-to-pose-1/2/poses.csv
+    - planner-runtime-nav-to-pose-1/2/resource_usage.csv
+    - planner-runtime-nav-to-pose-1/2/rosbag2/metadata.yaml
+    - planner-runtime-nav-to-pose-1/2/rosbag2/rosbag2_0.mcap
+    - planner-runtime-nav-to-pose-1/2/rosbag2_collision.csv
+    - planner-runtime-nav-to-pose-1/2/run.clock_map.csv
+    - planner-runtime-nav-to-pose-1/2/run.npz
+    - planner-runtime-nav-to-pose-1/2/run_log.csv
+    - planner-runtime-nav-to-pose-1/2/sim_poses.csv
+    - planner-runtime-nav-to-pose-1/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: planner-runtime-nav-to-pose-1/3
+    success: 'true'
+    start_time: '2026-09-06T16:17:57.779855+00:00'
+    end_time: '2026-09-06T16:18:25.728049+00:00'
+    output_files:
+    - planner-runtime-nav-to-pose-1/3/.robovast_rosbags_process_cache
+    - planner-runtime-nav-to-pose-1/3/action_navigate_to_pose_feedback.csv
+    - planner-runtime-nav-to-pose-1/3/action_navigate_to_pose_status.csv
+    - planner-runtime-nav-to-pose-1/3/behaviors.jsonl
+    - planner-runtime-nav-to-pose-1/3/capture/capture.bin
+    - planner-runtime-nav-to-pose-1/3/capture/capture.json
+    - planner-runtime-nav-to-pose-1/3/costmaps.csv
+    - planner-runtime-nav-to-pose-1/3/entities.json
+    - planner-runtime-nav-to-pose-1/3/nav2_behavior_tree.csv
+    - planner-runtime-nav-to-pose-1/3/nav2_behaviors.csv
+    - planner-runtime-nav-to-pose-1/3/poses.csv
+    - planner-runtime-nav-to-pose-1/3/resource_usage.csv
+    - planner-runtime-nav-to-pose-1/3/rosbag2/metadata.yaml
+    - planner-runtime-nav-to-pose-1/3/rosbag2/rosbag2_0.mcap
+    - planner-runtime-nav-to-pose-1/3/rosbag2_collision.csv
+    - planner-runtime-nav-to-pose-1/3/run.clock_map.csv
+    - planner-runtime-nav-to-pose-1/3/run.npz
+    - planner-runtime-nav-to-pose-1/3/run_log.csv
+    - planner-runtime-nav-to-pose-1/3/sim_poses.csv
+    - planner-runtime-nav-to-pose-1/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  - dir: planner-runtime-nav-to-pose-1/4
+    success: 'true'
+    start_time: '2026-09-06T16:18:41.920293+00:00'
+    end_time: '2026-09-06T16:19:15.263358+00:00'
+    output_files:
+    - planner-runtime-nav-to-pose-1/4/.robovast_rosbags_process_cache
+    - planner-runtime-nav-to-pose-1/4/action_navigate_to_pose_feedback.csv
+    - planner-runtime-nav-to-pose-1/4/action_navigate_to_pose_status.csv
+    - planner-runtime-nav-to-pose-1/4/behaviors.jsonl
+    - planner-runtime-nav-to-pose-1/4/capture/capture.bin
+    - planner-runtime-nav-to-pose-1/4/capture/capture.json
+    - planner-runtime-nav-to-pose-1/4/costmaps.csv
+    - planner-runtime-nav-to-pose-1/4/entities.json
+    - planner-runtime-nav-to-pose-1/4/nav2_behavior_tree.csv
+    - planner-runtime-nav-to-pose-1/4/nav2_behaviors.csv
+    - planner-runtime-nav-to-pose-1/4/poses.csv
+    - planner-runtime-nav-to-pose-1/4/resource_usage.csv
+    - planner-runtime-nav-to-pose-1/4/rosbag2/metadata.yaml
+    - planner-runtime-nav-to-pose-1/4/rosbag2/rosbag2_0.mcap
+    - planner-runtime-nav-to-pose-1/4/rosbag2_collision.csv
+    - planner-runtime-nav-to-pose-1/4/run.clock_map.csv
+    - planner-runtime-nav-to-pose-1/4/run.npz
+    - planner-runtime-nav-to-pose-1/4/run_log.csv
+    - planner-runtime-nav-to-pose-1/4/sim_poses.csv
+    - planner-runtime-nav-to-pose-1/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+    rosbag2:
+      ros_distro: jazzy
+      message_types:
+      - action_msgs/msg/GoalStatusArray
+      - geometry_msgs/msg/PoseWithCovarianceStamped
+      - nav2_msgs/action/NavigateToPose_FeedbackMessage
+      - nav2_msgs/msg/BehaviorTreeLog
+      - nav_msgs/msg/OccupancyGrid
+      - nav_msgs/msg/Odometry
+      - nav_msgs/msg/Path
+      - rosgraph_msgs/msg/Clock
+      - sensor_msgs/msg/LaserScan
+      - std_msgs/msg/Bool
+      - tf2_msgs/msg/TFMessage
+      files:
+      - rosbag2_0.mcap
+  variations:
+  - name: PathVariationRandom
+    started_at: '2026-09-06T16:16:34.842567+00:00'
+    duration: 0.005
+  derived_from: []
+- name: planner-path-valid-custom-footprint
+  config:
+    params_file: planner-path-valid-custom-footprint/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/custom-footprint
+    expect_success: true
+    planner_case: custom-footprint
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-custom-footprint/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-custom-footprint/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-custom-footprint/0
+    output_files:
+    - planner-path-valid-custom-footprint/0/behaviors.jsonl
+    - planner-path-valid-custom-footprint/0/capture/capture.bin
+    - planner-path-valid-custom-footprint/0/capture/capture.json
+    - planner-path-valid-custom-footprint/0/entities.json
+    - planner-path-valid-custom-footprint/0/resource_usage.csv
+    - planner-path-valid-custom-footprint/0/run.clock_map.csv
+    - planner-path-valid-custom-footprint/0/run.npz
+    - planner-path-valid-custom-footprint/0/run_log.csv
+    - planner-path-valid-custom-footprint/0/sim_poses.csv
+    - planner-path-valid-custom-footprint/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-custom-footprint/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-custom-footprint/1
+    output_files:
+    - planner-path-valid-custom-footprint/1/behaviors.jsonl
+    - planner-path-valid-custom-footprint/1/capture/capture.bin
+    - planner-path-valid-custom-footprint/1/capture/capture.json
+    - planner-path-valid-custom-footprint/1/entities.json
+    - planner-path-valid-custom-footprint/1/resource_usage.csv
+    - planner-path-valid-custom-footprint/1/run.clock_map.csv
+    - planner-path-valid-custom-footprint/1/run.npz
+    - planner-path-valid-custom-footprint/1/run_log.csv
+    - planner-path-valid-custom-footprint/1/sim_poses.csv
+    - planner-path-valid-custom-footprint/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-custom-footprint/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-custom-footprint/2
+    output_files:
+    - planner-path-valid-custom-footprint/2/behaviors.jsonl
+    - planner-path-valid-custom-footprint/2/capture/capture.bin
+    - planner-path-valid-custom-footprint/2/capture/capture.json
+    - planner-path-valid-custom-footprint/2/entities.json
+    - planner-path-valid-custom-footprint/2/resource_usage.csv
+    - planner-path-valid-custom-footprint/2/run.clock_map.csv
+    - planner-path-valid-custom-footprint/2/run.npz
+    - planner-path-valid-custom-footprint/2/run_log.csv
+    - planner-path-valid-custom-footprint/2/sim_poses.csv
+    - planner-path-valid-custom-footprint/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-custom-footprint/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-custom-footprint/3
+    output_files:
+    - planner-path-valid-custom-footprint/3/behaviors.jsonl
+    - planner-path-valid-custom-footprint/3/capture/capture.bin
+    - planner-path-valid-custom-footprint/3/capture/capture.json
+    - planner-path-valid-custom-footprint/3/entities.json
+    - planner-path-valid-custom-footprint/3/resource_usage.csv
+    - planner-path-valid-custom-footprint/3/run.clock_map.csv
+    - planner-path-valid-custom-footprint/3/run.npz
+    - planner-path-valid-custom-footprint/3/run_log.csv
+    - planner-path-valid-custom-footprint/3/sim_poses.csv
+    - planner-path-valid-custom-footprint/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-custom-footprint/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-custom-footprint/4
+    output_files:
+    - planner-path-valid-custom-footprint/4/behaviors.jsonl
+    - planner-path-valid-custom-footprint/4/capture/capture.bin
+    - planner-path-valid-custom-footprint/4/capture/capture.json
+    - planner-path-valid-custom-footprint/4/entities.json
+    - planner-path-valid-custom-footprint/4/resource_usage.csv
+    - planner-path-valid-custom-footprint/4/run.clock_map.csv
+    - planner-path-valid-custom-footprint/4/run.npz
+    - planner-path-valid-custom-footprint/4/run_log.csv
+    - planner-path-valid-custom-footprint/4/sim_poses.csv
+    - planner-path-valid-custom-footprint/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-invalid-footprint
+  config:
+    params_file: planner-path-valid-invalid-footprint/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/invalid-footprint
+    expect_success: true
+    planner_case: invalid-footprint
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-invalid-footprint/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-invalid-footprint/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-footprint/0
+    output_files:
+    - planner-path-valid-invalid-footprint/0/behaviors.jsonl
+    - planner-path-valid-invalid-footprint/0/capture/capture.bin
+    - planner-path-valid-invalid-footprint/0/capture/capture.json
+    - planner-path-valid-invalid-footprint/0/entities.json
+    - planner-path-valid-invalid-footprint/0/resource_usage.csv
+    - planner-path-valid-invalid-footprint/0/run.clock_map.csv
+    - planner-path-valid-invalid-footprint/0/run.npz
+    - planner-path-valid-invalid-footprint/0/run_log.csv
+    - planner-path-valid-invalid-footprint/0/sim_poses.csv
+    - planner-path-valid-invalid-footprint/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-footprint/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-footprint/1
+    output_files:
+    - planner-path-valid-invalid-footprint/1/behaviors.jsonl
+    - planner-path-valid-invalid-footprint/1/capture/capture.bin
+    - planner-path-valid-invalid-footprint/1/capture/capture.json
+    - planner-path-valid-invalid-footprint/1/entities.json
+    - planner-path-valid-invalid-footprint/1/resource_usage.csv
+    - planner-path-valid-invalid-footprint/1/run.clock_map.csv
+    - planner-path-valid-invalid-footprint/1/run.npz
+    - planner-path-valid-invalid-footprint/1/run_log.csv
+    - planner-path-valid-invalid-footprint/1/sim_poses.csv
+    - planner-path-valid-invalid-footprint/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-footprint/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-footprint/2
+    output_files:
+    - planner-path-valid-invalid-footprint/2/behaviors.jsonl
+    - planner-path-valid-invalid-footprint/2/capture/capture.bin
+    - planner-path-valid-invalid-footprint/2/capture/capture.json
+    - planner-path-valid-invalid-footprint/2/entities.json
+    - planner-path-valid-invalid-footprint/2/resource_usage.csv
+    - planner-path-valid-invalid-footprint/2/run.clock_map.csv
+    - planner-path-valid-invalid-footprint/2/run.npz
+    - planner-path-valid-invalid-footprint/2/run_log.csv
+    - planner-path-valid-invalid-footprint/2/sim_poses.csv
+    - planner-path-valid-invalid-footprint/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-footprint/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-footprint/3
+    output_files:
+    - planner-path-valid-invalid-footprint/3/behaviors.jsonl
+    - planner-path-valid-invalid-footprint/3/capture/capture.bin
+    - planner-path-valid-invalid-footprint/3/capture/capture.json
+    - planner-path-valid-invalid-footprint/3/entities.json
+    - planner-path-valid-invalid-footprint/3/resource_usage.csv
+    - planner-path-valid-invalid-footprint/3/run.clock_map.csv
+    - planner-path-valid-invalid-footprint/3/run.npz
+    - planner-path-valid-invalid-footprint/3/run_log.csv
+    - planner-path-valid-invalid-footprint/3/sim_poses.csv
+    - planner-path-valid-invalid-footprint/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-footprint/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-footprint/4
+    output_files:
+    - planner-path-valid-invalid-footprint/4/behaviors.jsonl
+    - planner-path-valid-invalid-footprint/4/capture/capture.bin
+    - planner-path-valid-invalid-footprint/4/capture/capture.json
+    - planner-path-valid-invalid-footprint/4/entities.json
+    - planner-path-valid-invalid-footprint/4/resource_usage.csv
+    - planner-path-valid-invalid-footprint/4/run.clock_map.csv
+    - planner-path-valid-invalid-footprint/4/run.npz
+    - planner-path-valid-invalid-footprint/4/run_log.csv
+    - planner-path-valid-invalid-footprint/4/sim_poses.csv
+    - planner-path-valid-invalid-footprint/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-nonexistent-layer
+  config:
+    params_file: planner-path-valid-nonexistent-layer/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/nonexistent-layer
+    expect_success: true
+    planner_case: nonexistent-layer
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-nonexistent-layer/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-nonexistent-layer/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-nonexistent-layer/0
+    output_files:
+    - planner-path-valid-nonexistent-layer/0/behaviors.jsonl
+    - planner-path-valid-nonexistent-layer/0/capture/capture.bin
+    - planner-path-valid-nonexistent-layer/0/capture/capture.json
+    - planner-path-valid-nonexistent-layer/0/entities.json
+    - planner-path-valid-nonexistent-layer/0/resource_usage.csv
+    - planner-path-valid-nonexistent-layer/0/run.clock_map.csv
+    - planner-path-valid-nonexistent-layer/0/run.npz
+    - planner-path-valid-nonexistent-layer/0/run_log.csv
+    - planner-path-valid-nonexistent-layer/0/sim_poses.csv
+    - planner-path-valid-nonexistent-layer/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-nonexistent-layer/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-nonexistent-layer/1
+    output_files:
+    - planner-path-valid-nonexistent-layer/1/behaviors.jsonl
+    - planner-path-valid-nonexistent-layer/1/capture/capture.bin
+    - planner-path-valid-nonexistent-layer/1/capture/capture.json
+    - planner-path-valid-nonexistent-layer/1/entities.json
+    - planner-path-valid-nonexistent-layer/1/resource_usage.csv
+    - planner-path-valid-nonexistent-layer/1/run.clock_map.csv
+    - planner-path-valid-nonexistent-layer/1/run.npz
+    - planner-path-valid-nonexistent-layer/1/run_log.csv
+    - planner-path-valid-nonexistent-layer/1/sim_poses.csv
+    - planner-path-valid-nonexistent-layer/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-nonexistent-layer/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-nonexistent-layer/2
+    output_files:
+    - planner-path-valid-nonexistent-layer/2/behaviors.jsonl
+    - planner-path-valid-nonexistent-layer/2/capture/capture.bin
+    - planner-path-valid-nonexistent-layer/2/capture/capture.json
+    - planner-path-valid-nonexistent-layer/2/entities.json
+    - planner-path-valid-nonexistent-layer/2/resource_usage.csv
+    - planner-path-valid-nonexistent-layer/2/run.clock_map.csv
+    - planner-path-valid-nonexistent-layer/2/run.npz
+    - planner-path-valid-nonexistent-layer/2/run_log.csv
+    - planner-path-valid-nonexistent-layer/2/sim_poses.csv
+    - planner-path-valid-nonexistent-layer/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-nonexistent-layer/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-nonexistent-layer/3
+    output_files:
+    - planner-path-valid-nonexistent-layer/3/behaviors.jsonl
+    - planner-path-valid-nonexistent-layer/3/capture/capture.bin
+    - planner-path-valid-nonexistent-layer/3/capture/capture.json
+    - planner-path-valid-nonexistent-layer/3/entities.json
+    - planner-path-valid-nonexistent-layer/3/resource_usage.csv
+    - planner-path-valid-nonexistent-layer/3/run.clock_map.csv
+    - planner-path-valid-nonexistent-layer/3/run.npz
+    - planner-path-valid-nonexistent-layer/3/run_log.csv
+    - planner-path-valid-nonexistent-layer/3/sim_poses.csv
+    - planner-path-valid-nonexistent-layer/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-nonexistent-layer/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-nonexistent-layer/4
+    output_files:
+    - planner-path-valid-nonexistent-layer/4/behaviors.jsonl
+    - planner-path-valid-nonexistent-layer/4/capture/capture.bin
+    - planner-path-valid-nonexistent-layer/4/capture/capture.json
+    - planner-path-valid-nonexistent-layer/4/entities.json
+    - planner-path-valid-nonexistent-layer/4/resource_usage.csv
+    - planner-path-valid-nonexistent-layer/4/run.clock_map.csv
+    - planner-path-valid-nonexistent-layer/4/run.npz
+    - planner-path-valid-nonexistent-layer/4/run_log.csv
+    - planner-path-valid-nonexistent-layer/4/sim_poses.csv
+    - planner-path-valid-nonexistent-layer/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-empty-layer
+  config:
+    params_file: planner-path-valid-empty-layer/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/empty-layer
+    expect_success: true
+    planner_case: valid-path
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-empty-layer/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-empty-layer/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-empty-layer/0
+    output_files:
+    - planner-path-valid-empty-layer/0/behaviors.jsonl
+    - planner-path-valid-empty-layer/0/capture/capture.bin
+    - planner-path-valid-empty-layer/0/capture/capture.json
+    - planner-path-valid-empty-layer/0/entities.json
+    - planner-path-valid-empty-layer/0/resource_usage.csv
+    - planner-path-valid-empty-layer/0/run.clock_map.csv
+    - planner-path-valid-empty-layer/0/run.npz
+    - planner-path-valid-empty-layer/0/run_log.csv
+    - planner-path-valid-empty-layer/0/sim_poses.csv
+    - planner-path-valid-empty-layer/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-empty-layer/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-empty-layer/1
+    output_files:
+    - planner-path-valid-empty-layer/1/behaviors.jsonl
+    - planner-path-valid-empty-layer/1/capture/capture.bin
+    - planner-path-valid-empty-layer/1/capture/capture.json
+    - planner-path-valid-empty-layer/1/entities.json
+    - planner-path-valid-empty-layer/1/resource_usage.csv
+    - planner-path-valid-empty-layer/1/run.clock_map.csv
+    - planner-path-valid-empty-layer/1/run.npz
+    - planner-path-valid-empty-layer/1/run_log.csv
+    - planner-path-valid-empty-layer/1/sim_poses.csv
+    - planner-path-valid-empty-layer/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-empty-layer/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-empty-layer/2
+    output_files:
+    - planner-path-valid-empty-layer/2/behaviors.jsonl
+    - planner-path-valid-empty-layer/2/capture/capture.bin
+    - planner-path-valid-empty-layer/2/capture/capture.json
+    - planner-path-valid-empty-layer/2/entities.json
+    - planner-path-valid-empty-layer/2/resource_usage.csv
+    - planner-path-valid-empty-layer/2/run.clock_map.csv
+    - planner-path-valid-empty-layer/2/run.npz
+    - planner-path-valid-empty-layer/2/run_log.csv
+    - planner-path-valid-empty-layer/2/sim_poses.csv
+    - planner-path-valid-empty-layer/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-empty-layer/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-empty-layer/3
+    output_files:
+    - planner-path-valid-empty-layer/3/behaviors.jsonl
+    - planner-path-valid-empty-layer/3/capture/capture.bin
+    - planner-path-valid-empty-layer/3/capture/capture.json
+    - planner-path-valid-empty-layer/3/entities.json
+    - planner-path-valid-empty-layer/3/resource_usage.csv
+    - planner-path-valid-empty-layer/3/run.clock_map.csv
+    - planner-path-valid-empty-layer/3/run.npz
+    - planner-path-valid-empty-layer/3/run_log.csv
+    - planner-path-valid-empty-layer/3/sim_poses.csv
+    - planner-path-valid-empty-layer/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-empty-layer/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-empty-layer/4
+    output_files:
+    - planner-path-valid-empty-layer/4/behaviors.jsonl
+    - planner-path-valid-empty-layer/4/capture/capture.bin
+    - planner-path-valid-empty-layer/4/capture/capture.json
+    - planner-path-valid-empty-layer/4/entities.json
+    - planner-path-valid-empty-layer/4/resource_usage.csv
+    - planner-path-valid-empty-layer/4/run.clock_map.csv
+    - planner-path-valid-empty-layer/4/run.npz
+    - planner-path-valid-empty-layer/4/run_log.csv
+    - planner-path-valid-empty-layer/4/sim_poses.csv
+    - planner-path-valid-empty-layer/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-large-footprint
+  config:
+    params_file: planner-path-valid-large-footprint/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/large-footprint
+    expect_success: true
+    planner_case: large-footprint
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-large-footprint/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-large-footprint/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-large-footprint/0
+    output_files:
+    - planner-path-valid-large-footprint/0/behaviors.jsonl
+    - planner-path-valid-large-footprint/0/capture/capture.bin
+    - planner-path-valid-large-footprint/0/capture/capture.json
+    - planner-path-valid-large-footprint/0/entities.json
+    - planner-path-valid-large-footprint/0/resource_usage.csv
+    - planner-path-valid-large-footprint/0/run.clock_map.csv
+    - planner-path-valid-large-footprint/0/run.npz
+    - planner-path-valid-large-footprint/0/run_log.csv
+    - planner-path-valid-large-footprint/0/sim_poses.csv
+    - planner-path-valid-large-footprint/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-large-footprint/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-large-footprint/1
+    output_files:
+    - planner-path-valid-large-footprint/1/behaviors.jsonl
+    - planner-path-valid-large-footprint/1/capture/capture.bin
+    - planner-path-valid-large-footprint/1/capture/capture.json
+    - planner-path-valid-large-footprint/1/entities.json
+    - planner-path-valid-large-footprint/1/resource_usage.csv
+    - planner-path-valid-large-footprint/1/run.clock_map.csv
+    - planner-path-valid-large-footprint/1/run.npz
+    - planner-path-valid-large-footprint/1/run_log.csv
+    - planner-path-valid-large-footprint/1/sim_poses.csv
+    - planner-path-valid-large-footprint/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-large-footprint/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-large-footprint/2
+    output_files:
+    - planner-path-valid-large-footprint/2/behaviors.jsonl
+    - planner-path-valid-large-footprint/2/capture/capture.bin
+    - planner-path-valid-large-footprint/2/capture/capture.json
+    - planner-path-valid-large-footprint/2/entities.json
+    - planner-path-valid-large-footprint/2/resource_usage.csv
+    - planner-path-valid-large-footprint/2/run.clock_map.csv
+    - planner-path-valid-large-footprint/2/run.npz
+    - planner-path-valid-large-footprint/2/run_log.csv
+    - planner-path-valid-large-footprint/2/sim_poses.csv
+    - planner-path-valid-large-footprint/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-large-footprint/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-large-footprint/3
+    output_files:
+    - planner-path-valid-large-footprint/3/behaviors.jsonl
+    - planner-path-valid-large-footprint/3/capture/capture.bin
+    - planner-path-valid-large-footprint/3/capture/capture.json
+    - planner-path-valid-large-footprint/3/entities.json
+    - planner-path-valid-large-footprint/3/resource_usage.csv
+    - planner-path-valid-large-footprint/3/run.clock_map.csv
+    - planner-path-valid-large-footprint/3/run.npz
+    - planner-path-valid-large-footprint/3/run_log.csv
+    - planner-path-valid-large-footprint/3/sim_poses.csv
+    - planner-path-valid-large-footprint/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-large-footprint/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-large-footprint/4
+    output_files:
+    - planner-path-valid-large-footprint/4/behaviors.jsonl
+    - planner-path-valid-large-footprint/4/capture/capture.bin
+    - planner-path-valid-large-footprint/4/capture/capture.json
+    - planner-path-valid-large-footprint/4/entities.json
+    - planner-path-valid-large-footprint/4/resource_usage.csv
+    - planner-path-valid-large-footprint/4/run.clock_map.csv
+    - planner-path-valid-large-footprint/4/run.npz
+    - planner-path-valid-large-footprint/4/run_log.csv
+    - planner-path-valid-large-footprint/4/sim_poses.csv
+    - planner-path-valid-large-footprint/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-max-lookahead
+  config:
+    params_file: planner-path-valid-max-lookahead/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/max-lookahead
+    expect_success: true
+    planner_case: max-lookahead
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-max-lookahead/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-max-lookahead/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-max-lookahead/0
+    output_files:
+    - planner-path-valid-max-lookahead/0/behaviors.jsonl
+    - planner-path-valid-max-lookahead/0/capture/capture.bin
+    - planner-path-valid-max-lookahead/0/capture/capture.json
+    - planner-path-valid-max-lookahead/0/entities.json
+    - planner-path-valid-max-lookahead/0/resource_usage.csv
+    - planner-path-valid-max-lookahead/0/run.clock_map.csv
+    - planner-path-valid-max-lookahead/0/run.npz
+    - planner-path-valid-max-lookahead/0/run_log.csv
+    - planner-path-valid-max-lookahead/0/sim_poses.csv
+    - planner-path-valid-max-lookahead/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-max-lookahead/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-max-lookahead/1
+    output_files:
+    - planner-path-valid-max-lookahead/1/behaviors.jsonl
+    - planner-path-valid-max-lookahead/1/capture/capture.bin
+    - planner-path-valid-max-lookahead/1/capture/capture.json
+    - planner-path-valid-max-lookahead/1/entities.json
+    - planner-path-valid-max-lookahead/1/resource_usage.csv
+    - planner-path-valid-max-lookahead/1/run.clock_map.csv
+    - planner-path-valid-max-lookahead/1/run.npz
+    - planner-path-valid-max-lookahead/1/run_log.csv
+    - planner-path-valid-max-lookahead/1/sim_poses.csv
+    - planner-path-valid-max-lookahead/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-max-lookahead/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-max-lookahead/2
+    output_files:
+    - planner-path-valid-max-lookahead/2/behaviors.jsonl
+    - planner-path-valid-max-lookahead/2/capture/capture.bin
+    - planner-path-valid-max-lookahead/2/capture/capture.json
+    - planner-path-valid-max-lookahead/2/entities.json
+    - planner-path-valid-max-lookahead/2/resource_usage.csv
+    - planner-path-valid-max-lookahead/2/run.clock_map.csv
+    - planner-path-valid-max-lookahead/2/run.npz
+    - planner-path-valid-max-lookahead/2/run_log.csv
+    - planner-path-valid-max-lookahead/2/sim_poses.csv
+    - planner-path-valid-max-lookahead/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-max-lookahead/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-max-lookahead/3
+    output_files:
+    - planner-path-valid-max-lookahead/3/behaviors.jsonl
+    - planner-path-valid-max-lookahead/3/capture/capture.bin
+    - planner-path-valid-max-lookahead/3/capture/capture.json
+    - planner-path-valid-max-lookahead/3/entities.json
+    - planner-path-valid-max-lookahead/3/resource_usage.csv
+    - planner-path-valid-max-lookahead/3/run.clock_map.csv
+    - planner-path-valid-max-lookahead/3/run.npz
+    - planner-path-valid-max-lookahead/3/run_log.csv
+    - planner-path-valid-max-lookahead/3/sim_poses.csv
+    - planner-path-valid-max-lookahead/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-max-lookahead/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-max-lookahead/4
+    output_files:
+    - planner-path-valid-max-lookahead/4/behaviors.jsonl
+    - planner-path-valid-max-lookahead/4/capture/capture.bin
+    - planner-path-valid-max-lookahead/4/capture/capture.json
+    - planner-path-valid-max-lookahead/4/entities.json
+    - planner-path-valid-max-lookahead/4/resource_usage.csv
+    - planner-path-valid-max-lookahead/4/run.clock_map.csv
+    - planner-path-valid-max-lookahead/4/run.npz
+    - planner-path-valid-max-lookahead/4/run_log.csv
+    - planner-path-valid-max-lookahead/4/sim_poses.csv
+    - planner-path-valid-max-lookahead/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-empty-path
+  config:
+    params_file: planner-path-valid-empty-path/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/empty-path
+    expect_success: true
+    planner_case: empty-path
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-empty-path/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-empty-path/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-empty-path/0
+    output_files:
+    - planner-path-valid-empty-path/0/behaviors.jsonl
+    - planner-path-valid-empty-path/0/capture/capture.bin
+    - planner-path-valid-empty-path/0/capture/capture.json
+    - planner-path-valid-empty-path/0/entities.json
+    - planner-path-valid-empty-path/0/resource_usage.csv
+    - planner-path-valid-empty-path/0/run.clock_map.csv
+    - planner-path-valid-empty-path/0/run.npz
+    - planner-path-valid-empty-path/0/run_log.csv
+    - planner-path-valid-empty-path/0/sim_poses.csv
+    - planner-path-valid-empty-path/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-empty-path/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-empty-path/1
+    output_files:
+    - planner-path-valid-empty-path/1/behaviors.jsonl
+    - planner-path-valid-empty-path/1/capture/capture.bin
+    - planner-path-valid-empty-path/1/capture/capture.json
+    - planner-path-valid-empty-path/1/entities.json
+    - planner-path-valid-empty-path/1/resource_usage.csv
+    - planner-path-valid-empty-path/1/run.clock_map.csv
+    - planner-path-valid-empty-path/1/run.npz
+    - planner-path-valid-empty-path/1/run_log.csv
+    - planner-path-valid-empty-path/1/sim_poses.csv
+    - planner-path-valid-empty-path/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-empty-path/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-empty-path/2
+    output_files:
+    - planner-path-valid-empty-path/2/behaviors.jsonl
+    - planner-path-valid-empty-path/2/capture/capture.bin
+    - planner-path-valid-empty-path/2/capture/capture.json
+    - planner-path-valid-empty-path/2/entities.json
+    - planner-path-valid-empty-path/2/resource_usage.csv
+    - planner-path-valid-empty-path/2/run.clock_map.csv
+    - planner-path-valid-empty-path/2/run.npz
+    - planner-path-valid-empty-path/2/run_log.csv
+    - planner-path-valid-empty-path/2/sim_poses.csv
+    - planner-path-valid-empty-path/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-empty-path/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-empty-path/3
+    output_files:
+    - planner-path-valid-empty-path/3/behaviors.jsonl
+    - planner-path-valid-empty-path/3/capture/capture.bin
+    - planner-path-valid-empty-path/3/capture/capture.json
+    - planner-path-valid-empty-path/3/entities.json
+    - planner-path-valid-empty-path/3/resource_usage.csv
+    - planner-path-valid-empty-path/3/run.clock_map.csv
+    - planner-path-valid-empty-path/3/run.npz
+    - planner-path-valid-empty-path/3/run_log.csv
+    - planner-path-valid-empty-path/3/sim_poses.csv
+    - planner-path-valid-empty-path/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-empty-path/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-empty-path/4
+    output_files:
+    - planner-path-valid-empty-path/4/behaviors.jsonl
+    - planner-path-valid-empty-path/4/capture/capture.bin
+    - planner-path-valid-empty-path/4/capture/capture.json
+    - planner-path-valid-empty-path/4/entities.json
+    - planner-path-valid-empty-path/4/resource_usage.csv
+    - planner-path-valid-empty-path/4/run.clock_map.csv
+    - planner-path-valid-empty-path/4/run.npz
+    - planner-path-valid-empty-path/4/run_log.csv
+    - planner-path-valid-empty-path/4/sim_poses.csv
+    - planner-path-valid-empty-path/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-invalid-path
+  config:
+    params_file: planner-path-valid-invalid-path/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/invalid-path
+    expect_success: true
+    planner_case: invalid-path
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-invalid-path/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-invalid-path/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-path/0
+    output_files:
+    - planner-path-valid-invalid-path/0/behaviors.jsonl
+    - planner-path-valid-invalid-path/0/capture/capture.bin
+    - planner-path-valid-invalid-path/0/capture/capture.json
+    - planner-path-valid-invalid-path/0/entities.json
+    - planner-path-valid-invalid-path/0/resource_usage.csv
+    - planner-path-valid-invalid-path/0/run.clock_map.csv
+    - planner-path-valid-invalid-path/0/run.npz
+    - planner-path-valid-invalid-path/0/run_log.csv
+    - planner-path-valid-invalid-path/0/sim_poses.csv
+    - planner-path-valid-invalid-path/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-path/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-path/1
+    output_files:
+    - planner-path-valid-invalid-path/1/behaviors.jsonl
+    - planner-path-valid-invalid-path/1/capture/capture.bin
+    - planner-path-valid-invalid-path/1/capture/capture.json
+    - planner-path-valid-invalid-path/1/entities.json
+    - planner-path-valid-invalid-path/1/resource_usage.csv
+    - planner-path-valid-invalid-path/1/run.clock_map.csv
+    - planner-path-valid-invalid-path/1/run.npz
+    - planner-path-valid-invalid-path/1/run_log.csv
+    - planner-path-valid-invalid-path/1/sim_poses.csv
+    - planner-path-valid-invalid-path/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-path/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-path/2
+    output_files:
+    - planner-path-valid-invalid-path/2/behaviors.jsonl
+    - planner-path-valid-invalid-path/2/capture/capture.bin
+    - planner-path-valid-invalid-path/2/capture/capture.json
+    - planner-path-valid-invalid-path/2/entities.json
+    - planner-path-valid-invalid-path/2/resource_usage.csv
+    - planner-path-valid-invalid-path/2/run.clock_map.csv
+    - planner-path-valid-invalid-path/2/run.npz
+    - planner-path-valid-invalid-path/2/run_log.csv
+    - planner-path-valid-invalid-path/2/sim_poses.csv
+    - planner-path-valid-invalid-path/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-path/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-path/3
+    output_files:
+    - planner-path-valid-invalid-path/3/behaviors.jsonl
+    - planner-path-valid-invalid-path/3/capture/capture.bin
+    - planner-path-valid-invalid-path/3/capture/capture.json
+    - planner-path-valid-invalid-path/3/entities.json
+    - planner-path-valid-invalid-path/3/resource_usage.csv
+    - planner-path-valid-invalid-path/3/run.clock_map.csv
+    - planner-path-valid-invalid-path/3/run.npz
+    - planner-path-valid-invalid-path/3/run_log.csv
+    - planner-path-valid-invalid-path/3/sim_poses.csv
+    - planner-path-valid-invalid-path/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-path/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-path/4
+    output_files:
+    - planner-path-valid-invalid-path/4/behaviors.jsonl
+    - planner-path-valid-invalid-path/4/capture/capture.bin
+    - planner-path-valid-invalid-path/4/capture/capture.json
+    - planner-path-valid-invalid-path/4/entities.json
+    - planner-path-valid-invalid-path/4/resource_usage.csv
+    - planner-path-valid-invalid-path/4/run.clock_map.csv
+    - planner-path-valid-invalid-path/4/run.npz
+    - planner-path-valid-invalid-path/4/run_log.csv
+    - planner-path-valid-invalid-path/4/sim_poses.csv
+    - planner-path-valid-invalid-path/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-valid-path
+  config:
+    params_file: planner-path-valid-valid-path/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/valid-path
+    expect_success: true
+    planner_case: empty-layer
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-valid-path/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-valid-path/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-valid-path/0
+    output_files:
+    - planner-path-valid-valid-path/0/behaviors.jsonl
+    - planner-path-valid-valid-path/0/capture/capture.bin
+    - planner-path-valid-valid-path/0/capture/capture.json
+    - planner-path-valid-valid-path/0/entities.json
+    - planner-path-valid-valid-path/0/resource_usage.csv
+    - planner-path-valid-valid-path/0/run.clock_map.csv
+    - planner-path-valid-valid-path/0/run.npz
+    - planner-path-valid-valid-path/0/run_log.csv
+    - planner-path-valid-valid-path/0/sim_poses.csv
+    - planner-path-valid-valid-path/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-valid-path/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-valid-path/1
+    output_files:
+    - planner-path-valid-valid-path/1/behaviors.jsonl
+    - planner-path-valid-valid-path/1/capture/capture.bin
+    - planner-path-valid-valid-path/1/capture/capture.json
+    - planner-path-valid-valid-path/1/entities.json
+    - planner-path-valid-valid-path/1/resource_usage.csv
+    - planner-path-valid-valid-path/1/run.clock_map.csv
+    - planner-path-valid-valid-path/1/run.npz
+    - planner-path-valid-valid-path/1/run_log.csv
+    - planner-path-valid-valid-path/1/sim_poses.csv
+    - planner-path-valid-valid-path/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-valid-path/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-valid-path/2
+    output_files:
+    - planner-path-valid-valid-path/2/behaviors.jsonl
+    - planner-path-valid-valid-path/2/capture/capture.bin
+    - planner-path-valid-valid-path/2/capture/capture.json
+    - planner-path-valid-valid-path/2/entities.json
+    - planner-path-valid-valid-path/2/resource_usage.csv
+    - planner-path-valid-valid-path/2/run.clock_map.csv
+    - planner-path-valid-valid-path/2/run.npz
+    - planner-path-valid-valid-path/2/run_log.csv
+    - planner-path-valid-valid-path/2/sim_poses.csv
+    - planner-path-valid-valid-path/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-valid-path/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-valid-path/3
+    output_files:
+    - planner-path-valid-valid-path/3/behaviors.jsonl
+    - planner-path-valid-valid-path/3/capture/capture.bin
+    - planner-path-valid-valid-path/3/capture/capture.json
+    - planner-path-valid-valid-path/3/entities.json
+    - planner-path-valid-valid-path/3/resource_usage.csv
+    - planner-path-valid-valid-path/3/run.clock_map.csv
+    - planner-path-valid-valid-path/3/run.npz
+    - planner-path-valid-valid-path/3/run_log.csv
+    - planner-path-valid-valid-path/3/sim_poses.csv
+    - planner-path-valid-valid-path/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-valid-path/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-valid-path/4
+    output_files:
+    - planner-path-valid-valid-path/4/behaviors.jsonl
+    - planner-path-valid-valid-path/4/capture/capture.bin
+    - planner-path-valid-valid-path/4/capture/capture.json
+    - planner-path-valid-valid-path/4/entities.json
+    - planner-path-valid-valid-path/4/resource_usage.csv
+    - planner-path-valid-valid-path/4/run.clock_map.csv
+    - planner-path-valid-valid-path/4/run.npz
+    - planner-path-valid-valid-path/4/run_log.csv
+    - planner-path-valid-valid-path/4/sim_poses.csv
+    - planner-path-valid-valid-path/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-unknown-cells
+  config:
+    params_file: planner-path-valid-unknown-cells/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/unknown-cells
+    expect_success: true
+    planner_case: unknown-cells
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-unknown-cells/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-unknown-cells/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-unknown-cells/0
+    output_files:
+    - planner-path-valid-unknown-cells/0/behaviors.jsonl
+    - planner-path-valid-unknown-cells/0/capture/capture.bin
+    - planner-path-valid-unknown-cells/0/capture/capture.json
+    - planner-path-valid-unknown-cells/0/entities.json
+    - planner-path-valid-unknown-cells/0/resource_usage.csv
+    - planner-path-valid-unknown-cells/0/run.clock_map.csv
+    - planner-path-valid-unknown-cells/0/run.npz
+    - planner-path-valid-unknown-cells/0/run_log.csv
+    - planner-path-valid-unknown-cells/0/sim_poses.csv
+    - planner-path-valid-unknown-cells/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-unknown-cells/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-unknown-cells/1
+    output_files:
+    - planner-path-valid-unknown-cells/1/behaviors.jsonl
+    - planner-path-valid-unknown-cells/1/capture/capture.bin
+    - planner-path-valid-unknown-cells/1/capture/capture.json
+    - planner-path-valid-unknown-cells/1/entities.json
+    - planner-path-valid-unknown-cells/1/resource_usage.csv
+    - planner-path-valid-unknown-cells/1/run.clock_map.csv
+    - planner-path-valid-unknown-cells/1/run.npz
+    - planner-path-valid-unknown-cells/1/run_log.csv
+    - planner-path-valid-unknown-cells/1/sim_poses.csv
+    - planner-path-valid-unknown-cells/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-unknown-cells/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-unknown-cells/2
+    output_files:
+    - planner-path-valid-unknown-cells/2/behaviors.jsonl
+    - planner-path-valid-unknown-cells/2/capture/capture.bin
+    - planner-path-valid-unknown-cells/2/capture/capture.json
+    - planner-path-valid-unknown-cells/2/entities.json
+    - planner-path-valid-unknown-cells/2/resource_usage.csv
+    - planner-path-valid-unknown-cells/2/run.clock_map.csv
+    - planner-path-valid-unknown-cells/2/run.npz
+    - planner-path-valid-unknown-cells/2/run_log.csv
+    - planner-path-valid-unknown-cells/2/sim_poses.csv
+    - planner-path-valid-unknown-cells/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-unknown-cells/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-unknown-cells/3
+    output_files:
+    - planner-path-valid-unknown-cells/3/behaviors.jsonl
+    - planner-path-valid-unknown-cells/3/capture/capture.bin
+    - planner-path-valid-unknown-cells/3/capture/capture.json
+    - planner-path-valid-unknown-cells/3/entities.json
+    - planner-path-valid-unknown-cells/3/resource_usage.csv
+    - planner-path-valid-unknown-cells/3/run.clock_map.csv
+    - planner-path-valid-unknown-cells/3/run.npz
+    - planner-path-valid-unknown-cells/3/run_log.csv
+    - planner-path-valid-unknown-cells/3/sim_poses.csv
+    - planner-path-valid-unknown-cells/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-unknown-cells/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-unknown-cells/4
+    output_files:
+    - planner-path-valid-unknown-cells/4/behaviors.jsonl
+    - planner-path-valid-unknown-cells/4/capture/capture.bin
+    - planner-path-valid-unknown-cells/4/capture/capture.json
+    - planner-path-valid-unknown-cells/4/entities.json
+    - planner-path-valid-unknown-cells/4/resource_usage.csv
+    - planner-path-valid-unknown-cells/4/run.clock_map.csv
+    - planner-path-valid-unknown-cells/4/run.npz
+    - planner-path-valid-unknown-cells/4/run_log.csv
+    - planner-path-valid-unknown-cells/4/sim_poses.csv
+    - planner-path-valid-unknown-cells/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-max-cost-zero
+  config:
+    params_file: planner-path-valid-max-cost-zero/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/max-cost-zero
+    expect_success: true
+    planner_case: max-cost-zero
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-max-cost-zero/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-max-cost-zero/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-max-cost-zero/0
+    output_files:
+    - planner-path-valid-max-cost-zero/0/behaviors.jsonl
+    - planner-path-valid-max-cost-zero/0/capture/capture.bin
+    - planner-path-valid-max-cost-zero/0/capture/capture.json
+    - planner-path-valid-max-cost-zero/0/entities.json
+    - planner-path-valid-max-cost-zero/0/resource_usage.csv
+    - planner-path-valid-max-cost-zero/0/run.clock_map.csv
+    - planner-path-valid-max-cost-zero/0/run.npz
+    - planner-path-valid-max-cost-zero/0/run_log.csv
+    - planner-path-valid-max-cost-zero/0/sim_poses.csv
+    - planner-path-valid-max-cost-zero/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-max-cost-zero/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-max-cost-zero/1
+    output_files:
+    - planner-path-valid-max-cost-zero/1/behaviors.jsonl
+    - planner-path-valid-max-cost-zero/1/capture/capture.bin
+    - planner-path-valid-max-cost-zero/1/capture/capture.json
+    - planner-path-valid-max-cost-zero/1/entities.json
+    - planner-path-valid-max-cost-zero/1/resource_usage.csv
+    - planner-path-valid-max-cost-zero/1/run.clock_map.csv
+    - planner-path-valid-max-cost-zero/1/run.npz
+    - planner-path-valid-max-cost-zero/1/run_log.csv
+    - planner-path-valid-max-cost-zero/1/sim_poses.csv
+    - planner-path-valid-max-cost-zero/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-max-cost-zero/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-max-cost-zero/2
+    output_files:
+    - planner-path-valid-max-cost-zero/2/behaviors.jsonl
+    - planner-path-valid-max-cost-zero/2/capture/capture.bin
+    - planner-path-valid-max-cost-zero/2/capture/capture.json
+    - planner-path-valid-max-cost-zero/2/entities.json
+    - planner-path-valid-max-cost-zero/2/resource_usage.csv
+    - planner-path-valid-max-cost-zero/2/run.clock_map.csv
+    - planner-path-valid-max-cost-zero/2/run.npz
+    - planner-path-valid-max-cost-zero/2/run_log.csv
+    - planner-path-valid-max-cost-zero/2/sim_poses.csv
+    - planner-path-valid-max-cost-zero/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-max-cost-zero/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-max-cost-zero/3
+    output_files:
+    - planner-path-valid-max-cost-zero/3/behaviors.jsonl
+    - planner-path-valid-max-cost-zero/3/capture/capture.bin
+    - planner-path-valid-max-cost-zero/3/capture/capture.json
+    - planner-path-valid-max-cost-zero/3/entities.json
+    - planner-path-valid-max-cost-zero/3/resource_usage.csv
+    - planner-path-valid-max-cost-zero/3/run.clock_map.csv
+    - planner-path-valid-max-cost-zero/3/run.npz
+    - planner-path-valid-max-cost-zero/3/run_log.csv
+    - planner-path-valid-max-cost-zero/3/sim_poses.csv
+    - planner-path-valid-max-cost-zero/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-max-cost-zero/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-max-cost-zero/4
+    output_files:
+    - planner-path-valid-max-cost-zero/4/behaviors.jsonl
+    - planner-path-valid-max-cost-zero/4/capture/capture.bin
+    - planner-path-valid-max-cost-zero/4/capture/capture.json
+    - planner-path-valid-max-cost-zero/4/entities.json
+    - planner-path-valid-max-cost-zero/4/resource_usage.csv
+    - planner-path-valid-max-cost-zero/4/run.clock_map.csv
+    - planner-path-valid-max-cost-zero/4/run.npz
+    - planner-path-valid-max-cost-zero/4/run_log.csv
+    - planner-path-valid-max-cost-zero/4/sim_poses.csv
+    - planner-path-valid-max-cost-zero/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-invalid-pose-indices
+  config:
+    params_file: planner-path-valid-invalid-pose-indices/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/invalid-pose-indices
+    expect_success: true
+    planner_case: invalid-pose-indices
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-invalid-pose-indices/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-invalid-pose-indices/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-pose-indices/0
+    output_files:
+    - planner-path-valid-invalid-pose-indices/0/behaviors.jsonl
+    - planner-path-valid-invalid-pose-indices/0/capture/capture.bin
+    - planner-path-valid-invalid-pose-indices/0/capture/capture.json
+    - planner-path-valid-invalid-pose-indices/0/entities.json
+    - planner-path-valid-invalid-pose-indices/0/resource_usage.csv
+    - planner-path-valid-invalid-pose-indices/0/run.clock_map.csv
+    - planner-path-valid-invalid-pose-indices/0/run.npz
+    - planner-path-valid-invalid-pose-indices/0/run_log.csv
+    - planner-path-valid-invalid-pose-indices/0/sim_poses.csv
+    - planner-path-valid-invalid-pose-indices/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-pose-indices/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-pose-indices/1
+    output_files:
+    - planner-path-valid-invalid-pose-indices/1/behaviors.jsonl
+    - planner-path-valid-invalid-pose-indices/1/capture/capture.bin
+    - planner-path-valid-invalid-pose-indices/1/capture/capture.json
+    - planner-path-valid-invalid-pose-indices/1/entities.json
+    - planner-path-valid-invalid-pose-indices/1/resource_usage.csv
+    - planner-path-valid-invalid-pose-indices/1/run.clock_map.csv
+    - planner-path-valid-invalid-pose-indices/1/run.npz
+    - planner-path-valid-invalid-pose-indices/1/run_log.csv
+    - planner-path-valid-invalid-pose-indices/1/sim_poses.csv
+    - planner-path-valid-invalid-pose-indices/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-pose-indices/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-pose-indices/2
+    output_files:
+    - planner-path-valid-invalid-pose-indices/2/behaviors.jsonl
+    - planner-path-valid-invalid-pose-indices/2/capture/capture.bin
+    - planner-path-valid-invalid-pose-indices/2/capture/capture.json
+    - planner-path-valid-invalid-pose-indices/2/entities.json
+    - planner-path-valid-invalid-pose-indices/2/resource_usage.csv
+    - planner-path-valid-invalid-pose-indices/2/run.clock_map.csv
+    - planner-path-valid-invalid-pose-indices/2/run.npz
+    - planner-path-valid-invalid-pose-indices/2/run_log.csv
+    - planner-path-valid-invalid-pose-indices/2/sim_poses.csv
+    - planner-path-valid-invalid-pose-indices/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-pose-indices/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-pose-indices/3
+    output_files:
+    - planner-path-valid-invalid-pose-indices/3/behaviors.jsonl
+    - planner-path-valid-invalid-pose-indices/3/capture/capture.bin
+    - planner-path-valid-invalid-pose-indices/3/capture/capture.json
+    - planner-path-valid-invalid-pose-indices/3/entities.json
+    - planner-path-valid-invalid-pose-indices/3/resource_usage.csv
+    - planner-path-valid-invalid-pose-indices/3/run.clock_map.csv
+    - planner-path-valid-invalid-pose-indices/3/run.npz
+    - planner-path-valid-invalid-pose-indices/3/run_log.csv
+    - planner-path-valid-invalid-pose-indices/3/sim_poses.csv
+    - planner-path-valid-invalid-pose-indices/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-invalid-pose-indices/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-invalid-pose-indices/4
+    output_files:
+    - planner-path-valid-invalid-pose-indices/4/behaviors.jsonl
+    - planner-path-valid-invalid-pose-indices/4/capture/capture.bin
+    - planner-path-valid-invalid-pose-indices/4/capture/capture.json
+    - planner-path-valid-invalid-pose-indices/4/entities.json
+    - planner-path-valid-invalid-pose-indices/4/resource_usage.csv
+    - planner-path-valid-invalid-pose-indices/4/run.clock_map.csv
+    - planner-path-valid-invalid-pose-indices/4/run.npz
+    - planner-path-valid-invalid-pose-indices/4/run_log.csv
+    - planner-path-valid-invalid-pose-indices/4/sim_poses.csv
+    - planner-path-valid-invalid-pose-indices/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-stop-first-collision
+  config:
+    params_file: planner-path-valid-stop-first-collision/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/stop-first-collision
+    expect_success: true
+    planner_case: stop-first-collision
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-stop-first-collision/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-stop-first-collision/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-stop-first-collision/0
+    output_files:
+    - planner-path-valid-stop-first-collision/0/behaviors.jsonl
+    - planner-path-valid-stop-first-collision/0/capture/capture.bin
+    - planner-path-valid-stop-first-collision/0/capture/capture.json
+    - planner-path-valid-stop-first-collision/0/entities.json
+    - planner-path-valid-stop-first-collision/0/resource_usage.csv
+    - planner-path-valid-stop-first-collision/0/run.clock_map.csv
+    - planner-path-valid-stop-first-collision/0/run.npz
+    - planner-path-valid-stop-first-collision/0/run_log.csv
+    - planner-path-valid-stop-first-collision/0/sim_poses.csv
+    - planner-path-valid-stop-first-collision/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-stop-first-collision/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-stop-first-collision/1
+    output_files:
+    - planner-path-valid-stop-first-collision/1/behaviors.jsonl
+    - planner-path-valid-stop-first-collision/1/capture/capture.bin
+    - planner-path-valid-stop-first-collision/1/capture/capture.json
+    - planner-path-valid-stop-first-collision/1/entities.json
+    - planner-path-valid-stop-first-collision/1/resource_usage.csv
+    - planner-path-valid-stop-first-collision/1/run.clock_map.csv
+    - planner-path-valid-stop-first-collision/1/run.npz
+    - planner-path-valid-stop-first-collision/1/run_log.csv
+    - planner-path-valid-stop-first-collision/1/sim_poses.csv
+    - planner-path-valid-stop-first-collision/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-stop-first-collision/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-stop-first-collision/2
+    output_files:
+    - planner-path-valid-stop-first-collision/2/behaviors.jsonl
+    - planner-path-valid-stop-first-collision/2/capture/capture.bin
+    - planner-path-valid-stop-first-collision/2/capture/capture.json
+    - planner-path-valid-stop-first-collision/2/entities.json
+    - planner-path-valid-stop-first-collision/2/resource_usage.csv
+    - planner-path-valid-stop-first-collision/2/run.clock_map.csv
+    - planner-path-valid-stop-first-collision/2/run.npz
+    - planner-path-valid-stop-first-collision/2/run_log.csv
+    - planner-path-valid-stop-first-collision/2/sim_poses.csv
+    - planner-path-valid-stop-first-collision/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-stop-first-collision/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-stop-first-collision/3
+    output_files:
+    - planner-path-valid-stop-first-collision/3/behaviors.jsonl
+    - planner-path-valid-stop-first-collision/3/capture/capture.bin
+    - planner-path-valid-stop-first-collision/3/capture/capture.json
+    - planner-path-valid-stop-first-collision/3/entities.json
+    - planner-path-valid-stop-first-collision/3/resource_usage.csv
+    - planner-path-valid-stop-first-collision/3/run.clock_map.csv
+    - planner-path-valid-stop-first-collision/3/run.npz
+    - planner-path-valid-stop-first-collision/3/run_log.csv
+    - planner-path-valid-stop-first-collision/3/sim_poses.csv
+    - planner-path-valid-stop-first-collision/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-stop-first-collision/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-stop-first-collision/4
+    output_files:
+    - planner-path-valid-stop-first-collision/4/behaviors.jsonl
+    - planner-path-valid-stop-first-collision/4/capture/capture.bin
+    - planner-path-valid-stop-first-collision/4/capture/capture.json
+    - planner-path-valid-stop-first-collision/4/entities.json
+    - planner-path-valid-stop-first-collision/4/resource_usage.csv
+    - planner-path-valid-stop-first-collision/4/run.clock_map.csv
+    - planner-path-valid-stop-first-collision/4/run.npz
+    - planner-path-valid-stop-first-collision/4/run_log.csv
+    - planner-path-valid-stop-first-collision/4/sim_poses.csv
+    - planner-path-valid-stop-first-collision/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+- name: planner-path-valid-stop-all-collisions
+  config:
+    params_file: planner-path-valid-stop-all-collisions/_config/files/nav2_params.yaml
+    map_file: _config/environments/hexagon/maps/hexagon.yaml
+    mesh_file: _config/environments/hexagon/3d-mesh/hexagon.stl
+    start_pose:
+      position:
+        x: -2.0
+        y: -0.5
+    goal_pose:
+      position:
+        x: 0.0
+        y: 2.0
+    nav2_test_id: test_planner_is_path_valid/stop-all-collisions
+    expect_success: true
+    planner_case: stop-all-collisions
+  sut: {}
+  sim:
+    config: world/nav2.yaml
+    overrides:
+      components:
+        floorplan:
+          mesh: /config/environments/hexagon/3d-mesh/hexagon.stl
+  config_files:
+  - planner-path-valid-stop-all-collisions/_config/files/nav2_params.yaml
+  created_at: '2026-09-06T18:16:35.198987'
+  config_identifier: 900f78a80c74
+  sub_identifier:
+    block: ca3d163bab05
+    run_files: 41d831e09a33
+    scenario_file: fd6db8194b30
+    config_referenced_files: e3b0c44298fc
+    variation_entrypoints: e3b0c44298fc
+    sut_sources: 09e9fec3f34b
+  transient_files: []
+  test_results:
+  - dir: planner-path-valid-stop-all-collisions/0
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-stop-all-collisions/0
+    output_files:
+    - planner-path-valid-stop-all-collisions/0/behaviors.jsonl
+    - planner-path-valid-stop-all-collisions/0/capture/capture.bin
+    - planner-path-valid-stop-all-collisions/0/capture/capture.json
+    - planner-path-valid-stop-all-collisions/0/entities.json
+    - planner-path-valid-stop-all-collisions/0/resource_usage.csv
+    - planner-path-valid-stop-all-collisions/0/run.clock_map.csv
+    - planner-path-valid-stop-all-collisions/0/run.npz
+    - planner-path-valid-stop-all-collisions/0/run_log.csv
+    - planner-path-valid-stop-all-collisions/0/sim_poses.csv
+    - planner-path-valid-stop-all-collisions/0/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-stop-all-collisions/1
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-stop-all-collisions/1
+    output_files:
+    - planner-path-valid-stop-all-collisions/1/behaviors.jsonl
+    - planner-path-valid-stop-all-collisions/1/capture/capture.bin
+    - planner-path-valid-stop-all-collisions/1/capture/capture.json
+    - planner-path-valid-stop-all-collisions/1/entities.json
+    - planner-path-valid-stop-all-collisions/1/resource_usage.csv
+    - planner-path-valid-stop-all-collisions/1/run.clock_map.csv
+    - planner-path-valid-stop-all-collisions/1/run.npz
+    - planner-path-valid-stop-all-collisions/1/run_log.csv
+    - planner-path-valid-stop-all-collisions/1/sim_poses.csv
+    - planner-path-valid-stop-all-collisions/1/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-stop-all-collisions/2
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-stop-all-collisions/2
+    output_files:
+    - planner-path-valid-stop-all-collisions/2/behaviors.jsonl
+    - planner-path-valid-stop-all-collisions/2/capture/capture.bin
+    - planner-path-valid-stop-all-collisions/2/capture/capture.json
+    - planner-path-valid-stop-all-collisions/2/entities.json
+    - planner-path-valid-stop-all-collisions/2/resource_usage.csv
+    - planner-path-valid-stop-all-collisions/2/run.clock_map.csv
+    - planner-path-valid-stop-all-collisions/2/run.npz
+    - planner-path-valid-stop-all-collisions/2/run_log.csv
+    - planner-path-valid-stop-all-collisions/2/sim_poses.csv
+    - planner-path-valid-stop-all-collisions/2/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-stop-all-collisions/3
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-stop-all-collisions/3
+    output_files:
+    - planner-path-valid-stop-all-collisions/3/behaviors.jsonl
+    - planner-path-valid-stop-all-collisions/3/capture/capture.bin
+    - planner-path-valid-stop-all-collisions/3/capture/capture.json
+    - planner-path-valid-stop-all-collisions/3/entities.json
+    - planner-path-valid-stop-all-collisions/3/resource_usage.csv
+    - planner-path-valid-stop-all-collisions/3/run.clock_map.csv
+    - planner-path-valid-stop-all-collisions/3/run.npz
+    - planner-path-valid-stop-all-collisions/3/run_log.csv
+    - planner-path-valid-stop-all-collisions/3/sim_poses.csv
+    - planner-path-valid-stop-all-collisions/3/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  - dir: planner-path-valid-stop-all-collisions/4
+    success: unknown
+    no_verdict_reason: test.xml not found in /campaign/planning-2026-09-06-18165849/planner-path-valid-stop-all-collisions/4
+    output_files:
+    - planner-path-valid-stop-all-collisions/4/behaviors.jsonl
+    - planner-path-valid-stop-all-collisions/4/capture/capture.bin
+    - planner-path-valid-stop-all-collisions/4/capture/capture.json
+    - planner-path-valid-stop-all-collisions/4/entities.json
+    - planner-path-valid-stop-all-collisions/4/resource_usage.csv
+    - planner-path-valid-stop-all-collisions/4/run.clock_map.csv
+    - planner-path-valid-stop-all-collisions/4/run.npz
+    - planner-path-valid-stop-all-collisions/4/run_log.csv
+    - planner-path-valid-stop-all-collisions/4/sim_poses.csv
+    - planner-path-valid-stop-all-collisions/4/system_usage.csv
+    sysinfo:
+      platform:
+        platform: Linux-7.0.0-30-generic-x86_64-with-glibc2.39
+        system: Linux
+        release: 7.0.0-30-generic
+        version: '#30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2'
+        machine: x86_64
+        processor: x86_64
+      gpu:
+        render_node: null
+        nvidia_present: false
+        nvidia_model: NVIDIA GeForce RTX 5080
+        nvidia_driver: '595.84'
+      cpu_name: Intel(R) Core(TM) Ultra 9 285K
+      cpu_governor: performance
+      instance_type: x86_64
+      available_cpus: '2'
+      available_mem: '4294967296'
+      node_label: node-7f7e372628b2
+  variations: []
+  derived_from: []
+execution:
+  execution_time: '2026-09-06T18:41:15.662619+00:00'
+  robovast_version: 7e2a5ef
+  robovast_revision: 7e2a5ef
+  robovast_revision_source: baked
+  robovast_dirty: false
+  runs: 5
+  execution_type: cluster
+  image: ghcr.io/cps-test-lab/robovast:latest
+  images:
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim:latest
+    sut: ghcr.io/cps-test-lab/robovast:latest
+    scenario: ghcr.io/cps-test-lab/robovast:latest
+  image_revision: ghcr.io/cps-test-lab/robovast@sha256:79e14ec3a9afc9459d79b47bc70b34d19dcb52eee0cb90fb26051a4676e18788
+  image_revisions:
+    scenario: ghcr.io/cps-test-lab/robovast@sha256:79e14ec3a9afc9459d79b47bc70b34d19dcb52eee0cb90fb26051a4676e18788
+    simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:a59593ef08d066571036abacd4fe56645eaa18f6fc0dd590a1b0fe73706415cf
+    sut: ghcr.io/cps-test-lab/robovast@sha256:79e14ec3a9afc9459d79b47bc70b34d19dcb52eee0cb90fb26051a4676e18788
+    robovast: ghcr.io/cps-test-lab/robovast@sha256:79e14ec3a9afc9459d79b47bc70b34d19dcb52eee0cb90fb26051a4676e18788
+    s3-init: ghcr.io/cps-test-lab/robovast-sidecar@sha256:94f9b862e0538408d9af57d92003ca91c608c6656bce5db7112cce30766b6b89
+  image_build_refs:
+    scenario:
+      revision: 45bf47d
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    simulation:
+      revision: 45bf47d
+      source: https://github.com/cps-test-lab/robovast
+      roqsim_ref: d944d606d02d519ce90870078c5255c6aca6b107
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+    sut:
+      revision: 45bf47d
+      source: https://github.com/cps-test-lab/robovast
+      scenario_execution_ref: 22ac88abcf613d10fe06dd357f99d66437acab19
+      scenario_execution_server_ref: 39c55d1081dcdd9f04f3762c0ec84b189c50b2da
+      base_image: ros:jazzy-ros-base@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
+      ubuntu_snapshot: 20260819T003043Z
+      ros_snapshot: '2026-06-18'
+  env:
+    PYTHONUNBUFFERED: '1'
+  cluster_info:
+    cluster_config:
+      name: rke2
+      kwargs:
+        namespace: default
+    node_count: 1
+    node_labels:
+      node-7f7e372628b2:
+        beta.kubernetes.io/arch: amd64
+        beta.kubernetes.io/instance-type: rke2
+        beta.kubernetes.io/os: linux
+        kubernetes.io/arch: amd64
+        kubernetes.io/os: linux
+        node-role.kubernetes.io/control-plane: 'true'
+        node-role.kubernetes.io/etcd: 'true'
+        node.kubernetes.io/instance-type: rke2
+        robovast.io/build-node: 'true'
+        robovast.io/data-node: 'true'
+        robovast.io/node-id: node-7f7e372628b2
+  launch:
+    config_filter: ''
+    campaign_name: ''
+    runs: 5
+    postprocess: true
+    upload_to_share: false
+    show_gui: false
+    images:
+      scenario: ghcr.io/cps-test-lab/robovast@sha256:79e14ec3a9afc9459d79b47bc70b34d19dcb52eee0cb90fb26051a4676e18788
+      simulation: ghcr.io/cps-test-lab/robovast-roqsim@sha256:a59593ef08d066571036abacd4fe56645eaa18f6fc0dd590a1b0fe73706415cf
+      sut: ghcr.io/cps-test-lab/robovast@sha256:79e14ec3a9afc9459d79b47bc70b34d19dcb52eee0cb90fb26051a4676e18788
+postprocessing:
+  generated_by: robovast
+  entries:
+  - output: ../planner-runtime-nav-to-pose-1/1/poses.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/1/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../planner-runtime-nav-to-pose-1/1/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../planner-runtime-nav-to-pose-1/1/action_navigate_to_pose_status.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/1/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../planner-runtime-nav-to-pose-1/1/rosbag2_collision.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/1/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../planner-runtime-nav-to-pose-1/1/nav2_behavior_tree.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/1/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../planner-runtime-nav-to-pose-1/1/costmaps.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/1/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../planner-runtime-nav-to-pose-1/2/poses.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/2/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../planner-runtime-nav-to-pose-1/2/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../planner-runtime-nav-to-pose-1/2/action_navigate_to_pose_status.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/2/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../planner-runtime-nav-to-pose-1/2/rosbag2_collision.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/2/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../planner-runtime-nav-to-pose-1/2/nav2_behavior_tree.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/2/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../planner-runtime-nav-to-pose-1/2/costmaps.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/2/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../planner-runtime-nav-to-pose-1/3/poses.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/3/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../planner-runtime-nav-to-pose-1/3/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../planner-runtime-nav-to-pose-1/3/action_navigate_to_pose_status.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/3/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../planner-runtime-nav-to-pose-1/3/rosbag2_collision.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/3/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../planner-runtime-nav-to-pose-1/3/nav2_behavior_tree.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/3/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../planner-runtime-nav-to-pose-1/3/costmaps.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/3/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../planner-runtime-nav-to-pose-1/0/poses.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/0/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../planner-runtime-nav-to-pose-1/0/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../planner-runtime-nav-to-pose-1/0/action_navigate_to_pose_status.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/0/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../planner-runtime-nav-to-pose-1/0/rosbag2_collision.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/0/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../planner-runtime-nav-to-pose-1/0/nav2_behavior_tree.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/0/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../planner-runtime-nav-to-pose-1/0/costmaps.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/0/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../planner-runtime-nav-to-pose-1/4/poses.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/4/rosbag2
+    plugin: rosbags_process/tf_to_csv
+    params:
+      type: tf_to_csv
+      frames: all
+      require:
+      - base_link
+      - odom
+      - nav2_turtlebot4_base_link_gt
+  - output: ../planner-runtime-nav-to-pose-1/4/action_navigate_to_pose_feedback.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../planner-runtime-nav-to-pose-1/4/action_navigate_to_pose_status.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/4/rosbag2
+    plugin: rosbags_process/action_to_csv
+    params:
+      type: action_to_csv
+      action: navigate_to_pose
+  - output: ../planner-runtime-nav-to-pose-1/4/rosbag2_collision.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/4/rosbag2
+    plugin: rosbags_process/to_csv
+    params:
+      type: to_csv
+      topics:
+      - /collision
+  - output: ../planner-runtime-nav-to-pose-1/4/nav2_behavior_tree.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/4/rosbag2
+    plugin: rosbags_process/nav2_bt_to_csv
+    params:
+      type: nav2_bt_to_csv
+  - output: ../planner-runtime-nav-to-pose-1/4/costmaps.csv
+    sources:
+    - ../planner-runtime-nav-to-pose-1/4/rosbag2
+    plugin: rosbags_process/costmap_to_csv
+    params:
+      type: costmap_to_csv
+      topics:
+      - /map
+      - /global_costmap/costmap
+      - /local_costmap/costmap
+  - output: ../_jobs/batch-0/job-3/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-3/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-3/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-0/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-0/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-1/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-1/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-2/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-2/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/rosout.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/rosout_to_csv
+    params:
+      type: rosout_to_csv
+  - output: ../_jobs/batch-0/job-4/logs/clock_map.csv
+    sources:
+    - ../_jobs/batch-0/job-4/logs/rosout_bag
+    plugin: rosbags_process/clock_to_csv
+    params:
+      type: clock_to_csv
+  - output: planner-path-valid-custom-footprint/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-5/resource_usage_main.csv
+    - _jobs/batch-0/job-5/resource_usage_simulation.csv
+    - _jobs/batch-0/job-5/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-custom-footprint/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-5/system_usage_main.csv
+    - _jobs/batch-0/job-5/system_usage_simulation.csv
+    - _jobs/batch-0/job-5/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-custom-footprint/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-6/resource_usage_main.csv
+    - _jobs/batch-0/job-6/resource_usage_simulation.csv
+    - _jobs/batch-0/job-6/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-custom-footprint/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-6/system_usage_main.csv
+    - _jobs/batch-0/job-6/system_usage_simulation.csv
+    - _jobs/batch-0/job-6/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-custom-footprint/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-7/resource_usage_main.csv
+    - _jobs/batch-0/job-7/resource_usage_simulation.csv
+    - _jobs/batch-0/job-7/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-custom-footprint/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-7/system_usage_main.csv
+    - _jobs/batch-0/job-7/system_usage_simulation.csv
+    - _jobs/batch-0/job-7/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-custom-footprint/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-8/resource_usage_main.csv
+    - _jobs/batch-0/job-8/resource_usage_simulation.csv
+    - _jobs/batch-0/job-8/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-custom-footprint/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-8/system_usage_main.csv
+    - _jobs/batch-0/job-8/system_usage_simulation.csv
+    - _jobs/batch-0/job-8/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-custom-footprint/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-9/resource_usage_main.csv
+    - _jobs/batch-0/job-9/resource_usage_simulation.csv
+    - _jobs/batch-0/job-9/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-custom-footprint/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-9/system_usage_main.csv
+    - _jobs/batch-0/job-9/system_usage_simulation.csv
+    - _jobs/batch-0/job-9/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-empty-layer/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-20/resource_usage_main.csv
+    - _jobs/batch-0/job-20/resource_usage_simulation.csv
+    - _jobs/batch-0/job-20/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-empty-layer/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-20/system_usage_main.csv
+    - _jobs/batch-0/job-20/system_usage_simulation.csv
+    - _jobs/batch-0/job-20/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-empty-layer/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-21/resource_usage_main.csv
+    - _jobs/batch-0/job-21/resource_usage_simulation.csv
+    - _jobs/batch-0/job-21/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-empty-layer/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-21/system_usage_main.csv
+    - _jobs/batch-0/job-21/system_usage_simulation.csv
+    - _jobs/batch-0/job-21/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-empty-layer/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-22/resource_usage_main.csv
+    - _jobs/batch-0/job-22/resource_usage_simulation.csv
+    - _jobs/batch-0/job-22/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-empty-layer/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-22/system_usage_main.csv
+    - _jobs/batch-0/job-22/system_usage_simulation.csv
+    - _jobs/batch-0/job-22/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-empty-layer/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-23/resource_usage_main.csv
+    - _jobs/batch-0/job-23/resource_usage_simulation.csv
+    - _jobs/batch-0/job-23/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-empty-layer/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-23/system_usage_main.csv
+    - _jobs/batch-0/job-23/system_usage_simulation.csv
+    - _jobs/batch-0/job-23/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-empty-layer/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-24/resource_usage_main.csv
+    - _jobs/batch-0/job-24/resource_usage_simulation.csv
+    - _jobs/batch-0/job-24/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-empty-layer/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-24/system_usage_main.csv
+    - _jobs/batch-0/job-24/system_usage_simulation.csv
+    - _jobs/batch-0/job-24/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-empty-path/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-35/resource_usage_main.csv
+    - _jobs/batch-0/job-35/resource_usage_simulation.csv
+    - _jobs/batch-0/job-35/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-empty-path/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-35/system_usage_main.csv
+    - _jobs/batch-0/job-35/system_usage_simulation.csv
+    - _jobs/batch-0/job-35/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-empty-path/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-36/resource_usage_main.csv
+    - _jobs/batch-0/job-36/resource_usage_simulation.csv
+    - _jobs/batch-0/job-36/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-empty-path/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-36/system_usage_main.csv
+    - _jobs/batch-0/job-36/system_usage_simulation.csv
+    - _jobs/batch-0/job-36/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-empty-path/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-37/resource_usage_main.csv
+    - _jobs/batch-0/job-37/resource_usage_simulation.csv
+    - _jobs/batch-0/job-37/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-empty-path/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-37/system_usage_main.csv
+    - _jobs/batch-0/job-37/system_usage_simulation.csv
+    - _jobs/batch-0/job-37/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-empty-path/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-38/resource_usage_main.csv
+    - _jobs/batch-0/job-38/resource_usage_simulation.csv
+    - _jobs/batch-0/job-38/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-empty-path/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-38/system_usage_main.csv
+    - _jobs/batch-0/job-38/system_usage_simulation.csv
+    - _jobs/batch-0/job-38/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-empty-path/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-39/resource_usage_main.csv
+    - _jobs/batch-0/job-39/resource_usage_simulation.csv
+    - _jobs/batch-0/job-39/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-empty-path/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-39/system_usage_main.csv
+    - _jobs/batch-0/job-39/system_usage_simulation.csv
+    - _jobs/batch-0/job-39/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-footprint/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-10/resource_usage_main.csv
+    - _jobs/batch-0/job-10/resource_usage_simulation.csv
+    - _jobs/batch-0/job-10/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-footprint/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-10/system_usage_main.csv
+    - _jobs/batch-0/job-10/system_usage_simulation.csv
+    - _jobs/batch-0/job-10/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-footprint/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-11/resource_usage_main.csv
+    - _jobs/batch-0/job-11/resource_usage_simulation.csv
+    - _jobs/batch-0/job-11/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-footprint/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-11/system_usage_main.csv
+    - _jobs/batch-0/job-11/system_usage_simulation.csv
+    - _jobs/batch-0/job-11/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-footprint/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-12/resource_usage_main.csv
+    - _jobs/batch-0/job-12/resource_usage_simulation.csv
+    - _jobs/batch-0/job-12/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-footprint/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-12/system_usage_main.csv
+    - _jobs/batch-0/job-12/system_usage_simulation.csv
+    - _jobs/batch-0/job-12/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-footprint/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-13/resource_usage_main.csv
+    - _jobs/batch-0/job-13/resource_usage_simulation.csv
+    - _jobs/batch-0/job-13/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-footprint/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-13/system_usage_main.csv
+    - _jobs/batch-0/job-13/system_usage_simulation.csv
+    - _jobs/batch-0/job-13/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-footprint/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-14/resource_usage_main.csv
+    - _jobs/batch-0/job-14/resource_usage_simulation.csv
+    - _jobs/batch-0/job-14/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-footprint/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-14/system_usage_main.csv
+    - _jobs/batch-0/job-14/system_usage_simulation.csv
+    - _jobs/batch-0/job-14/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-path/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-40/resource_usage_main.csv
+    - _jobs/batch-0/job-40/resource_usage_simulation.csv
+    - _jobs/batch-0/job-40/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-path/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-40/system_usage_main.csv
+    - _jobs/batch-0/job-40/system_usage_simulation.csv
+    - _jobs/batch-0/job-40/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-path/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-41/resource_usage_main.csv
+    - _jobs/batch-0/job-41/resource_usage_simulation.csv
+    - _jobs/batch-0/job-41/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-path/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-41/system_usage_main.csv
+    - _jobs/batch-0/job-41/system_usage_simulation.csv
+    - _jobs/batch-0/job-41/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-path/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-42/resource_usage_main.csv
+    - _jobs/batch-0/job-42/resource_usage_simulation.csv
+    - _jobs/batch-0/job-42/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-path/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-42/system_usage_main.csv
+    - _jobs/batch-0/job-42/system_usage_simulation.csv
+    - _jobs/batch-0/job-42/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-path/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-43/resource_usage_main.csv
+    - _jobs/batch-0/job-43/resource_usage_simulation.csv
+    - _jobs/batch-0/job-43/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-path/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-43/system_usage_main.csv
+    - _jobs/batch-0/job-43/system_usage_simulation.csv
+    - _jobs/batch-0/job-43/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-path/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-44/resource_usage_main.csv
+    - _jobs/batch-0/job-44/resource_usage_simulation.csv
+    - _jobs/batch-0/job-44/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-path/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-44/system_usage_main.csv
+    - _jobs/batch-0/job-44/system_usage_simulation.csv
+    - _jobs/batch-0/job-44/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-pose-indices/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-60/resource_usage_main.csv
+    - _jobs/batch-0/job-60/resource_usage_simulation.csv
+    - _jobs/batch-0/job-60/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-pose-indices/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-60/system_usage_main.csv
+    - _jobs/batch-0/job-60/system_usage_simulation.csv
+    - _jobs/batch-0/job-60/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-pose-indices/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-61/resource_usage_main.csv
+    - _jobs/batch-0/job-61/resource_usage_simulation.csv
+    - _jobs/batch-0/job-61/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-pose-indices/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-61/system_usage_main.csv
+    - _jobs/batch-0/job-61/system_usage_simulation.csv
+    - _jobs/batch-0/job-61/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-pose-indices/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-62/resource_usage_main.csv
+    - _jobs/batch-0/job-62/resource_usage_simulation.csv
+    - _jobs/batch-0/job-62/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-pose-indices/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-62/system_usage_main.csv
+    - _jobs/batch-0/job-62/system_usage_simulation.csv
+    - _jobs/batch-0/job-62/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-pose-indices/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-63/resource_usage_main.csv
+    - _jobs/batch-0/job-63/resource_usage_simulation.csv
+    - _jobs/batch-0/job-63/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-pose-indices/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-63/system_usage_main.csv
+    - _jobs/batch-0/job-63/system_usage_simulation.csv
+    - _jobs/batch-0/job-63/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-invalid-pose-indices/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-64/resource_usage_main.csv
+    - _jobs/batch-0/job-64/resource_usage_simulation.csv
+    - _jobs/batch-0/job-64/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-invalid-pose-indices/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-64/system_usage_main.csv
+    - _jobs/batch-0/job-64/system_usage_simulation.csv
+    - _jobs/batch-0/job-64/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-large-footprint/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-25/resource_usage_main.csv
+    - _jobs/batch-0/job-25/resource_usage_simulation.csv
+    - _jobs/batch-0/job-25/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-large-footprint/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-25/system_usage_main.csv
+    - _jobs/batch-0/job-25/system_usage_simulation.csv
+    - _jobs/batch-0/job-25/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-large-footprint/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-26/resource_usage_main.csv
+    - _jobs/batch-0/job-26/resource_usage_simulation.csv
+    - _jobs/batch-0/job-26/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-large-footprint/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-26/system_usage_main.csv
+    - _jobs/batch-0/job-26/system_usage_simulation.csv
+    - _jobs/batch-0/job-26/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-large-footprint/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-27/resource_usage_main.csv
+    - _jobs/batch-0/job-27/resource_usage_simulation.csv
+    - _jobs/batch-0/job-27/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-large-footprint/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-27/system_usage_main.csv
+    - _jobs/batch-0/job-27/system_usage_simulation.csv
+    - _jobs/batch-0/job-27/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-large-footprint/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-28/resource_usage_main.csv
+    - _jobs/batch-0/job-28/resource_usage_simulation.csv
+    - _jobs/batch-0/job-28/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-large-footprint/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-28/system_usage_main.csv
+    - _jobs/batch-0/job-28/system_usage_simulation.csv
+    - _jobs/batch-0/job-28/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-large-footprint/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-29/resource_usage_main.csv
+    - _jobs/batch-0/job-29/resource_usage_simulation.csv
+    - _jobs/batch-0/job-29/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-large-footprint/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-29/system_usage_main.csv
+    - _jobs/batch-0/job-29/system_usage_simulation.csv
+    - _jobs/batch-0/job-29/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-max-cost-zero/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-55/resource_usage_main.csv
+    - _jobs/batch-0/job-55/resource_usage_simulation.csv
+    - _jobs/batch-0/job-55/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-max-cost-zero/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-55/system_usage_main.csv
+    - _jobs/batch-0/job-55/system_usage_simulation.csv
+    - _jobs/batch-0/job-55/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-max-cost-zero/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-56/resource_usage_main.csv
+    - _jobs/batch-0/job-56/resource_usage_simulation.csv
+    - _jobs/batch-0/job-56/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-max-cost-zero/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-56/system_usage_main.csv
+    - _jobs/batch-0/job-56/system_usage_simulation.csv
+    - _jobs/batch-0/job-56/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-max-cost-zero/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-57/resource_usage_main.csv
+    - _jobs/batch-0/job-57/resource_usage_simulation.csv
+    - _jobs/batch-0/job-57/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-max-cost-zero/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-57/system_usage_main.csv
+    - _jobs/batch-0/job-57/system_usage_simulation.csv
+    - _jobs/batch-0/job-57/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-max-cost-zero/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-58/resource_usage_main.csv
+    - _jobs/batch-0/job-58/resource_usage_simulation.csv
+    - _jobs/batch-0/job-58/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-max-cost-zero/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-58/system_usage_main.csv
+    - _jobs/batch-0/job-58/system_usage_simulation.csv
+    - _jobs/batch-0/job-58/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-max-cost-zero/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-59/resource_usage_main.csv
+    - _jobs/batch-0/job-59/resource_usage_simulation.csv
+    - _jobs/batch-0/job-59/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-max-cost-zero/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-59/system_usage_main.csv
+    - _jobs/batch-0/job-59/system_usage_simulation.csv
+    - _jobs/batch-0/job-59/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-max-lookahead/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-30/resource_usage_main.csv
+    - _jobs/batch-0/job-30/resource_usage_simulation.csv
+    - _jobs/batch-0/job-30/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-max-lookahead/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-30/system_usage_main.csv
+    - _jobs/batch-0/job-30/system_usage_simulation.csv
+    - _jobs/batch-0/job-30/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-max-lookahead/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-31/resource_usage_main.csv
+    - _jobs/batch-0/job-31/resource_usage_simulation.csv
+    - _jobs/batch-0/job-31/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-max-lookahead/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-31/system_usage_main.csv
+    - _jobs/batch-0/job-31/system_usage_simulation.csv
+    - _jobs/batch-0/job-31/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-max-lookahead/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-32/resource_usage_main.csv
+    - _jobs/batch-0/job-32/resource_usage_simulation.csv
+    - _jobs/batch-0/job-32/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-max-lookahead/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-32/system_usage_main.csv
+    - _jobs/batch-0/job-32/system_usage_simulation.csv
+    - _jobs/batch-0/job-32/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-max-lookahead/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-33/resource_usage_main.csv
+    - _jobs/batch-0/job-33/resource_usage_simulation.csv
+    - _jobs/batch-0/job-33/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-max-lookahead/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-33/system_usage_main.csv
+    - _jobs/batch-0/job-33/system_usage_simulation.csv
+    - _jobs/batch-0/job-33/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-max-lookahead/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-34/resource_usage_main.csv
+    - _jobs/batch-0/job-34/resource_usage_simulation.csv
+    - _jobs/batch-0/job-34/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-max-lookahead/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-34/system_usage_main.csv
+    - _jobs/batch-0/job-34/system_usage_simulation.csv
+    - _jobs/batch-0/job-34/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-nonexistent-layer/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-15/resource_usage_main.csv
+    - _jobs/batch-0/job-15/resource_usage_simulation.csv
+    - _jobs/batch-0/job-15/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-nonexistent-layer/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-15/system_usage_main.csv
+    - _jobs/batch-0/job-15/system_usage_simulation.csv
+    - _jobs/batch-0/job-15/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-nonexistent-layer/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-16/resource_usage_main.csv
+    - _jobs/batch-0/job-16/resource_usage_simulation.csv
+    - _jobs/batch-0/job-16/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-nonexistent-layer/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-16/system_usage_main.csv
+    - _jobs/batch-0/job-16/system_usage_simulation.csv
+    - _jobs/batch-0/job-16/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-nonexistent-layer/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-17/resource_usage_main.csv
+    - _jobs/batch-0/job-17/resource_usage_simulation.csv
+    - _jobs/batch-0/job-17/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-nonexistent-layer/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-17/system_usage_main.csv
+    - _jobs/batch-0/job-17/system_usage_simulation.csv
+    - _jobs/batch-0/job-17/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-nonexistent-layer/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-18/resource_usage_main.csv
+    - _jobs/batch-0/job-18/resource_usage_simulation.csv
+    - _jobs/batch-0/job-18/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-nonexistent-layer/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-18/system_usage_main.csv
+    - _jobs/batch-0/job-18/system_usage_simulation.csv
+    - _jobs/batch-0/job-18/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-nonexistent-layer/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-19/resource_usage_main.csv
+    - _jobs/batch-0/job-19/resource_usage_simulation.csv
+    - _jobs/batch-0/job-19/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-nonexistent-layer/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-19/system_usage_main.csv
+    - _jobs/batch-0/job-19/system_usage_simulation.csv
+    - _jobs/batch-0/job-19/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-stop-all-collisions/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-70/resource_usage_main.csv
+    - _jobs/batch-0/job-70/resource_usage_simulation.csv
+    - _jobs/batch-0/job-70/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-stop-all-collisions/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-70/system_usage_main.csv
+    - _jobs/batch-0/job-70/system_usage_simulation.csv
+    - _jobs/batch-0/job-70/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-stop-all-collisions/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-71/resource_usage_main.csv
+    - _jobs/batch-0/job-71/resource_usage_simulation.csv
+    - _jobs/batch-0/job-71/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-stop-all-collisions/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-71/system_usage_main.csv
+    - _jobs/batch-0/job-71/system_usage_simulation.csv
+    - _jobs/batch-0/job-71/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-stop-all-collisions/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-72/resource_usage_main.csv
+    - _jobs/batch-0/job-72/resource_usage_simulation.csv
+    - _jobs/batch-0/job-72/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-stop-all-collisions/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-72/system_usage_main.csv
+    - _jobs/batch-0/job-72/system_usage_simulation.csv
+    - _jobs/batch-0/job-72/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-stop-all-collisions/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-73/resource_usage_main.csv
+    - _jobs/batch-0/job-73/resource_usage_simulation.csv
+    - _jobs/batch-0/job-73/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-stop-all-collisions/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-73/system_usage_main.csv
+    - _jobs/batch-0/job-73/system_usage_simulation.csv
+    - _jobs/batch-0/job-73/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-stop-all-collisions/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-74/resource_usage_main.csv
+    - _jobs/batch-0/job-74/resource_usage_simulation.csv
+    - _jobs/batch-0/job-74/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-stop-all-collisions/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-74/system_usage_main.csv
+    - _jobs/batch-0/job-74/system_usage_simulation.csv
+    - _jobs/batch-0/job-74/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-stop-first-collision/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-65/resource_usage_main.csv
+    - _jobs/batch-0/job-65/resource_usage_simulation.csv
+    - _jobs/batch-0/job-65/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-stop-first-collision/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-65/system_usage_main.csv
+    - _jobs/batch-0/job-65/system_usage_simulation.csv
+    - _jobs/batch-0/job-65/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-stop-first-collision/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-66/resource_usage_main.csv
+    - _jobs/batch-0/job-66/resource_usage_simulation.csv
+    - _jobs/batch-0/job-66/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-stop-first-collision/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-66/system_usage_main.csv
+    - _jobs/batch-0/job-66/system_usage_simulation.csv
+    - _jobs/batch-0/job-66/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-stop-first-collision/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-67/resource_usage_main.csv
+    - _jobs/batch-0/job-67/resource_usage_simulation.csv
+    - _jobs/batch-0/job-67/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-stop-first-collision/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-67/system_usage_main.csv
+    - _jobs/batch-0/job-67/system_usage_simulation.csv
+    - _jobs/batch-0/job-67/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-stop-first-collision/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-68/resource_usage_main.csv
+    - _jobs/batch-0/job-68/resource_usage_simulation.csv
+    - _jobs/batch-0/job-68/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-stop-first-collision/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-68/system_usage_main.csv
+    - _jobs/batch-0/job-68/system_usage_simulation.csv
+    - _jobs/batch-0/job-68/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-stop-first-collision/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-69/resource_usage_main.csv
+    - _jobs/batch-0/job-69/resource_usage_simulation.csv
+    - _jobs/batch-0/job-69/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-stop-first-collision/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-69/system_usage_main.csv
+    - _jobs/batch-0/job-69/system_usage_simulation.csv
+    - _jobs/batch-0/job-69/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-unknown-cells/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-50/resource_usage_main.csv
+    - _jobs/batch-0/job-50/resource_usage_simulation.csv
+    - _jobs/batch-0/job-50/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-unknown-cells/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-50/system_usage_main.csv
+    - _jobs/batch-0/job-50/system_usage_simulation.csv
+    - _jobs/batch-0/job-50/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-unknown-cells/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-51/resource_usage_main.csv
+    - _jobs/batch-0/job-51/resource_usage_simulation.csv
+    - _jobs/batch-0/job-51/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-unknown-cells/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-51/system_usage_main.csv
+    - _jobs/batch-0/job-51/system_usage_simulation.csv
+    - _jobs/batch-0/job-51/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-unknown-cells/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-52/resource_usage_main.csv
+    - _jobs/batch-0/job-52/resource_usage_simulation.csv
+    - _jobs/batch-0/job-52/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-unknown-cells/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-52/system_usage_main.csv
+    - _jobs/batch-0/job-52/system_usage_simulation.csv
+    - _jobs/batch-0/job-52/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-unknown-cells/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-53/resource_usage_main.csv
+    - _jobs/batch-0/job-53/resource_usage_simulation.csv
+    - _jobs/batch-0/job-53/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-unknown-cells/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-53/system_usage_main.csv
+    - _jobs/batch-0/job-53/system_usage_simulation.csv
+    - _jobs/batch-0/job-53/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-unknown-cells/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-54/resource_usage_main.csv
+    - _jobs/batch-0/job-54/resource_usage_simulation.csv
+    - _jobs/batch-0/job-54/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-unknown-cells/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-54/system_usage_main.csv
+    - _jobs/batch-0/job-54/system_usage_simulation.csv
+    - _jobs/batch-0/job-54/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-valid-path/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-45/resource_usage_main.csv
+    - _jobs/batch-0/job-45/resource_usage_simulation.csv
+    - _jobs/batch-0/job-45/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-valid-path/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-45/system_usage_main.csv
+    - _jobs/batch-0/job-45/system_usage_simulation.csv
+    - _jobs/batch-0/job-45/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-valid-path/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-46/resource_usage_main.csv
+    - _jobs/batch-0/job-46/resource_usage_simulation.csv
+    - _jobs/batch-0/job-46/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-valid-path/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-46/system_usage_main.csv
+    - _jobs/batch-0/job-46/system_usage_simulation.csv
+    - _jobs/batch-0/job-46/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-valid-path/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-47/resource_usage_main.csv
+    - _jobs/batch-0/job-47/resource_usage_simulation.csv
+    - _jobs/batch-0/job-47/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-valid-path/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-47/system_usage_main.csv
+    - _jobs/batch-0/job-47/system_usage_simulation.csv
+    - _jobs/batch-0/job-47/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-valid-path/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-48/resource_usage_main.csv
+    - _jobs/batch-0/job-48/resource_usage_simulation.csv
+    - _jobs/batch-0/job-48/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-valid-path/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-48/system_usage_main.csv
+    - _jobs/batch-0/job-48/system_usage_simulation.csv
+    - _jobs/batch-0/job-48/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-path-valid-valid-path/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-49/resource_usage_main.csv
+    - _jobs/batch-0/job-49/resource_usage_simulation.csv
+    - _jobs/batch-0/job-49/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-path-valid-valid-path/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-49/system_usage_main.csv
+    - _jobs/batch-0/job-49/system_usage_simulation.csv
+    - _jobs/batch-0/job-49/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-runtime-nav-to-pose-1/0/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/resource_usage_main.csv
+    - _jobs/batch-0/job-0/resource_usage_simulation.csv
+    - _jobs/batch-0/job-0/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-runtime-nav-to-pose-1/0/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-0/system_usage_main.csv
+    - _jobs/batch-0/job-0/system_usage_simulation.csv
+    - _jobs/batch-0/job-0/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-runtime-nav-to-pose-1/1/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/resource_usage_main.csv
+    - _jobs/batch-0/job-1/resource_usage_simulation.csv
+    - _jobs/batch-0/job-1/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-runtime-nav-to-pose-1/1/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-1/system_usage_main.csv
+    - _jobs/batch-0/job-1/system_usage_simulation.csv
+    - _jobs/batch-0/job-1/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-runtime-nav-to-pose-1/2/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/resource_usage_main.csv
+    - _jobs/batch-0/job-2/resource_usage_simulation.csv
+    - _jobs/batch-0/job-2/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-runtime-nav-to-pose-1/2/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-2/system_usage_main.csv
+    - _jobs/batch-0/job-2/system_usage_simulation.csv
+    - _jobs/batch-0/job-2/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-runtime-nav-to-pose-1/3/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/resource_usage_main.csv
+    - _jobs/batch-0/job-3/resource_usage_simulation.csv
+    - _jobs/batch-0/job-3/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-runtime-nav-to-pose-1/3/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-3/system_usage_main.csv
+    - _jobs/batch-0/job-3/system_usage_simulation.csv
+    - _jobs/batch-0/job-3/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+  - output: planner-runtime-nav-to-pose-1/4/resource_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/resource_usage_main.csv
+    - _jobs/batch-0/job-4/resource_usage_simulation.csv
+    - _jobs/batch-0/job-4/resource_usage_sut.csv
+    plugin: resource_usage
+    params: {}
+  - output: planner-runtime-nav-to-pose-1/4/system_usage.csv
+    sources:
+    - _jobs/batch-0/job-4/system_usage_main.csv
+    - _jobs/batch-0/job-4/system_usage_simulation.csv
+    - _jobs/batch-0/job-4/system_usage_sut.csv
+    plugin: system_usage
+    params: {}
+runs_without_verdict:
+- planner-path-valid-custom-footprint/0
+- planner-path-valid-custom-footprint/1
+- planner-path-valid-custom-footprint/2
+- planner-path-valid-custom-footprint/3
+- planner-path-valid-custom-footprint/4
+- planner-path-valid-empty-layer/0
+- planner-path-valid-empty-layer/1
+- planner-path-valid-empty-layer/2
+- planner-path-valid-empty-layer/3
+- planner-path-valid-empty-layer/4
+- planner-path-valid-empty-path/0
+- planner-path-valid-empty-path/1
+- planner-path-valid-empty-path/2
+- planner-path-valid-empty-path/3
+- planner-path-valid-empty-path/4
+- planner-path-valid-invalid-footprint/0
+- planner-path-valid-invalid-footprint/1
+- planner-path-valid-invalid-footprint/2
+- planner-path-valid-invalid-footprint/3
+- planner-path-valid-invalid-footprint/4
+- planner-path-valid-invalid-path/0
+- planner-path-valid-invalid-path/1
+- planner-path-valid-invalid-path/2
+- planner-path-valid-invalid-path/3
+- planner-path-valid-invalid-path/4
+- planner-path-valid-invalid-pose-indices/0
+- planner-path-valid-invalid-pose-indices/1
+- planner-path-valid-invalid-pose-indices/2
+- planner-path-valid-invalid-pose-indices/3
+- planner-path-valid-invalid-pose-indices/4
+- planner-path-valid-large-footprint/0
+- planner-path-valid-large-footprint/1
+- planner-path-valid-large-footprint/2
+- planner-path-valid-large-footprint/3
+- planner-path-valid-large-footprint/4
+- planner-path-valid-max-cost-zero/0
+- planner-path-valid-max-cost-zero/1
+- planner-path-valid-max-cost-zero/2
+- planner-path-valid-max-cost-zero/3
+- planner-path-valid-max-cost-zero/4
+- planner-path-valid-max-lookahead/0
+- planner-path-valid-max-lookahead/1
+- planner-path-valid-max-lookahead/2
+- planner-path-valid-max-lookahead/3
+- planner-path-valid-max-lookahead/4
+- planner-path-valid-nonexistent-layer/0
+- planner-path-valid-nonexistent-layer/1
+- planner-path-valid-nonexistent-layer/2
+- planner-path-valid-nonexistent-layer/3
+- planner-path-valid-nonexistent-layer/4
+- planner-path-valid-stop-all-collisions/0
+- planner-path-valid-stop-all-collisions/1
+- planner-path-valid-stop-all-collisions/2
+- planner-path-valid-stop-all-collisions/3
+- planner-path-valid-stop-all-collisions/4
+- planner-path-valid-stop-first-collision/0
+- planner-path-valid-stop-first-collision/1
+- planner-path-valid-stop-first-collision/2
+- planner-path-valid-stop-first-collision/3
+- planner-path-valid-stop-first-collision/4
+- planner-path-valid-unknown-cells/0
+- planner-path-valid-unknown-cells/1
+- planner-path-valid-unknown-cells/2
+- planner-path-valid-unknown-cells/3
+- planner-path-valid-unknown-cells/4
+- planner-path-valid-valid-path/0
+- planner-path-valid-valid-path/1
+- planner-path-valid-valid-path/2
+- planner-path-valid-valid-path/3
+- planner-path-valid-valid-path/4
